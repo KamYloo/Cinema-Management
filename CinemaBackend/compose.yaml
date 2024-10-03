@@ -1,0 +1,11 @@
+services:
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: cinemaData
+      POSTGRES_PASSWORD: netlab12
+      POSTGRES_USER: postgres
+    ports:
+      - '5432:5432'
