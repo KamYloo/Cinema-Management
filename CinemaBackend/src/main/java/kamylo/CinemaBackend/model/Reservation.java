@@ -1,7 +1,6 @@
 package kamylo.CinemaBackend.model;
 
 import jakarta.persistence.*;
-import kamylo.CinemaBackend.config.User;
 import lombok.Data;
 import lombok.ToString;
 
