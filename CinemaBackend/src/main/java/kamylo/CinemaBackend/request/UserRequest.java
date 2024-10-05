@@ -8,5 +8,4 @@ public class UserRequest {
     private String password;
     private String fullName;
     private String role;
-    private String artistName;
 }
