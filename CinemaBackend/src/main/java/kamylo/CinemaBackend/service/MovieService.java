@@ -12,7 +12,7 @@ import java.util.Set;
 @Service
 public interface MovieService {
     Movie createMovie(MovieRequest movieRequest) throws UserException;
-    List<Movie> getAllMovies();
+    Set<Movie> getAllMovies();
     Movie getMovie(Integer movieId) throws MovieException;
     Set<Movie> searchMovieByTitle(String title);
     void deleteMovie(Integer movieId, Integer userId) throws MovieException, UserException;

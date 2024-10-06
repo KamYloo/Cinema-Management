@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Integer> {
-    List<Movie> findAllByOrderByIdDesc();
+    Set<Movie> findAllByOrderByIdDesc();
 
     @Query("select m from Movie m where lower(m.title) like lower(concat('%',:title,'%'))")
     Set<Movie> findByTitle(@Param("title") String title);

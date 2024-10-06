@@ -57,7 +57,7 @@ public class MovieServiceImplementation implements MovieService {
     }
 
     @Override
-    public List<Movie> getAllMovies() {
+    public Set<Movie> getAllMovies() {
         return movieRepository.findAllByOrderByIdDesc();
     }
 
