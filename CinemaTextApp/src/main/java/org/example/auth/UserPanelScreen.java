@@ -1,6 +1,7 @@
 package org.example.auth;
 import com.googlecode.lanterna.gui2.*;
 import org.example.movie.AddMovieScreen;
+import org.example.movie.MovieListScreen;
 import org.example.user.UserService;
 
 public class UserPanelScreen {
@@ -26,10 +27,20 @@ public class UserPanelScreen {
                 }
             }));
         }
+        contentPanel.addComponent(new Button("Movies", () -> {
+            window.close();
+            try {
+                new MovieListScreen(gui.getScreen()).show();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }));
+
         contentPanel.addComponent(new Button("Logout", () -> {
             window.close();
             new MainMenuScreen(gui).start();
         }));
+
 
         window.setComponent(contentPanel);
         window.setHints(java.util.Arrays.asList(Window.Hint.FULL_SCREEN));
