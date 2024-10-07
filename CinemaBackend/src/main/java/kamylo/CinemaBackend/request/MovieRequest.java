@@ -13,7 +13,7 @@ public class MovieRequest {
     private String description;
     private String image;
     private String genre;
-    private Duration duration;
+    private int duration;
     private User user;
     private List<ShowTime> showTimes;
 }

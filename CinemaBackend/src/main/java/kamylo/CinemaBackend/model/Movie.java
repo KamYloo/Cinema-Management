@@ -21,7 +21,7 @@ public class Movie {
     private String description;
     private String image;
     private String genre;
-    private Duration duration;
+    private int duration;
 
     @ManyToOne
     @ToString.Exclude

@@ -34,7 +34,9 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> createUserHandler(@RequestBody UserRequest userRequest) throws Exception {
-        String role = userRequest.getRole();
+        String role = userRequest.getRole().trim().toLowerCase();  // Normalize role input
+
+        System.out.println("Role received from request: " + role);
         User isEmailExist = userRepository.findByEmail(userRequest.getEmail());
         if (isEmailExist != null) {
             throw new Exception("Email Is Already Used With Another Account");
@@ -43,10 +45,12 @@ public class AuthController {
         createdUser.setEmail(userRequest.getEmail());
         createdUser.setFullName(userRequest.getFullName());
         createdUser.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-        if ("Admin".equalsIgnoreCase(role)) {
+        if ("admin".equalsIgnoreCase(role)) {
             createdUser.setRole("ADMIN");
-        } else {
+        } else if ("user".equalsIgnoreCase(role)) {
             createdUser.setRole("USER");
+        } else {
+            throw new Exception("Invalid role provided. Must be 'Admin' or 'User'.");
         }
 
         User savedUser = userRepository.save(createdUser);

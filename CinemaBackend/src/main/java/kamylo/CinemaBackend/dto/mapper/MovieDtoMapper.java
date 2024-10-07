@@ -16,7 +16,6 @@ public class MovieDtoMapper {
         movieDto.setDescription(movie.getDescription());
         movieDto.setImage(movie.getImage());
         movieDto.setDuration(movie.getDuration());
-        movieDto.setShowTimes(movie.getShowTimes());
         movieDto.setGenre(movie.getGenre());
         movieDto.setUser(user);
         return movieDto;

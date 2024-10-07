@@ -15,7 +15,6 @@ public class MovieDto {
     private String description;
     private String image;
     private String genre;
-    private Duration duration;
+    private int duration;
     private UserDto user;
-    private List<ShowTime> showTimes = new ArrayList<>();
 }

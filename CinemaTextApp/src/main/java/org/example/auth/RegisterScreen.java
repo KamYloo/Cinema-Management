@@ -32,10 +32,10 @@ public class RegisterScreen {
 
         contentPanel.addComponent(new EmptySpace());
         contentPanel.addComponent(new Button("Register", () -> {
-            String fullName = fullNameBox.getText();
-            String email = emailBox.getText();
-            String password = passwordBox.getText();
-            String role = roleBox.getText();
+            String fullName = fullNameBox.getText().trim();
+            String email = emailBox.getText().trim();
+            String password = passwordBox.getText().trim();
+            String role = roleBox.getText().trim().toLowerCase();
 
             try {
                 boolean success = AuthService.register(fullName, email, password, role);

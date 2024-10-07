@@ -8,7 +8,7 @@ public class UserDtoMapper {
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
         userDto.setFullName(user.getFullName());
-        userDto.setAdmin(user.getRole().equalsIgnoreCase("ADMIN"));
+        userDto.setAdmin("ADMIN".equalsIgnoreCase(user.getRole()));
         return userDto;
     }
 }

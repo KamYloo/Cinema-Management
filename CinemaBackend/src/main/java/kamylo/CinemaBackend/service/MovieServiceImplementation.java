@@ -39,7 +39,6 @@ public class MovieServiceImplementation implements MovieService {
             movie.setGenre(movieRequest.getGenre());
             movie.setImage(movieRequest.getImage());
             movie.setUser(user);
-            movie.setShowTimes(movieRequest.getShowTimes());
             Movie savedMovie = movieRepository.save(movie);
             List<ShowTime> showTimes = new ArrayList<>();
             for (ShowTime showTimeRequest : movieRequest.getShowTimes()) {

@@ -20,4 +20,40 @@ public class HttpUtils {
 
         return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
+
+    public static HttpResponse<String> postWithToken(String endpoint, String jsonBody, String token) throws Exception {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + endpoint))
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + token)  // Dodanie tokena
+                .POST(HttpRequest.BodyPublishers.ofString(jsonBody, StandardCharsets.UTF_8))
+                .build();
+
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    public static HttpResponse<String> get(String endpoint, String token) throws Exception {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + endpoint))
+                .header("Authorization", "Bearer " + token)
+                .header("Accept", "application/json")
+                .GET()
+                .build();
+
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    public static HttpResponse<String> delete(String endpoint, String token) throws Exception {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + endpoint))
+                .header("Authorization", "Bearer " + token)
+                .header("Accept", "application/json")
+                .DELETE()
+                .build();
+
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
 }
