@@ -33,7 +33,7 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private Set<Reservation> reservations = new HashSet<>();
+    private List<Reservation> reservations = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

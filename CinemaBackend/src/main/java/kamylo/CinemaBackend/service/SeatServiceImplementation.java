@@ -1,5 +1,6 @@
 package kamylo.CinemaBackend.service;
 
+import kamylo.CinemaBackend.exception.SeatException;
 import kamylo.CinemaBackend.exception.ShowTimeException;
 import kamylo.CinemaBackend.model.Seat;
 import kamylo.CinemaBackend.repository.SeatRepository;
@@ -17,4 +18,10 @@ public class SeatServiceImplementation implements SeatService{
     public List<Seat> getAvailableSeatsByShowTimeId(Integer showTimeId) throws ShowTimeException {
         return seatRepository.findByShowTimeId(showTimeId);
     }
+
+    @Override
+    public Seat getSeat(Integer seatId) throws SeatException {
+       return seatRepository.findById(seatId).orElseThrow(() -> new SeatException("Seat not found with id: " + seatId));
+    }
+
 }
