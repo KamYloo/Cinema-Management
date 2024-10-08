@@ -52,11 +52,12 @@ public class MovieService {
         }
     }
 
-    public static Set<MovieDto> searchMovie(String title, String token) throws Exception {
-        HttpResponse<String> response = HttpUtils.get(MOVIE_ENDPOINT + "/search?title=" + title, token);
+    public static Set<MovieDto> searchMovie(String title) throws Exception {
+        HttpResponse<String> response = HttpUtils.get(MOVIE_ENDPOINT + "/search?title=" + title, JwtUtils.getJwtToken());
 
         if (response.statusCode() == 200) {
-            return gson.fromJson(response.body(), HashSet.class);
+            Type movieSetType = new TypeToken<HashSet<MovieDto>>(){}.getType();
+            return gson.fromJson(response.body(), movieSetType);
         } else {
             throw new RuntimeException("Error searching for movie: " + response.body());
         }

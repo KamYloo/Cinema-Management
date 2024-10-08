@@ -2,10 +2,10 @@ package org.example.movie;
 
 import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.gui2.*;
-import com.googlecode.lanterna.gui2.table.Table;
 import com.googlecode.lanterna.screen.Screen;
 import org.example.dto.MovieDto;
 import org.example.dto.ShowTimeDto;
+import org.example.seat.SeatsScreen;
 import org.example.showTime.ShowTimeService;
 
 import java.util.List;
@@ -23,41 +23,47 @@ public class MovieDetailScreen {
             MovieDto movie = MovieService.getMovie(movieId);
 
             BasicWindow detailsWindow = new BasicWindow("Movie Details: " + movie.getTitle());
-            Panel detailsPanel = new Panel(new GridLayout(1));
 
-            detailsPanel.addComponent(new Label("Title: " + movie.getTitle()).addStyle(SGR.BOLD));
-            detailsPanel.addComponent(new Label("Description: " + movie.getDescription()));
-            detailsPanel.addComponent(new Label("Genre: " + movie.getGenre()));
-            detailsPanel.addComponent(new Label("Duration: " + movie.getDuration() + " min"));
+            Panel mainPanel = new Panel();
+            mainPanel.setLayoutManager(new LinearLayout(Direction.VERTICAL)); // Stack elements vertically
+
+            mainPanel.addComponent(new EmptySpace().setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center)));
+
+            Panel detailsPanel = new Panel(new GridLayout(2).setHorizontalSpacing(2));
+
+            detailsPanel.addComponent(new Label("Title:").addStyle(SGR.BOLD));
+            detailsPanel.addComponent(new Label(movie.getTitle()));
+
+            detailsPanel.addComponent(new Label("Description:").addStyle(SGR.BOLD));
+            detailsPanel.addComponent(new Label(movie.getDescription()));
+
+            detailsPanel.addComponent(new Label("Genre:").addStyle(SGR.BOLD));
+            detailsPanel.addComponent(new Label(movie.getGenre()));
+
+            detailsPanel.addComponent(new Label("Duration:").addStyle(SGR.BOLD));
+            detailsPanel.addComponent(new Label(movie.getDuration() + " min"));
 
             List<ShowTimeDto> showTimes = ShowTimeService.getShowTimesByMovie(movieId);
             detailsPanel.addComponent(new Label("Available Showtimes:").addStyle(SGR.BOLD));
 
-            Table<String> showTimeTable = new Table<>("Showtime ID", "Time");
+            ActionListBox showTimeListBox = new ActionListBox();
             for (ShowTimeDto showTime : showTimes) {
-                showTimeTable.getTableModel().addRow(
-                        String.valueOf(showTime.getId()),
-                        showTime.getTime().toString()
-                );
+                showTimeListBox.addItem("Showtime: " + showTime.getTime().toString(), () -> {
+                    new SeatsScreen(screen).showSeatSelection(showTime.getId());
+                });
             }
+            detailsPanel.addComponent(showTimeListBox);
 
-            detailsPanel.addComponent(showTimeTable);
+            mainPanel.addComponent(detailsPanel);
 
-            detailsPanel.addComponent(new Button("Select Showtime", () -> {
-                String selectedShowtimeId = showTimeTable.getTableModel().getRow(showTimeTable.getSelectedRow()).get(0);
-                detailsPanel.addComponent(new Label("Selected showtime: " + selectedShowtimeId));
-            }));
+            mainPanel.addComponent(new Button("Back", detailsWindow::close)
+                    .setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center)));
 
-            detailsPanel.addComponent(new Button("Back", () -> {
-                detailsWindow.close();
-                try {
-                    new MovieListScreen(screen).show();
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }));
+            mainPanel.addComponent(new EmptySpace().setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center)));
 
-            detailsWindow.setComponent(detailsPanel);
+            detailsWindow.setComponent(mainPanel);
+
+            detailsWindow.setHints(java.util.Arrays.asList(Window.Hint.FULL_SCREEN));
 
             WindowBasedTextGUI textGUI = new MultiWindowTextGUI(screen);
             textGUI.addWindowAndWait(detailsWindow);

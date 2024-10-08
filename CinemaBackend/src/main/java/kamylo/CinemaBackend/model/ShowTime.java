@@ -25,7 +25,7 @@ public class ShowTime {
     private Movie movie;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "showTime", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "showTime", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<Seat> seats = new ArrayList<>();
 
