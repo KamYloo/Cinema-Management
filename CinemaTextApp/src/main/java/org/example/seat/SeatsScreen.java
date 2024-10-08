@@ -2,8 +2,11 @@ package org.example.seat;
 
 import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.gui2.*;
+import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
 import com.googlecode.lanterna.screen.Screen;
+import org.example.dto.ReservationDto;
 import org.example.dto.SeatDto;
+import org.example.reservation.ReservationService;
 
 import java.util.List;
 
@@ -38,10 +41,13 @@ public class SeatsScreen {
                 String seatLabel = "Row: " + seat.getRowNumber() + ", Seat: " + seat.getSeatNumber() +
                         (seat.isReserved() ? " [Reserved]" : " [Available]");
 
-                if (!seat.isReserved()) {
+                if (seat.isReserved()) {
                     seatListBox.addItem(seatLabel, () -> {
-                        /* reserveSeat(seat.getId()); */
+                        MessageDialog.showMessageDialog(new MultiWindowTextGUI(screen), "Reservation Error",
+                                "This seat is already reserved. Please select another seat.");
                     });
+                } else {
+                    seatListBox.addItem(seatLabel, () -> {reserveSeat(seat.getId());});
                 }
             }
 
@@ -66,13 +72,17 @@ public class SeatsScreen {
         }
     }
 
-   /* private void reserveSeat(Integer seatId) {
-        // Call service to reserve the seat and notify the user
-        boolean success = SeatService.reserveSeat(seatId);
-        if (success) {
+    private void reserveSeat(Integer seatId) {
+        try {
+
+            ReservationDto reservation = ReservationService.createReservation(seatId);
+
             MessageDialog.showMessageDialog(new MultiWindowTextGUI(screen), "Reservation", "Seat reserved successfully!");
-        } else {
-            MessageDialog.showMessageDialog(new MultiWindowTextGUI(screen), "Reservation Failed", "This seat is already reserved.");
+
+        } catch (Exception e) {
+
+            MessageDialog.showMessageDialog(new MultiWindowTextGUI(screen), "Reservation Failed", "This seat is already reserved or an error occurred.");
+            e.printStackTrace();
         }
-    }*/
+    }
 }

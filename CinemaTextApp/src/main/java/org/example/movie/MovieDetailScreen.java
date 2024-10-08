@@ -7,6 +7,7 @@ import org.example.dto.MovieDto;
 import org.example.dto.ShowTimeDto;
 import org.example.seat.SeatsScreen;
 import org.example.showTime.ShowTimeService;
+import org.example.user.UserService;
 
 import java.util.List;
 
@@ -56,8 +57,29 @@ public class MovieDetailScreen {
 
             mainPanel.addComponent(detailsPanel);
 
-            mainPanel.addComponent(new Button("Back", detailsWindow::close)
-                    .setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center)));
+            if (UserService.isAdmin()) {
+                // Zmiana wyglądu i stylu przycisku Delete Movie, aby działał i wyglądał jak Back
+                Button deleteButton = new Button("Delete Selected Movie", () -> {
+                    try {
+                        MovieService.deleteMovie(movieId);
+                        detailsWindow.close(); // Zamknięcie okna po usunięciu filmu
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        mainPanel.addComponent(new Label("Failed to delete movie."));
+                    }
+                });
+
+                // Ustawienie tego samego układu i wyrównania co dla przycisku "Back"
+                deleteButton.setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center));
+
+                mainPanel.addComponent(deleteButton);
+            }
+
+            // Przycisk Back
+            Button backButton = new Button("Back", detailsWindow::close)
+                    .setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center));
+
+            mainPanel.addComponent(backButton);
 
             mainPanel.addComponent(new EmptySpace().setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center)));
 

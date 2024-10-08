@@ -4,7 +4,7 @@ public class SeatDto {
     private Integer id;
     private int rowNumber;
     private int seatNumber;
-    private boolean isReserved;
+    private boolean reserved;
     private ShowTimeDto showTime;
 
     public Integer getId() {
@@ -32,11 +32,11 @@ public class SeatDto {
     }
 
     public boolean isReserved() {
-        return isReserved;
+        return reserved;
     }
 
     public void setReserved(boolean reserved) {
-        isReserved = reserved;
+        this.reserved = reserved;
     }
 
     public ShowTimeDto getShowTime() {

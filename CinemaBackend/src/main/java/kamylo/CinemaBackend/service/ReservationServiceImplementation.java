@@ -9,9 +9,7 @@ import kamylo.CinemaBackend.model.User;
 import kamylo.CinemaBackend.repository.ReservationRepository;
 import kamylo.CinemaBackend.repository.SeatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +24,9 @@ public class ReservationServiceImplementation implements ReservationService {
     @Autowired
     UserService userService;
 
+    @Autowired
+    SeatRepository seatRepository;
+
     @Override
     public Reservation createReservation(Integer seatId, User user) throws SeatException {
         Seat seat = seatService.getSeat(seatId);
@@ -37,6 +38,8 @@ public class ReservationServiceImplementation implements ReservationService {
             reservation.setSeat(seat);
             reservation.setUser(user);
             reservation.setShowtime(seat.getShowTime());
+            seat.setReserved(true);
+            seatRepository.save(seat);
             return reservationRepository.save(reservation);
         }
     }

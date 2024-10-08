@@ -14,8 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/reservations")
@@ -27,7 +27,8 @@ public class ReservationController {
     private UserService userService;
 
     @PostMapping("/create")
-    public ResponseEntity<ReservationDto> createReservationHandler(@PathVariable Integer seatId, @RequestHeader("Authorization") String token) throws UserException, SeatException {
+    public ResponseEntity<ReservationDto> createReservationHandler(@RequestBody Map<String, Integer> requestBody, @RequestHeader("Authorization") String token) throws UserException, SeatException {
+        Integer seatId = requestBody.get("seatId");
         User user = userService.findUserProfileByJwt(token);
         Reservation reservation = reservationService.createReservation(seatId, user);
         ReservationDto reservationDto = ReservationDtoMapper.toreservationDto(reservation);
