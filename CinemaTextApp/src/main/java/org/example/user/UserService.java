@@ -25,4 +25,21 @@ public class UserService {
             throw new RuntimeException("Unexpected response format: " + response);
         }
     }
+
+    public static Integer getLoggedInUserId() throws Exception {
+        String token = JwtUtils.getJwtToken();
+        String response = HttpUtils.get("/api/users/profile", token).body();
+        if (response.startsWith("{")) {
+            Gson gson = new Gson();
+            try {
+                UserDto user = gson.fromJson(response, UserDto.class);
+                return user.getId();
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Failed to parse response as UserDto");
+            }
+        } else {
+            throw new RuntimeException("Unexpected response format: " + response);
+        }
+    }
 }

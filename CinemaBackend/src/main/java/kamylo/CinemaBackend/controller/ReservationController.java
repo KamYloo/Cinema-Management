@@ -50,7 +50,7 @@ public class ReservationController {
     }
 
     @DeleteMapping("/delete/{reservationId}")
-    public ResponseEntity<ApiResponse> deleteAlbumHandler(@PathVariable Integer reservationId , @RequestHeader("Authorization") String token) throws UserException {
+    public ResponseEntity<ApiResponse> deleteAlbumHandler(@PathVariable Integer reservationId , @RequestHeader("Authorization") String token) throws UserException, SeatException {
         User user = userService.findUserProfileByJwt(token);
         ApiResponse res = new ApiResponse();
 

@@ -57,7 +57,7 @@ public class ReservationServiceImplementation implements ReservationService {
     }
 
     @Override
-    public void deleteReservationById(Integer reservationId, Integer userId) throws ReservationException, UserException {
+    public void deleteReservationById(Integer reservationId, Integer userId) throws ReservationException ,SeatException, UserException {
         Reservation reservation = getReservationById(reservationId);
         if (reservation == null) {
             throw new ReservationException("Reservation not found with id " + reservationId);
@@ -65,6 +65,9 @@ public class ReservationServiceImplementation implements ReservationService {
         if (!userId.equals(reservation.getUser().getId())) {
             throw new UserException("User not authorized to delete reservation");
         }
+        Seat seat = seatService.getSeat(reservation.getSeat().getId());
+        seat.setReserved(false);
+        seatRepository.save(seat);
         reservationRepository.deleteById(reservationId);
     }
 }

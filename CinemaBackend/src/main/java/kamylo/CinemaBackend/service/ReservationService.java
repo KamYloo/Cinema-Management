@@ -14,5 +14,5 @@ public interface ReservationService {
     Reservation createReservation(Integer SeatId, User user) throws SeatException;
     List<Reservation> getReservationsByUserId(Integer userId) throws UserException;
     Reservation getReservationById(Integer reservationId) throws ReservationException;
-    void deleteReservationById(Integer reservationId, Integer userId) throws ReservationException, UserException;
+    void deleteReservationById(Integer reservationId, Integer userId) throws ReservationException, SeatException, UserException;
 }
