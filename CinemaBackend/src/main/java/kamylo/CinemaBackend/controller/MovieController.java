@@ -30,19 +30,34 @@ public class MovieController {
     private UserService userService;
 
     @PostMapping("/create")
-    public ResponseEntity<MovieDto> createMovieHandler(@RequestBody MovieRequest movieRequest, @RequestHeader("Authorization") String token) throws UserException {
-        User user = userService.findUserProfileByJwt(token);
-        movieRequest.setUser(user);
-        Movie movie = movieService.createMovie(movieRequest);
-        MovieDto movieDto = MovieDtoMapper.toMovieDto(movie);
-        return new ResponseEntity<>(movieDto, HttpStatus.CREATED);
+    public ResponseEntity<?> createMovieHandler(@RequestBody MovieRequest movieRequest, @RequestHeader("Authorization") String token) {
+        try {
+            User user = userService.findUserProfileByJwt(token);
+            if (!"ADMIN".equalsIgnoreCase(user.getRole())) {
+                throw new UserException("User is not ADMIN");
+            }
+            movieRequest.setUser(user);
+            Movie movie = movieService.createMovie(movieRequest);
+            MovieDto movieDto = MovieDtoMapper.toMovieDto(movie);
+            return new ResponseEntity<>(movieDto, HttpStatus.CREATED);
+        } catch (UserException e) {
+            ApiResponse response = new ApiResponse();
+            response.setMessage(e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+        }
     }
 
     @GetMapping("/{movieId}")
-    public ResponseEntity<MovieDto> getMovieHandler(@PathVariable Integer movieId) throws MovieException {
-        Movie movie = movieService.getMovie(movieId);
-        MovieDto movieDto = MovieDtoMapper.toMovieDto(movie);
-        return new ResponseEntity<>(movieDto, HttpStatus.OK);
+    public ResponseEntity<?> getMovieHandler(@PathVariable Integer movieId) {
+        try {
+            Movie movie = movieService.getMovie(movieId);
+            MovieDto movieDto = MovieDtoMapper.toMovieDto(movie);
+            return new ResponseEntity<>(movieDto, HttpStatus.OK);
+        } catch (MovieException e) {
+            ApiResponse response = new ApiResponse();
+            response.setMessage(e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/getAll")
@@ -63,7 +78,10 @@ public class MovieController {
     public ResponseEntity<ApiResponse> deleteMovieHandler(@PathVariable Integer movieId , @RequestHeader("Authorization") String token) throws UserException{
         User user = userService.findUserProfileByJwt(token);
         ApiResponse res = new ApiResponse();
-
+        if (!"ADMIN".equalsIgnoreCase(user.getRole())) {
+            res.setMessage("User is not ADMIN");
+            return new ResponseEntity<>(res, HttpStatus.FORBIDDEN);
+        }
         try {
             movieService.deleteMovie(movieId, user.getId());
             res.setMessage("Movie deleted successfully.");
@@ -71,7 +89,7 @@ public class MovieController {
         }
         catch (UserException | MovieException e) {
             res.setMessage(e.getMessage());
-            return new ResponseEntity<>(res, HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
         }
     }
 }
