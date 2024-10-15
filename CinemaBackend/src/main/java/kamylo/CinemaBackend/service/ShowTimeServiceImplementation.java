@@ -46,5 +46,6 @@ public class ShowTimeServiceImplementation implements ShowTimeService {
         }
 
         seatRepository.saveAll(seats);
+        showTime.setSeats(seats);
     }
 }
