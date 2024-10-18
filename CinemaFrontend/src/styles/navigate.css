@@ -22,10 +22,9 @@
     }
 
     img {
-      height: 10vh;
-      width: 10vh;
-      border: 1px orange solid;
-      border-radius: 50%;
+      height: 12vh;
+      width: 12vh;
+
       object-fit: cover;
     }
   }

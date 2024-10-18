@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import {NavigateComponent} from "./Components/NavigateComponent.jsx";
 import {Home} from "./Components/HomeComponents/Home.jsx";
+import {MoviesView} from "./Components/MoviesComponents/MoviesView.jsx";
 
 function App() {
 
@@ -34,6 +35,10 @@ function App() {
 
               <Route path="/home" element={
                   renderLayout(Home)
+              } />
+
+              <Route path="/movies" element={
+                  renderLayout(MoviesView)
               } />
 
               <Route path="/" element={<Navigate to="/home" />} />

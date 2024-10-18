@@ -5,6 +5,7 @@
   overflow: hidden;
   display: flex;
   box-sizing: border-box;
+  flex-direction: column;
 }
 
 .background {

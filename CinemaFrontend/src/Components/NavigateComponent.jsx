@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "../styles/navigate.css";
+import Logo from "../images/logo.png";
 import { AiOutlineMenuFold } from "react-icons/ai";
 
 function NavigateComponent() {
@@ -19,7 +21,7 @@ function NavigateComponent() {
   return (
     <div className="navigateComponent">
       <div className="logo">
-        <img src="" alt="" />
+        <img src={Logo} alt="" />
         <p>CinemaManagment</p>
       </div>
 
@@ -27,10 +29,10 @@ function NavigateComponent() {
         <nav className="menuList">
           <ul>
             <li>
-              <a href="#">Home</a>
+              <Link to="/home">Home</Link>
             </li>
             <li>
-              <a href="#">Movies</a>
+              <Link to="/movies">Movies</Link>
             </li>
             <li>
               <a href="#">About</a>
