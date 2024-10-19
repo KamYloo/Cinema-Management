@@ -104,7 +104,31 @@
         object-fit: cover;
       }
 
+      ul {
+        position: absolute;
+        background-color: white;
+        height: auto;
+        width: auto;
+        right: 10vh;
+        top: 9vh;
+        border-radius: 10px;
+        list-style: none;
 
+        li {
+          font-size: 16px;
+          font-weight: bold;
+          text-align: center;
+          transition: all 0.3s;
+          padding: 1vh 2vh;
+          border-radius: 10px;
+          cursor: pointer;
+        }
+
+        li:hover {
+          background-color: #b30707;
+          color: white;
+        }
+      }
     }
   }
 
@@ -137,10 +161,8 @@
       background: #9a1515;
       z-index: 10;
       padding: 6vh 7vh;
-      transition: .3s right;
+      transition: 0.3s right;
       flex-direction: column;
-
-
 
       nav ul {
         flex-direction: column;
@@ -154,22 +176,21 @@
           display: none;
         }
       }
-     }
+    }
     .panel.visible {
       right: 0;
     }
-
   }
 }
 
 @media screen and (max-width: 550px) {
-.navigateComponent {
-  padding: 0 2vh;
+  .navigateComponent {
+    padding: 0 2vh;
 
-  .panel {
-    .profileBox {
-      flex-direction: column;
+    .panel {
+      .profileBox {
+        flex-direction: column;
+      }
     }
   }
-}
 }

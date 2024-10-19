@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 import "../styles/navigate.css";
 import Logo from "../images/logo.png";
 import { AiOutlineMenuFold } from "react-icons/ai";
 import { MdCancel } from "react-icons/md";
+import {logoutAction} from "../Redux/Auth/Action.js";
+import {BASE_API_URL} from "../config/api.js";
 
 function NavigateComponent({ activeTab, setActiveTab }) {
   const [isPanelVisible, setPanelVisible] = useState(false);
+  const [menu, setMenu] = useState(false)
+  const {auth} = useSelector(store => store);
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    dispatch(logoutAction())
+    navigate('/login')
+  }
 
   useEffect(() => {
     const allLi = document.querySelector(".menuList").querySelectorAll("li");
@@ -30,9 +42,8 @@ function NavigateComponent({ activeTab, setActiveTab }) {
 
   return (
       <header className="navigateComponent">
-
         <i className="iMenu" onClick={togglePanel}>
-          {isPanelVisible ? <MdCancel /> : <AiOutlineMenuFold/>}
+          {isPanelVisible ? <MdCancel/> : <AiOutlineMenuFold/>}
         </i>
         <div className="logo">
           <img src={Logo} alt=""/>
@@ -40,7 +51,6 @@ function NavigateComponent({ activeTab, setActiveTab }) {
         </div>
 
         <div className={`panel ${isPanelVisible ? "visible" : ""}`}>
-
           <nav className="menuList">
             <ul>
               <li onClick={() => setActiveTab("home")}>
@@ -58,11 +68,22 @@ function NavigateComponent({ activeTab, setActiveTab }) {
             </ul>
           </nav>
           <div className="profileBox">
-            <img src="" alt=""/>
-            <p>Imie Nazwisko</p>
-            <i>
-              <AiOutlineMenuFold/>
-            </i>
+            <img src={`${BASE_API_URL}/${auth.reqUser?.profilePicture || ''}`} alt=""/>
+            {!auth.reqUser ? (
+                <p style={{ cursor: 'pointer' }} onClick={() => navigate('/login')}>Login</p>
+            ) : (
+                <>
+                  <p>{auth.reqUser?.fullName}</p>
+                  <i onClick={() => setMenu((prev) => !prev)}>
+                    <AiOutlineMenuFold/>
+                  </i>
+                  {menu && (
+                      <ul>
+                        <li onClick={handleLogout}>Logout</li>
+                      </ul>
+                  )}
+                </>
+            )}
           </div>
         </div>
 

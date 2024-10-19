@@ -14,7 +14,7 @@
   left: 0;
   right: 0;
   bottom: 0;
+  background: url("https://img.freepik.com/free-photo/view-3d-cinema-theatre-room_23-2151067056.jpg?t=st=1729362244~exp=1729365844~hmac=bd87291821c1e632ceeb95ef851a9d21e0b425f8a26c9593368bf35baed0aa5a&w=1380") no-repeat center center;
   background-size: cover;
-  filter: grayscale(100);
   z-index: -1;
 }

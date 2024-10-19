@@ -4,6 +4,9 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import {NavigateComponent} from "./Components/NavigateComponent.jsx";
 import {Home} from "./Components/HomeComponents/Home.jsx";
 import {MoviesView} from "./Components/MoviesComponents/MoviesView.jsx";
+import {Login} from "./Components/AuthComponents/Login.jsx";
+import {Register} from "./Components/AuthComponents/Register.jsx";
+
 
 function App() {
     const [activeTab, setActiveTab] = useState("home");
@@ -22,7 +25,7 @@ function App() {
       <Router>
           <Routes>
 
-              {/*<Route path="/login" element={
+              <Route path="/login" element={
                   <div className='loginLayout'><Login />
                       <div className="background"></div>
                   </div>}
@@ -32,7 +35,7 @@ function App() {
                   <div className="loginLayout"><Register />
                       <div className="background"></div>
                   </div>
-              } />*/}
+              } />
 
               <Route path="/home" element={
                   renderLayout(Home)
