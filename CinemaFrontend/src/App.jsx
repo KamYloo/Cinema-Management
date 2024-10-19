@@ -6,13 +6,14 @@ import {Home} from "./Components/HomeComponents/Home.jsx";
 import {MoviesView} from "./Components/MoviesComponents/MoviesView.jsx";
 
 function App() {
+    const [activeTab, setActiveTab] = useState("home");
 
     const renderLayout = (Component) => {
 
         return (
             <div className='App'>
-                <NavigateComponent />
-                <Component/>
+                <NavigateComponent activeTab={activeTab} setActiveTab={setActiveTab}/>
+                <Component setActiveTab={setActiveTab}/>
             </div>
         )
     }

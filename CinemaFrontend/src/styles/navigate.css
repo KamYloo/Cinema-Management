@@ -1,7 +1,7 @@
 .navigateComponent {
   height: 12vh;
   width: 100%;
-  background-color: #cb0707;
+  background-color: #b30707;
 
   display: flex;
   align-items: center;
@@ -28,7 +28,7 @@
 
     p {
       font-family: "Times New Roman", Times, serif;
-      font-size: 26px;
+      font-size: 50px;
     }
 
     img {
