@@ -2,12 +2,22 @@
   height: 12vh;
   width: 100%;
   background-color: #cb0707;
-  position: relative;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 10vh;
 
+  i {
+    font-size: 25px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .iMenu {
+    display: none;
+  }
 
   .logo {
     display: flex;
@@ -94,20 +104,72 @@
         object-fit: cover;
       }
 
-      i {
-        font-size: 25px;
-        color: white;
-        font-weight: bold;
-      }
+
     }
   }
 
   .bottom {
     position: absolute;
-    bottom: 0;
+    top: 6vh;
     left: 0;
     width: 100%;
-    height: 5rem;
+    height: 6vh;
     background-image: linear-gradient(transparent, rgb(0, 0, 0));
   }
+}
+
+@media screen and (max-width: 1300px) {
+  .navigateComponent {
+    .iMenu {
+      display: block;
+      position: absolute;
+      top: 4vh;
+      right: 2vh;
+      z-index: 11;
+    }
+
+    .panel {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: -30%;
+      width: 30%;
+      background: #9a1515;
+      z-index: 10;
+      padding: 6vh 7vh;
+      transition: .3s right;
+      flex-direction: column;
+
+
+
+      nav ul {
+        flex-direction: column;
+      }
+
+      .profileBox {
+        position: absolute;
+        bottom: 5vh;
+
+        i {
+          display: none;
+        }
+      }
+     }
+    .panel.visible {
+      right: 0;
+    }
+
+  }
+}
+
+@media screen and (max-width: 550px) {
+.navigateComponent {
+  padding: 0 2vh;
+
+  .panel {
+    .profileBox {
+      flex-direction: column;
+    }
+  }
+}
 }
