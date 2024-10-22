@@ -2,10 +2,11 @@ import React, {useState} from 'react'
 import "../../styles/MovieView.css"
 import { BiSearchAlt } from "react-icons/bi";
 import { FaCirclePlay } from "react-icons/fa6";
+import {useNavigate} from "react-router-dom";
 
 function MoviesView() {
     const [searchQuery, setSearchQuery] = useState('');
-
+    const navigate = useNavigate();
 
     return (
         <div className='moviesView'>
@@ -16,9 +17,10 @@ function MoviesView() {
                     <i className='searchIcon'><BiSearchAlt /></i>
                 </div>
                 <button>Search</button>
+                <button onClick={()=> navigate("/movies/add")}>Add Movie</button>
             </div>
-            <div className="movies">
-                <div className="movie">
+            <div  className="movies">
+                <div onClick={()=> navigate("movie")} className="movie">
                     <i className="play"><FaCirclePlay/></i>
                     <img
                         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBdl8r-1SmfA7K1nTTm98v_2Kr-rcc6wKUQA&s"

@@ -1,0 +1,46 @@
+.movieDetail {
+    height: 88vh;
+    width: 100%;
+    z-index: 1;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    .backGround {
+        top: 0;
+        height: 30vh;
+        width: 100%;
+        background: url(../images/movieBackGround.jpg) no-repeat center;
+        background-size: cover;
+        filter: grayscale(100%);
+        position: absolute;
+        z-index: -1;
+    }
+
+    .center {
+        border: 2px green solid;
+        width: 60%;
+        height: 68vh;
+        display: flex;
+        padding: 5vh;
+        gap: 5vh;
+
+        img {
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+            width: 25vh;
+            height: 30vh;
+            background: black;
+            border-radius: 10px;
+        }
+
+        .data {
+            h3 {
+                color: #ff0000;
+                font-size: 4vw;
+            }
+        }
+    }
+}

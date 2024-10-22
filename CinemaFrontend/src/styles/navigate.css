@@ -1,7 +1,7 @@
 .navigateComponent {
   height: 12vh;
   width: 100%;
-  background-color: #b30707;
+  background-color: #780000;
 
   display: flex;
   align-items: center;
@@ -158,7 +158,7 @@
       bottom: 0;
       right: -30%;
       width: 30%;
-      background: #9a1515;
+      background-color: #780000;
       z-index: 10;
       padding: 6vh 7vh;
       transition: 0.3s right;
