@@ -5,16 +5,38 @@ import { FaCirclePlay } from "react-icons/fa6";
 import { PiFilmReelDuotone } from "react-icons/pi";
 import {useDispatch, useSelector} from "react-redux";
 import {getMovie} from "../../Redux/Movie/Action.js";
+import {getShowTimes} from "../../Redux/ShowTime/Action.js";
 
 function MovieDetail() {
     const {movieId} = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const {movie} = useSelector(store => store);
+    const {movie, showTime} = useSelector(store => store);
+
+
+    const convertShowtime = (dateTimeString) => {
+        const dateTime = new Date(dateTimeString);
+        const options = { month: 'short', day: '2-digit', year: 'numeric' };
+        const formattedDate = dateTime.toLocaleDateString('en-US', options);
+        const formattedTime = dateTime.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
+
+        return {
+            date: formattedDate,
+            time: formattedTime
+        };
+    };
 
     useEffect(() => {
         dispatch(getMovie(movieId))
     }, [dispatch, movieId]);
+
+    useEffect(() => {
+        dispatch(getShowTimes(movieId))
+    }, [dispatch,movieId])
 
     return (
         <div className="movieDetail">
@@ -36,98 +58,17 @@ function MovieDetail() {
                 <div className="showTimes">
                     <h4>Available Showtimes</h4>
                     <ul>
-                        <li onClick={()=>navigate("seats")}>
-                            <button className="showTime">
-                                <div className="info">
-                                    <span className="date">Oct 23, 2024</span>
-                                    <span className="time">18:30</span>
-                                </div>
-                                <i><PiFilmReelDuotone/></i>
-                            </button>
-                        </li>
-                        <li>
-                            <button className="showTime">
-                                <div className="info">
-                                    <span className="date">Oct 23, 2024</span>
-                                    <span className="time">18:30</span>
-                                </div>
-                                <i><PiFilmReelDuotone/></i>
-                            </button>
-                        </li>
-                        <li>
-                            <button className="showTime">
-                                <div className="info">
-                                    <span className="date">Oct 23, 2024</span>
-                                    <span className="time">18:30</span>
-                                </div>
-                                <i><PiFilmReelDuotone/></i>
-                            </button>
-                        </li>
-                        <li>
-                            <button className="showTime">
-                                <div className="info">
-                                    <span className="date">Oct 23, 2024</span>
-                                    <span className="time">18:30</span>
-                                </div>
-                                <i><PiFilmReelDuotone/></i>
-                            </button>
-                        </li>
-                        <li>
-                            <button className="showTime">
-                                <div className="info">
-                                    <span className="date">Oct 23, 2024</span>
-                                    <span className="time">18:30</span>
-                                </div>
-                                <i><PiFilmReelDuotone/></i>
-                            </button>
-                        </li>
-                        <li>
-                            <button className="showTime">
-                                <div className="info">
-                                    <span className="date">Oct 23, 2024</span>
-                                    <span className="time">18:30</span>
-                                </div>
-                                <i><PiFilmReelDuotone/></i>
-                            </button>
-                        </li>
-                        <li>
-                            <button className="showTime">
-                                <div className="info">
-                                    <span className="date">Oct 23, 2024</span>
-                                    <span className="time">18:30</span>
-                                </div>
-                                <i><PiFilmReelDuotone/></i>
-                            </button>
-                        </li>
-                        <li>
-                            <button className="showTime">
-                                <div className="info">
-                                    <span className="date">Oct 23, 2024</span>
-                                    <span className="time">18:30</span>
-                                </div>
-                                <i><PiFilmReelDuotone/></i>
-                            </button>
-                        </li>
-                        <li>
-                            <button className="showTime">
-                                <div className="info">
-                                    <span className="date">Oct 23, 2024</span>
-                                    <span className="time">18:30</span>
-                                </div>
-                                <i><PiFilmReelDuotone/></i>
-                            </button>
-                        </li>
-                        <li>
-                            <button className="showTime">
-                                <div className="info">
-                                    <span className="date">Oct 23, 2024</span>
-                                    <span className="time">18:30</span>
-                                </div>
-                                <i><PiFilmReelDuotone/></i>
-                            </button>
-                        </li>
-
-
+                        {showTime.showTimes?.map((item) => (
+                            <li  key={item.id} onClick={() => navigate("seats")} >
+                                <button className="showTime">
+                                    <div className="info">
+                                        <span className="date">{convertShowtime(item?.time).date}</span>
+                                        <span className="time">{convertShowtime(item?.time).time}</span>
+                                    </div>
+                                    <i><PiFilmReelDuotone/></i>
+                                </button>
+                            </li>
+                        ))}
                     </ul>
                 </div>
             </div>
