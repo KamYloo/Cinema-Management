@@ -1,0 +1,166 @@
+.seatsView {
+    height: 88vh;
+    width: 100%;
+    z-index: 1;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    .center {
+        width: 70%;
+        height: 68vh;
+        display: flex;
+        flex-direction: column;
+        gap: 2vh;
+
+        .up {
+            padding: 2vh 4vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 2vh;
+            height: auto;
+            width: 100%;
+            background-color: #9f0000;
+            border-radius: 10px;
+            box-shadow: 0px 8px 15px rgba(35, 35, 35, 0.4);
+
+
+            .top, .bottom{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                p, span {
+                    color: rgba(255, 255, 255, 0.72);
+                    font-size: 2vh;
+                    font-weight: bold;
+                }
+
+                h4 {
+                    color: white;
+                    font-size: 5vh;
+                    font-family: cursive;
+                }
+            }
+        }
+
+        .down {
+            height: 50vh;
+            width: 100%;
+            background: #9f0000;
+            border-radius: 10px;
+            box-shadow: 0px 8px 15px rgba(35, 35, 35, 0.4);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 2vh;
+            padding: 3vh;
+            .seatsBox {
+                height: 85%;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: 1px solid blue;
+
+                .seats {
+                    height: 300px;
+                    width: 500px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+
+                    color: #f4e1e1;
+
+                    .row {
+                        width: 100%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 2vh;
+
+                        i {
+                            font-size: 45px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            cursor: pointer;
+                        }
+
+                        p {
+                            font-size: 35px;
+                        }
+                    }
+                }
+            }
+
+            .legend {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5vh;
+
+                span {
+                    color: rgba(255, 255, 255, 0.84);
+                    font-weight: bold;
+
+                }
+
+                h6 {
+                    color: #e8e8e8;
+                    font-size: 2vh;
+                    font-family: cursive;
+                    font-weight: bold;
+                }
+
+                .signs, .colors {
+                    display: flex;
+                    justify-content: space-between;
+                }
+
+                .colors {
+                    gap: 10vh;
+
+                    .color {
+                        display: flex;
+                        gap: 1vh;
+                        align-items: center;
+                        .dye {
+                            width: 2.5vh;
+                            height: 2.5vh;
+                            border-radius: 50%;
+                        }
+                    }
+                    .color:nth-child(1) {
+                        .dye {
+                            background-color: white;
+                        }
+                    }
+                    .color:nth-child(2) {
+                        .dye {
+                            background-color: black;
+                        }
+                    }
+                    .color:nth-child(3) {
+                        .dye {
+                            background-color: yellow;
+                        }
+                    }
+                }
+
+                .icon {
+                    display: flex;
+                    align-items: center;
+                    gap: 1vh;
+                    i {
+                        color: white;
+                        font-size: 3vh;
+                    }
+                }
+            }
+        }
+    }
+}
