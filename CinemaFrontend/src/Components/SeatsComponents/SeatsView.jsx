@@ -30,6 +30,8 @@ function SeatsView() {
                 <div className="down">
                     <div className="seatsBox">
                         <div className="seats">
+                            <hr className="screen" />
+                            <p className="screenP">Screen</p>
                             {/* {Object.keys(rows).map((rowKey) => (
                                 <div className="row" key={`row-${rowKey}`}>
                                      Generowanie siedzeń w każdym rzędzie

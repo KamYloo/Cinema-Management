@@ -27,6 +27,7 @@
         flex-direction: column;
 
         .up {
+            justify-content: center;
             padding: 5vh;
             display: flex;
             gap: 5vh;
@@ -153,6 +154,71 @@
 
         .showTime:hover {
             background-color: #b60000;
+        }
+    }
+}
+
+
+@media screen and (max-width: 1000px) {
+    .movieDetail {
+        .center {
+            height: 64vh;
+            .up {
+                gap: 2vh;
+                padding: 5vh 2vh;
+
+                img {
+                    width: 25vh;
+                    height: 25vh;
+                }
+
+                .data {
+                    height: 25vh;
+                    h3 {
+                        font-size: 4.5vw;
+                        gap: 1vh;
+                        display: flex;
+                        align-items: center;
+
+                    }
+
+                    .description {
+                        height: 8vh;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .movieDetail {
+        .center {
+            height: 80vh;
+            .up {
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 3vh 2vh;
+
+                .data {
+                    width: 40vh;
+                    height: auto;
+                    h3 {
+                        font-size: 4vh;
+                        height: auto;
+                    }
+                    p {
+                        font-size: 18px;
+                    }
+
+                    .description {
+                        span {
+                            font-size: 14px;
+                        }
+                    }
+                }
+            }
         }
     }
 }

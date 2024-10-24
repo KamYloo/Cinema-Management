@@ -43,6 +43,9 @@
                     color: white;
                     font-size: 5vh;
                     font-family: cursive;
+                    word-wrap: break-word;
+                    white-space: pre-wrap;
+                    overflow: hidden;
                 }
             }
         }
@@ -64,7 +67,6 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                border: 1px solid blue;
 
                 .seats {
                     height: 300px;
@@ -73,8 +75,17 @@
                     flex-direction: column;
                     justify-content: center;
                     align-items: center;
-
                     color: #f4e1e1;
+
+                    .screen {
+                        height: 0.5vh;
+                        width: 75%;
+                        background: white;
+                    }
+
+                    .screenP {
+                        margin-bottom: 1vh;
+                    }
 
                     .row {
                         width: 100%;
@@ -158,6 +169,110 @@
                     i {
                         color: white;
                         font-size: 3vh;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .seatsView {
+        .center {
+            .down {
+                .legend {
+                    .signs {
+                        .colors {
+                            gap: 5vh;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+@media screen and (max-width: 700px) {
+    .seatsView {
+        .center {
+
+            .up {
+                .top, .bottom{
+
+                    p, span {
+                        font-size: 1.5vh;
+                    }
+
+                    h4 {
+                        font-size: 4vh;
+                        width: 100%;
+                    }
+                }
+                .bottom {
+                    flex-direction: column;
+                }
+            }
+            .down {
+                .seatsBox {
+
+                    .seats {
+                        height: 250px;
+                        width: 400px;
+
+                        .row {
+
+                            i {
+                                font-size: 35px;
+                            }
+
+                            p {
+                                font-size: 25px;
+                            }
+                        }
+                    }
+                }
+
+                .legend {
+                    .signs {
+                        .colors {
+                            gap: 1vh;
+
+                            .color {
+                                gap: 0.5vh;
+                                .dye {
+                                    width: 1.5vh;
+                                    height: 1.5vh;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+@media screen and (max-width: 640px) {
+    .seatsView {
+        .center {
+            .down {
+                .seatsBox {
+
+                    .seats {
+                        width: 350px;
+
+                        .row {
+
+                            i {
+                                font-size: 25px;
+                            }
+
+                            p {
+                                font-size: 25px;
+                            }
+                        }
                     }
                 }
             }
