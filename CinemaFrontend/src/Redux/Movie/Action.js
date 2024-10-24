@@ -1,4 +1,10 @@
-import {ADD_MOVIE_ERROR, ADD_MOVIE_REQUEST, GET_ALL_MOVIES_ERROR, GET_ALL_MOVIES_REQUEST} from "./ActionType.js";
+import {
+    ADD_MOVIE_ERROR,
+    ADD_MOVIE_REQUEST,
+    GET_ALL_MOVIES_ERROR,
+    GET_ALL_MOVIES_REQUEST, GET_MOVIE_ERROR,
+    GET_MOVIE_REQUEST
+} from "./ActionType.js";
 import {BASE_API_URL} from "../../config/api.js";
 
 export const createMovie = (data) => async (dispatch) => {
@@ -41,3 +47,22 @@ export const getAllMovies = () => async (dispatch) => {
         dispatch({ type: GET_ALL_MOVIES_ERROR, payload: error.message });
     }
 };
+
+export const getMovie = (movieId) => async (dispatch) => {
+    try {
+        const res = await fetch(`${BASE_API_URL}/api/movies/${movieId}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+        })
+
+        const resData = await res.json()
+        console.log("Get Movie ", resData)
+        dispatch({ type: GET_MOVIE_REQUEST, payload: resData })
+    } catch (error) {
+        console.log("catch error ", error)
+        dispatch({ type: GET_MOVIE_ERROR, payload: error.message });
+    }
+}

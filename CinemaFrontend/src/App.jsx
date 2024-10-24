@@ -59,7 +59,7 @@ function App() {
                   renderLayout(AddMovie)
               } />
 
-              <Route path="/movies/movie" element={
+              <Route path="/movies/movie/:movieId" element={
                   renderLayout(MovieDetail)
               } />
 

@@ -34,7 +34,7 @@ function MoviesView() {
             </div>
             <div  className="movies">
                 {filteredMovies.map((item) => (
-                    <div className="movie" key={item.id} onClick={() => navigate("movie")}>
+                    <div className="movie" key={item.id} onClick={() => navigate(`movie/${item.id}`)}>
                         <i className="play"><FaCirclePlay/></i>
                         <img
                             src={item?.image || ''}

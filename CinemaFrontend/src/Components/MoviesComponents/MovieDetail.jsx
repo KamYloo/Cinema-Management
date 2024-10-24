@@ -1,25 +1,34 @@
-import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom'
+import React, {useEffect, useState} from "react";
+import {useNavigate, useParams} from 'react-router-dom'
 import "../../styles/movieDetail.css";
 import { FaCirclePlay } from "react-icons/fa6";
 import { PiFilmReelDuotone } from "react-icons/pi";
+import {useDispatch, useSelector} from "react-redux";
+import {getMovie} from "../../Redux/Movie/Action.js";
 
 function MovieDetail() {
+    const {movieId} = useParams();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const {movie} = useSelector(store => store);
+
+    useEffect(() => {
+        dispatch(getMovie(movieId))
+    }, [dispatch, movieId]);
 
     return (
         <div className="movieDetail">
             <div className="backGround"></div>
             <div className="center">
                 <div className="up">
-                <img src="https://m.media-amazon.com/images/M/MV5BYjY2NDZhN2EtZmYwNS00NDU2LThiODAtNmY4OWY2ODNmZWRmXkEyXkFqcGc@._V1_.jpg" alt="" />
+                <img src={movie.getMovie?.image} alt="" />
                     <div className="data">
-                        <h3><i><FaCirclePlay/></i>fiLmdsfdsivjos</h3>
-                        <p>Animation <span>· 90min</span></p>
+                        <h3><i><FaCirclePlay/></i>{movie.getMovie?.title}</h3>
+                        <p>{movie.getMovie?.genre} <span>· {movie.getMovie?.duration}min</span></p>
                         <div className="description">
                             <p>Description</p>
                             <span>
-                                sgfdsfDSFGSGVDFVXZVFSGfdagdvdahgdahfdavbadvresdfffffffffffffffffffffffffffffffffffffffffffffffffffffffsdfffffffffffffffffffffffffffffffffhgfdagadgfbdabkiuhfdavhfdiuyvhdfiuvbhdaiffvbdaovi8fyubhavdldaifuvgbdalivf
+                               {movie.getMovie?.description}
                             </span>
                         </div>
                     </div>
