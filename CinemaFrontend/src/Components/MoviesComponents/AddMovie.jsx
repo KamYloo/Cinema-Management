@@ -4,20 +4,21 @@ import "../../styles/form.css";
 import {useDispatch} from "react-redux";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import {createMovie} from "../../Redux/Movie/Action.js";
+import {format} from "date-fns";
 
 function AddMovie() {
-    const [title, setTitle] = useState()
+    const [title, setTitle] = useState('')
     const [movieImg, setMovieImg] = useState(null)
-    const [description, setDescription] = useState()
-    const [dateTime, setDateTime] = useState(null);  // Updated to hold both Date and Time
+    const [description, setDescription] = useState('')
+    const [genre, setGenre] = useState('')
+    const [duration, setDuration] = useState(0)
+    const [dateTime, setDateTime] = useState(null);
     const [showtimes, setShowtimes] = useState([]);
-    const [preview, setPreview] = useState('');
+    const [dateList, setDateList] = useState([]);
     const dispatch = useDispatch()
     const navigate = useNavigate();
 
-    const handleFileChange = (e) => {
-        setMovieImg(e.target.files[0])
-    };
 
     const handleAddShowtime = () => {
         if (dateTime) {
@@ -28,27 +29,31 @@ function AddMovie() {
         }
     };
 
+    const handleAddDateList = () => {
+        if (dateTime) {
+            const formattedDateTime = format(dateTime, "yyyy-MM-dd'T'HH:mm:ss");
+            console.log(formattedDateTime);
+            setDateList([...dateList, { time: formattedDateTime }]);
+            setDateTime(null);
+        }
+    };
+
     const handleRemoveShowtime = (index) => {
         setShowtimes(showtimes.filter((_, i) => i !== index));  // Remove the selected showtime
     };
 
-    const addMovieHandler = () => {
-        const formData = new FormData()
-        formData.append('file', movieImg)
-        formData.append('title', title)
-        //dispatch(createAlbum(formData))
-        setMovieImg(null)
+    const addMovieHandler = (e) => {
+        e.preventDefault();
+        dispatch(createMovie({title:title,description:description,image:movieImg,genre:genre,duration:duration,showTimes:dateList}))
+        setMovieImg('');
+        setDuration(0);
+        setTitle('');
+        setGenre('');
+        setShowtimes([]);
+        setDateList([]);
+        setDescription('');
     }
 
-    useEffect(() => {
-        if (movieImg) {
-            const previewUrl = URL.createObjectURL(movieImg)
-            setPreview(previewUrl)
-            return () => {
-                URL.revokeObjectURL(previewUrl)
-            }
-        }
-    }, [movieImg])
 
     return (
         <div className="addMovie">
@@ -57,37 +62,36 @@ function AddMovie() {
                 <h2>Add Movie</h2>
             </div>
                 <form onSubmit={addMovieHandler}>
-                    <div className="editPic">
-                        <div className="left">
-                            <img src={preview} alt=""/>
-                            <span>{movieImg?.name}</span>
-                        </div>
-                        <div className="right">
-                            <input type="file" onChange={handleFileChange}/>
-                            <button type="button"
-                                    onClick={() => document.querySelector('input[type="file"]').click()}>
-                                Select Img
-                            </button>
-                        </div>
+                    <div className="editShortText">
+                        <h4>(Url) Image</h4>
+                        <input type="text" value={movieImg || ''} onChange={(e) => setMovieImg(e.target.value)}></input>
                     </div>
                     <div className="editShortText">
                         <h4>Title</h4>
-                        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)}></input>
+                        <input type="text" value={title || ''} onChange={(e) => setTitle(e.target.value)}></input>
                     </div>
                     <div className="editLongText">
                         <h4>Description</h4>
-                        <textarea value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+                        <textarea value={description || ''} onChange={(e) => setDescription(e.target.value)}></textarea>
                     </div>
                     <div className="editShortText">
                         <h4>Duration</h4>
-                        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)}></input>
+                        <input type="number" value={duration} onChange={(e) => setDuration(e.target.value)}></input>
                     </div>
                     <div className="editShortText">
                         <h4>Genre</h4>
-                        <select>
-                            <option value="likes">Sort by likes</option>
-                            <option value="date-asc">Sort by date (ascending)</option>
-                            <option value="date-desc">Sort by date (descending)</option>
+                        <select value={genre} onChange={(e) => setGenre(e.target.value)}>
+                            <option value="Animated">Animated</option>
+                            <option value="Documentary">documentary</option>
+                            <option value="Horror">Horror</option>
+                            <option value="Fiction">Fiction</option>
+                            <option value="Comedy">Comedy</option>
+                            <option value="Drama">Drama</option>
+                            <option value="Action">Action</option>
+                            <option value="War">War</option>
+                            <option value="Crime">Crime</option>
+                            <option value="Historical">Historical</option>
+                            <option value="Adventure">Adventure</option>
                         </select>
                     </div>
 
@@ -107,7 +111,12 @@ function AddMovie() {
                                 />
                             </div>
 
-                            <button type="button" onClick={handleAddShowtime}>Add Showtime</button>
+                            <button type="button" onClick={() => {
+                                handleAddShowtime()
+                                handleAddDateList()
+                            }}>
+                                Add Showtime
+                            </button>
                         </div>
                         <div className="showtimeList">
                             {showtimes.map((showtime, index) => (
@@ -124,7 +133,7 @@ function AddMovie() {
 
 
                     <div className="buttons">
-                        <button onClick={()=> navigate("/movies")} className='submit'>Cancel</button>
+                        <button onClick={() => navigate("/movies")} className='submit'>Cancel</button>
                         <button type="submit" className='submit'>Send</button>
                     </div>
                 </form>
