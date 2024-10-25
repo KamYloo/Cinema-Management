@@ -126,7 +126,7 @@ function SeatsView() {
                         </div>
                     </div>
                 </div>
-                <button onClick={makeReservationHandler}>Reserve</button>
+                <button className="reservationBtn" onClick={makeReservationHandler}>Reserve</button>
             </div>
         </div>
     );

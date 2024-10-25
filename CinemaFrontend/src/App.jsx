@@ -11,6 +11,7 @@ import {useDispatch} from "react-redux";
 import {currentUser} from "./Redux/Auth/Action.js";
 import {MovieDetail} from "./Components/MoviesComponents/MovieDetail.jsx";
 import {SeatsView} from "./Components/SeatsComponents/SeatsView.jsx";
+import {ReservationsView} from "./Components/ReservationComponents/ReservationsView.jsx";
 
 
 function App() {
@@ -65,6 +66,10 @@ function App() {
 
               <Route path="/movies/movie/:movieId/showTime/:showTimeId/seats" element={
                   renderLayout(SeatsView)
+              } />
+
+              <Route path="/reservations/user/:userId" element={
+                  renderLayout(ReservationsView)
               } />
 
               <Route path="/" element={<Navigate to="/home" />} />

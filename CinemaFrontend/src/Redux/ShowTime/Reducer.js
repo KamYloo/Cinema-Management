@@ -6,6 +6,7 @@ import {
 const initialValue= {
     showTimes: [],
     getShowTime: null,
+
 }
 
 export const showTimeReducer=(store=initialValue, {type,payload})=>{

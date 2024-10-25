@@ -19,7 +19,7 @@
     padding: 10px 30px;
     z-index: 5;
 
-    button {
+    .formBtn {
         outline: none;
         border: none;
         padding: 10px 40px;
@@ -32,7 +32,7 @@
         transition: 0.3s;
     }
 
-    button:hover {
+    .formBtn:hover {
         background: #d16060;
     }
 
@@ -58,56 +58,11 @@
         justify-content: center;
         gap: 1vh;
 
-        .editPic{
-            width: 100%;
+        .double {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 10px 20px;
-            border-radius: 10px;
-            background: rgba(54, 54, 54, 0.644);
-
-            .left {
-                display: flex;
-                align-items: center;
-                gap: 20px;
-
-                img {
-                    width: 60px;
-                    height: 70px;
-                    background: rgb(29, 29, 31);
-                    border-radius: 10px;
-                    object-fit: cover;
-                }
-
-                .trackImg {
-                    width: 70px;
-                }
-
-                span {
-                    font-size: 12px;
-                    font-weight: bold;
-                    color: white;
-                    max-width: 20vh;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-
-                }
-            }
-
-            .right {
-                input {
-                    display: none;
-                }
-
-                button {
-                    padding: 10px;
-                }
-
-                button:hover {
-                    background: rgb(4, 214, 214);
-                }
-            }
+            justify-content: center;
+            gap: 22.5vh;
         }
 
         .editLongText, .editShortText {

@@ -120,8 +120,17 @@
           text-align: center;
           transition: all 0.3s;
           padding: 1vh 2vh;
-          border-radius: 10px;
           cursor: pointer;
+        }
+
+        li:nth-child(1) {
+          border-top-right-radius: 10px;
+          border-top-left-radius: 10px;
+        }
+
+        li:nth-child(2) {
+          border-bottom-right-radius: 10px;
+          border-bottom-left-radius: 10px;
         }
 
         li:hover {
@@ -170,10 +179,25 @@
 
       .profileBox {
         position: absolute;
-        bottom: 5vh;
+        bottom: 6vh;
+        flex-direction: column;
 
         i {
           display: none;
+        }
+
+        ul {
+          background: #780000;
+          position: static;
+          justify-self: center;
+          display: flex;
+          gap: 1vh;
+          border-radius: 0;
+
+          li {
+            background: white;
+            border-radius: 10px;
+          }
         }
       }
     }

@@ -65,10 +65,11 @@ function NavigateComponent({ activeTab, setActiveTab }) {
               <li>
                 <a href="#">Help</a>
               </li>
+
             </ul>
           </nav>
           <div className="profileBox">
-            <img src={`${BASE_API_URL}/${auth.reqUser?.profilePicture || ''}`} alt=""/>
+          <img src={`${BASE_API_URL}/${auth.reqUser?.profilePicture || ''}`} alt="Profile" />
             {!auth.reqUser ? (
                 <p style={{ cursor: 'pointer' }} onClick={() => navigate('/login')}>Login</p>
             ) : (
@@ -77,9 +78,10 @@ function NavigateComponent({ activeTab, setActiveTab }) {
                   <i onClick={() => setMenu((prev) => !prev)}>
                     <AiOutlineMenuFold/>
                   </i>
-                  {menu && (
+                  {(menu || isPanelVisible) && (
                       <ul>
                         <li onClick={handleLogout}>Logout</li>
+                        <li onClick={() => navigate(`/reservations/user/${auth.reqUser?.id}`)}>Reservations</li>
                       </ul>
                   )}
                 </>

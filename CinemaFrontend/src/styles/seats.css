@@ -188,6 +188,29 @@
                 }
             }
         }
+
+        .reservationBtn {
+            outline: none;
+            border: none;
+            width: 15vh;
+            padding: 1vh;
+            align-self: end;
+            background: rgba(191, 12, 12, 0.58);
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 5px;
+            color: white;
+            font-family: cursive;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+
+        }
+
+        .reservationBtn:hover {
+            background: #bf0c0c;
+
+        }
     }
 }
 
@@ -237,8 +260,11 @@
 
                         .row {
 
-                            i {
-                                font-size: 35px;
+                            .seat {
+
+                                i {
+                                    font-size: 35px;
+                                }
                             }
 
                             p {
@@ -264,6 +290,11 @@
                     }
                 }
             }
+
+            .reservationBtn {
+                width: 10vh;
+                font-size: 16px;
+            }
         }
     }
 }
@@ -279,9 +310,11 @@
                         width: 350px;
 
                         .row {
+                            .seat {
 
-                            i {
-                                font-size: 25px;
+                                i {
+                                    font-size: 25px;
+                                }
                             }
 
                             p {

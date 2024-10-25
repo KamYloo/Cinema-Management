@@ -74,6 +74,7 @@ function AddMovie() {
                         <h4>Description</h4>
                         <textarea value={description || ''} onChange={(e) => setDescription(e.target.value)}></textarea>
                     </div>
+                    <div className="double">
                     <div className="editShortText">
                         <h4>Duration</h4>
                         <input type="number" value={duration} onChange={(e) => setDuration(e.target.value)}></input>
@@ -94,6 +95,7 @@ function AddMovie() {
                             <option value="Adventure">Adventure</option>
                         </select>
                     </div>
+                    </div>
 
                     <div className="editShortText">
                         <h4>Showtimes</h4>
@@ -111,7 +113,7 @@ function AddMovie() {
                                 />
                             </div>
 
-                            <button type="button" onClick={() => {
+                            <button className="formBtn" type="button" onClick={() => {
                                 handleAddShowtime()
                                 handleAddDateList()
                             }}>
@@ -122,7 +124,7 @@ function AddMovie() {
                             {showtimes.map((showtime, index) => (
                                 <div key={index} className="showtimeItem">
                                     <span>{showtime.date} {showtime.time}</span>
-                                    <button className="delete" type="button"
+                                    <button className="formBtn" type="button"
                                             onClick={() => handleRemoveShowtime(index)}>
                                         Delete
                                     </button>
@@ -133,8 +135,8 @@ function AddMovie() {
 
 
                     <div className="buttons">
-                        <button onClick={() => navigate("/movies")} className='submit'>Cancel</button>
-                        <button type="submit" className='submit'>Send</button>
+                        <button className="formBtn" onClick={() => navigate("/movies")} >Cancel</button>
+                        <button className="formBtn" type="submit" >Send</button>
                     </div>
                 </form>
             </div>
