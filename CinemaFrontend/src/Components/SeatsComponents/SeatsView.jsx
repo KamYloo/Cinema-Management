@@ -5,19 +5,27 @@ import { PiArmchairBold } from "react-icons/pi";
 import {useDispatch, useSelector} from "react-redux";
 import {getMovie} from "../../Redux/Movie/Action.js";
 import {getShowTime} from "../../Redux/ShowTime/Action.js";
+import {getSeats} from "../../Redux/Seat/Action.js";
 
 function SeatsView() {
 
     const {showTimeId} = useParams();
     const dispatch = useDispatch();
-    const {showTime} = useSelector(store => store);
+    const {showTime, seat} = useSelector(store => store);
+    const [selectedSeat, setSelectedSeat] = useState(null);
     const navigate = useNavigate();
 
-   /* const rows = seats.reduce((acc, seat) => {
+    const rows = seat.seats.reduce((acc, seat) => {
         acc[seat.rowNumber] = acc[seat.rowNumber] || [];
         acc[seat.rowNumber].push(seat);
         return acc;
-    }, {});*/
+    }, {});
+
+    const handleSeatClick = (seat) => {
+        if (!seat.reserved) {
+            setSelectedSeat(selectedSeat === seat ? null : seat);
+        }
+    };
 
     const convertShowtime = (dateTimeString) => {
         const dateTime = new Date(dateTimeString);
@@ -37,7 +45,9 @@ function SeatsView() {
 
     useEffect(() => {
         dispatch(getShowTime(showTimeId))
+        dispatch(getSeats(showTimeId))
     }, [dispatch, showTimeId]);
+
 
     return (
         <div className="seatsView">
@@ -58,69 +68,26 @@ function SeatsView() {
                         <div className="seats">
                             <hr className="screen" />
                             <p className="screenP">Screen</p>
-                            {/* {Object.keys(rows).map((rowKey) => (
+
+                            {Object.keys(rows).map((rowKey) => (
                                 <div className="row" key={`row-${rowKey}`}>
-                                     Generowanie siedzeń w każdym rzędzie
+                                    <p>{rowKey}</p>
                                     {rows[rowKey].map((seat) => (
                                         <div
                                             key={`seat-${seat.seatNumber}`}
-                                            className={`seat ${seat.reserved ? 'occupied' : ''}`}
+                                            className={`seat ${
+                                                seat?.reserved ? 'occupied' :
+                                                    selectedSeat === seat ? 'selected' : ''
+                                            }`}
+                                            onClick={() => handleSeatClick(seat)}
                                         >
-                                            {seat.seatNumber}
+                                            <i><PiArmchairBold /></i>
+                                            {/*<span>{seat.seatNumber}</span>*/}
                                         </div>
                                     ))}
+                                    <p>{rowKey}</p>
                                 </div>
-                            ))}*/}
-                            <div className="row">
-                                <p>I</p>
-                                <i><PiArmchairBold/></i>
-                                <i><PiArmchairBold/></i>
-                                <i><PiArmchairBold/></i>
-                                <i><PiArmchairBold/></i>
-                                <i><PiArmchairBold/></i>
-                                <i><PiArmchairBold/></i>
-                                <p>I</p>
-                            </div>
-                            <div className="row">
-                                <p>II</p>
-                                <i><PiArmchairBold/></i>
-                                <i><PiArmchairBold/></i>
-                                <i><PiArmchairBold/></i>
-                                <i><PiArmchairBold/></i>
-                                <i><PiArmchairBold/></i>
-                                <i><PiArmchairBold/></i>
-                                <p>II</p>
-                            </div>
-                            <div className="row">
-                                <p>III</p>
-                                <i><PiArmchairBold/></i>
-                                <i><PiArmchairBold/></i>
-                                <i><PiArmchairBold/></i>
-                                <i><PiArmchairBold/></i>
-                                <i><PiArmchairBold/></i>
-                                <i><PiArmchairBold/></i>
-                                <p>III</p>
-                            </div>
-                            <div className="row">
-                                <p>IV</p>
-                                <i><PiArmchairBold/></i>
-                                <i><PiArmchairBold/></i>
-                                <i><PiArmchairBold/></i>
-                                <i><PiArmchairBold/></i>
-                                <i><PiArmchairBold/></i>
-                                <i><PiArmchairBold/></i>
-                                <p>IV</p>
-                            </div>
-                            <div className="row">
-                                <p>V</p>
-                                <i><PiArmchairBold/></i>
-                                <i><PiArmchairBold/></i>
-                                <i><PiArmchairBold/></i>
-                                <i><PiArmchairBold/></i>
-                                <i><PiArmchairBold/></i>
-                                <i><PiArmchairBold/></i>
-                                <p>V</p>
-                            </div>
+                            ))}
                         </div>
                     </div>
                     <hr/>

@@ -94,12 +94,27 @@
                         justify-content: center;
                         gap: 2vh;
 
-                        i {
-                            font-size: 45px;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            cursor: pointer;
+                        .seat {
+
+                            i {
+                                font-size: 45px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                cursor: pointer;
+                            }
+                        }
+
+                        .seat.occupied {
+                            i {
+                                color: black;
+                            }
+                        }
+
+                        .seat.selected  {
+                            i {
+                                color: yellow;
+                            }
                         }
 
                         p {

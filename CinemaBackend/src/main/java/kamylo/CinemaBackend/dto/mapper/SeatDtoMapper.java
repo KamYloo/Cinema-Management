@@ -9,13 +9,13 @@ import java.util.List;
 
 public class SeatDtoMapper {
     public static SeatDto toSeatDto(Seat seat) {
-        ShowTimeDto showTimeDto = ShowTimeDtoMapper.toShowTimeDto(seat.getShowTime());
+//        ShowTimeDto showTimeDto = ShowTimeDtoMapper.toShowTimeDto(seat.getShowTime());
         SeatDto seatDto = new SeatDto();
         seatDto.setId(seat.getId());
         seatDto.setSeatNumber(seat.getSeatNumber());
         seatDto.setReserved(seat.isReserved());
         seatDto.setRowNumber(seat.getRowNumber());
-        seatDto.setShowTime(showTimeDto);
+//        seatDto.setShowTime(showTimeDto);
         return seatDto;
     }
 
