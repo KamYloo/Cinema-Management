@@ -63,7 +63,7 @@ function App() {
                   renderLayout(MovieDetail)
               } />
 
-              <Route path="/movies/movie/:movieId/seats" element={
+              <Route path="/movies/movie/:movieId/showTime/:showTimeId/seats" element={
                   renderLayout(SeatsView)
               } />
 

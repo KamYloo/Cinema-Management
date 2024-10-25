@@ -1,6 +1,7 @@
 package kamylo.CinemaBackend.service;
 
 import kamylo.CinemaBackend.exception.MovieException;
+import kamylo.CinemaBackend.exception.ShowTimeException;
 import kamylo.CinemaBackend.model.Seat;
 import kamylo.CinemaBackend.model.ShowTime;
 import kamylo.CinemaBackend.repository.SeatRepository;
@@ -19,7 +20,10 @@ public class ShowTimeServiceImplementation implements ShowTimeService {
     @Autowired
     private SeatRepository seatRepository;
 
-    private final int DEFAULT_SEAT_COUNT = 30;
+    @Override
+    public ShowTime getShowTime(Integer showTimeId) throws ShowTimeException {
+        return showTimeRepository.findById(showTimeId).orElseThrow(() -> new ShowTimeException("Show time not found with id: " + showTimeId));
+    }
 
     @Override
     public List<ShowTime> getShowTimeByMovieId(Integer movieId) throws MovieException {
@@ -27,19 +31,21 @@ public class ShowTimeServiceImplementation implements ShowTimeService {
 
         for (ShowTime showTime : showTimes) {
             if (showTime.getSeats() == null || showTime.getSeats().isEmpty()) {
-                initializeSeatsForShowTime(showTime, DEFAULT_SEAT_COUNT);
+                initializeSeatsForShowTime(showTime);
             }
         }
         return showTimes;
     }
 
-    private void initializeSeatsForShowTime(ShowTime showTime, int seatCount) {
+    private void initializeSeatsForShowTime(ShowTime showTime) {
         List<Seat> seats = new ArrayList<>();
 
-        for (int i = 1; i <= seatCount; i++) {
+        int seatsPerRow = 6;
+        int DEFAULT_SEAT_COUNT = 30;
+        for (int i = 0; i < DEFAULT_SEAT_COUNT; i++) {
             Seat seat = new Seat();
-            seat.setRowNumber((i - 1) / 10 + 1);
-            seat.setSeatNumber(i);
+            seat.setRowNumber(i / seatsPerRow + 1);
+            seat.setSeatNumber(i % seatsPerRow + 1);
             seat.setReserved(false);
             seat.setShowTime(showTime);
             seats.add(seat);

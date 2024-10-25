@@ -59,7 +59,7 @@ function MovieDetail() {
                     <h4>Available Showtimes</h4>
                     <ul>
                         {showTime.showTimes?.map((item) => (
-                            <li  key={item.id} onClick={() => navigate("seats")} >
+                            <li  key={item.id} onClick={() => navigate(`showTime/${item.id}/seats`)} >
                                 <button className="showTime">
                                     <div className="info">
                                         <span className="date">{convertShowtime(item?.time).date}</span>

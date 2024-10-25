@@ -1,9 +1,14 @@
 package kamylo.CinemaBackend.controller;
 
+import kamylo.CinemaBackend.dto.MovieDto;
 import kamylo.CinemaBackend.dto.ShowTimeDto;
+import kamylo.CinemaBackend.dto.mapper.MovieDtoMapper;
 import kamylo.CinemaBackend.dto.mapper.ShowTimeDtoMapper;
 import kamylo.CinemaBackend.exception.MovieException;
+import kamylo.CinemaBackend.exception.ShowTimeException;
+import kamylo.CinemaBackend.model.Movie;
 import kamylo.CinemaBackend.model.ShowTime;
+import kamylo.CinemaBackend.response.ApiResponse;
 import kamylo.CinemaBackend.service.ShowTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +25,19 @@ import java.util.List;
 public class ShowTimeController {
     @Autowired
     private ShowTimeService showTimeService;
+
+    @GetMapping("/{showTimeId}")
+    public ResponseEntity<?> getShowTimeHandler(@PathVariable Integer showTimeId) {
+        try {
+            ShowTime showTime = showTimeService.getShowTime(showTimeId);
+            ShowTimeDto showTimeDto = ShowTimeDtoMapper.toShowTimeDto(showTime);
+            return new ResponseEntity<>(showTimeDto, HttpStatus.OK);
+        } catch (ShowTimeException e) {
+            ApiResponse response = new ApiResponse();
+            response.setMessage(e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+    }
 
     @GetMapping("/movie/{movieId}")
     public ResponseEntity<List<ShowTimeDto>> getShowTimesForMovie(@PathVariable Integer movieId) throws MovieException {

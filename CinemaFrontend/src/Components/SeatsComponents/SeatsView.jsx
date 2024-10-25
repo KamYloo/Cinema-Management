@@ -1,10 +1,16 @@
-import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom'
+import React, {useEffect, useState} from "react";
+import {useNavigate, useParams} from 'react-router-dom'
 import "../../styles/seats.css";
 import { PiArmchairBold } from "react-icons/pi";
+import {useDispatch, useSelector} from "react-redux";
+import {getMovie} from "../../Redux/Movie/Action.js";
+import {getShowTime} from "../../Redux/ShowTime/Action.js";
 
 function SeatsView() {
 
+    const {showTimeId} = useParams();
+    const dispatch = useDispatch();
+    const {showTime} = useSelector(store => store);
     const navigate = useNavigate();
 
    /* const rows = seats.reduce((acc, seat) => {
@@ -13,18 +19,38 @@ function SeatsView() {
         return acc;
     }, {});*/
 
+    const convertShowtime = (dateTimeString) => {
+        const dateTime = new Date(dateTimeString);
+        const options = { month: 'short', day: '2-digit', year: 'numeric' };
+        const formattedDate = dateTime.toLocaleDateString('en-US', options);
+        const formattedTime = dateTime.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
+
+        return {
+            date: formattedDate,
+            time: formattedTime
+        };
+    };
+
+    useEffect(() => {
+        dispatch(getShowTime(showTimeId))
+    }, [dispatch, showTimeId]);
+
     return (
         <div className="seatsView">
             <div className="center">
                 <div className="up">
                     <div className="top">
                         <p>Watch and Enjoy</p>
-                        <p> 28 Pazdziernika 2024 18:00</p>
+                        <p>{convertShowtime(showTime.getShowTime?.time).date} · {convertShowtime(showTime.getShowTime?.time).time}</p>
                     </div>
                     <hr/>
                     <div className="bottom">
-                        <h4>Garfield /</h4>
-                        <span>Animation</span>
+                        <h4>{showTime.getShowTime?.movie.title} /</h4>
+                        <span>{showTime.getShowTime?.movie.genre}</span>
                     </div>
                 </div>
                 <div className="down">
