@@ -3,15 +3,16 @@ import {useNavigate, useParams} from 'react-router-dom'
 import "../../styles/seats.css";
 import { PiArmchairBold } from "react-icons/pi";
 import {useDispatch, useSelector} from "react-redux";
-import {getMovie} from "../../Redux/Movie/Action.js";
+import {createMovie, getMovie} from "../../Redux/Movie/Action.js";
 import {getShowTime} from "../../Redux/ShowTime/Action.js";
 import {getSeats} from "../../Redux/Seat/Action.js";
+import {makeReservation} from "../../Redux/Reservation/Action.js";
 
 function SeatsView() {
 
     const {showTimeId} = useParams();
     const dispatch = useDispatch();
-    const {showTime, seat} = useSelector(store => store);
+    const {showTime, seat, reservation} = useSelector(store => store);
     const [selectedSeat, setSelectedSeat] = useState(null);
     const navigate = useNavigate();
 
@@ -43,10 +44,20 @@ function SeatsView() {
         };
     };
 
+
+    const makeReservationHandler = (e) => {
+        e.preventDefault();
+        if (selectedSeat) {
+            dispatch(makeReservation({seatId:selectedSeat.id}))
+            setSelectedSeat(null);
+        }
+}
+
+
     useEffect(() => {
         dispatch(getShowTime(showTimeId))
         dispatch(getSeats(showTimeId))
-    }, [dispatch, showTimeId]);
+    }, [dispatch, showTimeId, reservation.makeReservation]);
 
 
     return (
@@ -66,7 +77,7 @@ function SeatsView() {
                 <div className="down">
                     <div className="seatsBox">
                         <div className="seats">
-                            <hr className="screen" />
+                            <hr className="screen"/>
                             <p className="screenP">Screen</p>
 
                             {Object.keys(rows).map((rowKey) => (
@@ -74,14 +85,14 @@ function SeatsView() {
                                     <p>{rowKey}</p>
                                     {rows[rowKey].map((seat) => (
                                         <div
-                                            key={`seat-${seat.seatNumber}`}
+                                            key={`seat-${seat?.seatNumber}`}
                                             className={`seat ${
                                                 seat?.reserved ? 'occupied' :
                                                     selectedSeat === seat ? 'selected' : ''
                                             }`}
                                             onClick={() => handleSeatClick(seat)}
                                         >
-                                            <i><PiArmchairBold /></i>
+                                            <i><PiArmchairBold/></i>
                                             {/*<span>{seat.seatNumber}</span>*/}
                                         </div>
                                     ))}
@@ -115,9 +126,10 @@ function SeatsView() {
                         </div>
                     </div>
                 </div>
+                <button onClick={makeReservationHandler}>Reserve</button>
             </div>
         </div>
     );
-    }
+}
 
                 export {SeatsView};

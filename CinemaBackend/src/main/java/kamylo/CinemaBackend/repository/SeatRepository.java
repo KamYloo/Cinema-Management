@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface SeatRepository extends JpaRepository<Seat, Integer> {
 
-    @Query("select s from Seat s where s.showTime.id = :showTimeId")
+    @Query("select s from Seat s where s.showTime.id = :showTimeId ORDER BY s.rowNumber, s.seatNumber")
     List<Seat> findByShowTimeId(@Param("showTimeId") Integer showTimeId);
 }
