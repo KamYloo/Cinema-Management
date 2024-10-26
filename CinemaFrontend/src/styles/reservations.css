@@ -1,13 +1,15 @@
 .reservationsView {
     width: 80%;
     margin: auto;
+
+    h2 {
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+    }
 }
 
-h2 {
-    color: #333;
-    margin-bottom: 20px;
-    text-align: center;
-}
+
 
 table {
     border-collapse: collapse;

@@ -11,7 +11,7 @@ function MoviesView() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const {movie} = useSelector(store => store);
+    const {auth,movie} = useSelector(store => store);
 
     const filteredMovies = movie.movies.filter(movieItem =>
         movieItem.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -30,7 +30,7 @@ function MoviesView() {
                     <i className='searchIcon'><BiSearchAlt /></i>
                 </div>
                 <button>Search</button>
-                <button onClick={()=> navigate("/movies/add")}>Add Movie</button>
+                {auth.reqUser?.admin && <button onClick={() => navigate("/movies/add")}>Add Movie</button>}
             </div>
             <div  className="movies">
                 {filteredMovies.map((item) => (
