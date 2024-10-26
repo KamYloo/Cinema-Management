@@ -96,12 +96,9 @@
       align-items: center;
       gap: 2vh;
 
-      img {
-        height: 6vh;
-        width: 6vh;
-        border: 1px orange solid;
-        border-radius: 50%;
-        object-fit: cover;
+      .userIcon {
+        font-size: 3.5vh;
+        cursor: default;
       }
 
       ul {
@@ -182,6 +179,10 @@
         bottom: 6vh;
         flex-direction: column;
 
+        .userIcon {
+          display: block;
+        }
+
         i {
           display: none;
         }
@@ -191,6 +192,7 @@
           position: static;
           justify-self: center;
           display: flex;
+          flex-direction: column;
           gap: 1vh;
           border-radius: 0;
 
@@ -214,6 +216,11 @@
     .panel {
       .profileBox {
         flex-direction: column;
+
+        ul li {
+            font-size: 14px;
+            padding: 1vh 1vh;
+        }
       }
     }
   }

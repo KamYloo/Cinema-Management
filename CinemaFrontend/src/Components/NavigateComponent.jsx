@@ -5,8 +5,8 @@ import "../styles/navigate.css";
 import Logo from "../images/logo.png";
 import { AiOutlineMenuFold } from "react-icons/ai";
 import { MdCancel } from "react-icons/md";
+import { FaUserCircle } from "react-icons/fa";
 import {logoutAction} from "../Redux/Auth/Action.js";
-import {BASE_API_URL} from "../config/api.js";
 
 function NavigateComponent({ activeTab, setActiveTab }) {
   const [isPanelVisible, setPanelVisible] = useState(false);
@@ -18,6 +18,7 @@ function NavigateComponent({ activeTab, setActiveTab }) {
   const handleLogout = () => {
     dispatch(logoutAction())
     navigate('/login')
+    setMenu(null)
   }
 
   useEffect(() => {
@@ -69,7 +70,7 @@ function NavigateComponent({ activeTab, setActiveTab }) {
             </ul>
           </nav>
           <div className="profileBox">
-          <img src={`${BASE_API_URL}/${auth.reqUser?.profilePicture || ''}`} alt="Profile" />
+          <i className="userIcon"><FaUserCircle /></i>
             {!auth.reqUser ? (
                 <p style={{ cursor: 'pointer' }} onClick={() => navigate('/login')}>Login</p>
             ) : (
@@ -80,8 +81,11 @@ function NavigateComponent({ activeTab, setActiveTab }) {
                   </i>
                   {(menu || isPanelVisible) && (
                       <ul>
+                        <li onClick={() => {
+                          navigate(`/reservations/user/${auth.reqUser?.id}`)
+                          setMenu(null)
+                        }}>Reservations</li>
                         <li onClick={handleLogout}>Logout</li>
-                        <li onClick={() => navigate(`/reservations/user/${auth.reqUser?.id}`)}>Reservations</li>
                       </ul>
                   )}
                 </>

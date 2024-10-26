@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {useNavigate, useParams} from 'react-router-dom'
 import "../../styles/movieDetail.css";
 import { FaCirclePlay } from "react-icons/fa6";
@@ -6,29 +6,13 @@ import { PiFilmReelDuotone } from "react-icons/pi";
 import {useDispatch, useSelector} from "react-redux";
 import {getMovie} from "../../Redux/Movie/Action.js";
 import {getShowTimes} from "../../Redux/ShowTime/Action.js";
+import {convertShowtime} from "../../utils/formatDate.js";
 
 function MovieDetail() {
     const {movieId} = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const {movie, showTime} = useSelector(store => store);
-
-
-    const convertShowtime = (dateTimeString) => {
-        const dateTime = new Date(dateTimeString);
-        const options = { month: 'short', day: '2-digit', year: 'numeric' };
-        const formattedDate = dateTime.toLocaleDateString('en-US', options);
-        const formattedTime = dateTime.toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false
-        });
-
-        return {
-            date: formattedDate,
-            time: formattedTime
-        };
-    };
 
     useEffect(() => {
         dispatch(getMovie(movieId))

@@ -102,6 +102,14 @@
                                 align-items: center;
                                 justify-content: center;
                                 cursor: pointer;
+
+                                span {
+                                    position: absolute;
+                                    font-size: 20px;
+                                    color: #ffef00;
+                                    font-weight: bold;
+                                    display: none;
+                                }
                             }
                         }
 
@@ -113,7 +121,11 @@
 
                         .seat.selected  {
                             i {
-                                color: yellow;
+                                color: #ff6a00;
+
+                                span {
+                                    display: block;
+                                }
                             }
                         }
 
@@ -172,7 +184,7 @@
                     }
                     .color:nth-child(3) {
                         .dye {
-                            background-color: yellow;
+                            background-color: #ff6a00;
                         }
                     }
                 }
@@ -264,6 +276,9 @@
 
                                 i {
                                     font-size: 35px;
+                                    span {
+                                        font-size: 18px;
+                                    }
                                 }
                             }
 
@@ -310,12 +325,7 @@
                         width: 350px;
 
                         .row {
-                            .seat {
-
-                                i {
-                                    font-size: 25px;
-                                }
-                            }
+                            gap: 1vh;
 
                             p {
                                 font-size: 25px;
@@ -323,6 +333,52 @@
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .seatsView {
+        .center {
+            .down {
+                .seatsBox {
+
+                    .seats {
+
+                        .row {
+                            .seat {
+
+                                i {
+                                    font-size: 25px;
+                                    span {
+                                        font-size: 12px;
+                                    }
+                                }
+                            }
+                            p {
+                                font-size: 25px;
+                            }
+                        }
+                    }
+                }
+                .legend {
+                    .signs {
+                        gap: 1vh;
+                        .colors {
+                            gap: 0.5vh;
+
+                            .color {
+                                gap: 0.5vh;
+                                .dye {
+                                    width: 1vh;
+                                    height: 1vh;
+                                }
+                            }
+                        }
+                    }
+                }
+
             }
         }
     }

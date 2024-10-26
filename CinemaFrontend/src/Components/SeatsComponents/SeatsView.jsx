@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react";
-import {useNavigate, useParams} from 'react-router-dom'
+import {useParams} from 'react-router-dom'
 import "../../styles/seats.css";
 import { PiArmchairBold } from "react-icons/pi";
 import {useDispatch, useSelector} from "react-redux";
-import {createMovie, getMovie} from "../../Redux/Movie/Action.js";
 import {getShowTime} from "../../Redux/ShowTime/Action.js";
 import {getSeats} from "../../Redux/Seat/Action.js";
 import {makeReservation} from "../../Redux/Reservation/Action.js";
+import RomanNumerals from 'roman-numerals';
+import {convertShowtime} from "../../utils/formatDate.js";
 
 function SeatsView() {
 
@@ -14,7 +15,6 @@ function SeatsView() {
     const dispatch = useDispatch();
     const {showTime, seat, reservation} = useSelector(store => store);
     const [selectedSeat, setSelectedSeat] = useState(null);
-    const navigate = useNavigate();
 
     const rows = seat.seats.reduce((acc, seat) => {
         acc[seat.rowNumber] = acc[seat.rowNumber] || [];
@@ -28,22 +28,11 @@ function SeatsView() {
         }
     };
 
-    const convertShowtime = (dateTimeString) => {
-        const dateTime = new Date(dateTimeString);
-        const options = { month: 'short', day: '2-digit', year: 'numeric' };
-        const formattedDate = dateTime.toLocaleDateString('en-US', options);
-        const formattedTime = dateTime.toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false
-        });
-
-        return {
-            date: formattedDate,
-            time: formattedTime
-        };
+    const handleConvertNumber = (num) => {
+        if (!isNaN(num) && num > 0) {
+            return (RomanNumerals.toRoman(num));
+        }
     };
-
 
     const makeReservationHandler = (e) => {
         e.preventDefault();
@@ -51,8 +40,7 @@ function SeatsView() {
             dispatch(makeReservation({seatId:selectedSeat.id}))
             setSelectedSeat(null);
         }
-}
-
+    }
 
     useEffect(() => {
         dispatch(getShowTime(showTimeId))
@@ -82,7 +70,7 @@ function SeatsView() {
 
                             {Object.keys(rows).map((rowKey) => (
                                 <div className="row" key={`row-${rowKey}`}>
-                                    <p>{rowKey}</p>
+                                    <p>{handleConvertNumber(rowKey)}</p>
                                     {rows[rowKey].map((seat) => (
                                         <div
                                             key={`seat-${seat?.seatNumber}`}
@@ -92,11 +80,11 @@ function SeatsView() {
                                             }`}
                                             onClick={() => handleSeatClick(seat)}
                                         >
-                                            <i><PiArmchairBold/></i>
-                                            {/*<span>{seat.seatNumber}</span>*/}
+                                            <i><PiArmchairBold/><span>{seat.seatNumber}</span></i>
+
                                         </div>
                                     ))}
-                                    <p>{rowKey}</p>
+                                    <p>{handleConvertNumber(rowKey)}</p>
                                 </div>
                             ))}
                         </div>
@@ -132,4 +120,4 @@ function SeatsView() {
     );
 }
 
-                export {SeatsView};
+export {SeatsView};

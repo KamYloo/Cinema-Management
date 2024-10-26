@@ -160,3 +160,23 @@
     }
 }
 }
+
+@media screen and (max-height: 750px) {
+    .addMovie{
+    .box {
+        padding: 5px 30px;
+
+        .title {
+            padding: 5px 20px;
+
+            h2 {
+                font-size: x-large;
+            }
+        }
+        .form {
+
+        }
+    }
+        }
+}
+

@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from "react";
-import {useNavigate, useParams} from 'react-router-dom'
+import React, {useEffect} from "react";
+import {useParams} from 'react-router-dom'
 import "../../styles/reservations.css";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteReservation, getReservationsByUser} from "../../Redux/Reservation/Action.js";
+import {convertShowtime} from "../../utils/formatDate.js";
 
 function ReservationsView() {
 
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     const {userId} = useParams();
 
@@ -25,22 +25,22 @@ function ReservationsView() {
 
     return (
         <div className="reservationsView">
-            <h2>Moje Rezerwacje</h2>
+            <h2>My Reservations</h2>
             <table>
                 <thead>
                 <tr>
-                    <th>Tytuł Filmu</th>
-                    <th>Data i Godzina</th>
-                    <th>Rząd</th>
-                    <th>Miejsce</th>
-                    <th>Akcje</th>
+                    <th>Movie Title</th>
+                    <th>Date & Time</th>
+                    <th>Row</th>
+                    <th>Seat</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
                 {reservation.reservations.map((reservation) => (
                     <tr key={reservation.id}>
                         <td>{reservation?.showtime.movie.title}</td>
-                        <td>{reservation?.showtime.time}</td>
+                        <td>{convertShowtime(reservation?.showtime.time).date} · {convertShowtime(reservation?.showtime.time).time}</td>
                         <td>{reservation?.seat.rowNumber}</td>
                         <td>{reservation?.seat.seatNumber}</td>
                         <td>
@@ -48,7 +48,7 @@ function ReservationsView() {
                                 onClick={() => deleteReservationHandler(reservation.id)}
                                 className="cancel-button"
                             >
-                                Anuluj
+                                Cancel
                             </button>
                         </td>
                     </tr>
