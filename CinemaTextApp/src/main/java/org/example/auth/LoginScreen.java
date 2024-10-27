@@ -1,14 +1,12 @@
 package org.example.auth;
 
 import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialogBuilder;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
-import org.example.utils.JwtUtils;
+import org.example.user.UserPanelScreen;
 
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class LoginScreen {
     private final MultiWindowTextGUI gui;

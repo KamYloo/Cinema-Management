@@ -1,10 +1,11 @@
-package org.example.auth;
+package org.example.user;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.Window.Hint;
+import org.example.auth.LoginScreen;
+import org.example.auth.RegisterScreen;
 
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class MainMenuScreen {
     private final MultiWindowTextGUI gui;

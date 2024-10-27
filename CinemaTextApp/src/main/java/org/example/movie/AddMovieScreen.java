@@ -4,7 +4,7 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
-import org.example.auth.UserPanelScreen;
+import org.example.user.UserPanelScreen;
 import org.example.dto.MovieDto;
 import org.example.utils.JwtUtils;
 
@@ -16,11 +16,11 @@ import java.util.List;
 public class AddMovieScreen {
     private final MultiWindowTextGUI gui;
     private final List<LocalDateTime> showTimes = new ArrayList<>();
-    private final UserPanelScreen userPanelScreen; // Add reference to UserPanelScreen
+    private final UserPanelScreen userPanelScreen;
 
     public AddMovieScreen(MultiWindowTextGUI gui, UserPanelScreen userPanelScreen) {
         this.gui = gui;
-        this.userPanelScreen = userPanelScreen; // Initialize UserPanelScreen reference
+        this.userPanelScreen = userPanelScreen;
     }
 
     public void start() throws Exception {

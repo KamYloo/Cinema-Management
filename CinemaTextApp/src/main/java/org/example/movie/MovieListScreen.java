@@ -1,19 +1,14 @@
 package org.example.movie;
 
 import com.googlecode.lanterna.SGR;
+import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.screen.Screen;
-import com.googlecode.lanterna.gui2.BorderLayout;
-import com.googlecode.lanterna.gui2.GridLayout;
-import com.googlecode.lanterna.gui2.GridLayout.Alignment;
-import com.googlecode.lanterna.gui2.EmptySpace;
 import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.gui2.LinearLayout;
-import com.googlecode.lanterna.gui2.Window.Hint;
-import com.googlecode.lanterna.TerminalPosition;
-import org.example.auth.UserPanelScreen;
+import com.googlecode.lanterna.graphics.SimpleTheme;
+import com.googlecode.lanterna.graphics.Theme;
+import org.example.user.UserPanelScreen;
 import org.example.dto.MovieDto;
-import org.example.user.UserService;
 
 import java.util.Set;
 
@@ -33,7 +28,7 @@ public class MovieListScreen {
         WindowBasedTextGUI textGUI = new MultiWindowTextGUI(screen);
         BasicWindow window = new BasicWindow();
 
-        window.setHints(java.util.Collections.singletonList(Hint.FULL_SCREEN));
+        window.setHints(java.util.Collections.singletonList(Window.Hint.FULL_SCREEN));
 
         Panel containerPanel = new Panel(new BorderLayout());
 
@@ -42,23 +37,26 @@ public class MovieListScreen {
         containerPanel.addComponent(new EmptySpace(new TerminalSize(1, 0)), BorderLayout.Location.LEFT);
         containerPanel.addComponent(new EmptySpace(new TerminalSize(1, 0)), BorderLayout.Location.RIGHT);
 
-        Label titleLabel = new Label("List of Movies:").addStyle(SGR.BOLD);
-        titleLabel.setLayoutData(GridLayout.createLayoutData(Alignment.CENTER, Alignment.CENTER));
+        Label titleLabel = new Label("List of Movies:")
+                .setForegroundColor(TextColor.ANSI.CYAN)
+                .addStyle(SGR.BOLD)
+                .setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center));
         mainPanel.addComponent(titleLabel);
 
-        Panel searchPanel = new Panel(new LinearLayout());
-
+        Panel searchPanel = new Panel(new GridLayout(2));
         searchTextBox = new TextBox().setPreferredSize(new TerminalSize(20, 1));
         searchPanel.addComponent(searchTextBox);
 
         Button searchButton = new Button("Search", this::searchMovies);
+        searchButton.setTheme(getButtonTheme());
         searchPanel.addComponent(searchButton);
 
-        mainPanel.addComponent(searchPanel.withBorder(Borders.singleLine()).setLayoutData(GridLayout.createLayoutData(Alignment.CENTER, Alignment.CENTER)));
+        mainPanel.addComponent(searchPanel.withBorder(Borders.singleLine("Search")).setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.CENTER, GridLayout.Alignment.CENTER)));
 
-        movieListBox = new ActionListBox(new TerminalSize(30, 10));  // Rozmiar listy filmów
+        movieListBox = new ActionListBox(new TerminalSize(30, 10));
         refreshMovieList(movieListBox);
-        mainPanel.addComponent(movieListBox.withBorder(Borders.singleLine("Movies")));
+        movieListBox.setTheme(getButtonTheme());
+        mainPanel.addComponent(movieListBox.withBorder(Borders.singleLine("Movies")).setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.CENTER, GridLayout.Alignment.CENTER)));
 
         Button backButton = new Button("Back", () -> {
             window.close();
@@ -68,12 +66,27 @@ public class MovieListScreen {
                 e.printStackTrace();
             }
         });
-        mainPanel.addComponent(backButton.withBorder(Borders.singleLine()).setLayoutData(GridLayout.createLayoutData(Alignment.CENTER, Alignment.CENTER)));
+        backButton.setTheme(getButtonTheme());
+        mainPanel.addComponent(backButton.setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.CENTER, GridLayout.Alignment.CENTER)));
 
-        containerPanel.addComponent(mainPanel.withBorder(Borders.singleLine()), BorderLayout.Location.CENTER);
+        containerPanel.addComponent(mainPanel.withBorder(Borders.doubleLine()), BorderLayout.Location.CENTER);
 
         window.setComponent(containerPanel);
+        window.setTheme(new SimpleTheme(TextColor.ANSI.WHITE, TextColor.ANSI.BLACK));
         textGUI.addWindowAndWait(window);
+    }
+
+    private Theme getButtonTheme() {
+        return SimpleTheme.makeTheme(
+                true,
+                TextColor.ANSI.WHITE,
+                TextColor.ANSI.BLUE,
+                TextColor.ANSI.WHITE,
+                TextColor.ANSI.BLUE,
+                TextColor.ANSI.BLACK,
+                TextColor.ANSI.WHITE,
+                TextColor.ANSI.BLACK
+        );
     }
 
     public void refreshMovieList(ActionListBox movieListBox) {
