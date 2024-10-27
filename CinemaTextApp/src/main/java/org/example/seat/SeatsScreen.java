@@ -3,13 +3,13 @@ package org.example.seat;
 import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.SimpleTheme;
-import com.googlecode.lanterna.graphics.Theme;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
 import com.googlecode.lanterna.screen.Screen;
 import org.example.dto.ReservationDto;
 import org.example.dto.SeatDto;
 import org.example.reservation.ReservationService;
+import org.example.utils.ColorThemes;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class SeatsScreen {
             seatPanel.setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center));
 
             ActionListBox seatListBox = new ActionListBox();
-            seatListBox.setTheme(getButtonTheme());
+            seatListBox.setTheme(ColorThemes.getButtonTheme());
 
             for (SeatDto seat : seats) {
                 String seatLabel = "Row: " + seat.getRowNumber() + ", Seat: " + seat.getSeatNumber() +
@@ -62,7 +62,7 @@ public class SeatsScreen {
 
             Button backButton = new Button("Back", seatWindow::close);
             backButton.setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center));
-            backButton.setTheme(getButtonTheme());
+            backButton.setTheme(ColorThemes.getButtonTheme());
             mainPanel.addComponent(backButton);
 
             mainPanel.addComponent(new EmptySpace());
@@ -91,18 +91,5 @@ public class SeatsScreen {
             MessageDialog.showMessageDialog(new MultiWindowTextGUI(screen), "Reservation Failed", "This seat is already reserved or an error occurred.");
             e.printStackTrace();
         }
-    }
-
-    private Theme getButtonTheme() {
-        return SimpleTheme.makeTheme(
-                true,
-                TextColor.ANSI.WHITE,
-                TextColor.ANSI.BLUE,
-                TextColor.ANSI.WHITE,
-                TextColor.ANSI.BLUE,
-                TextColor.ANSI.BLACK,
-                TextColor.ANSI.WHITE,
-                TextColor.ANSI.BLACK
-        );
     }
 }

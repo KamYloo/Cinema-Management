@@ -6,12 +6,12 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.graphics.SimpleTheme;
-import com.googlecode.lanterna.graphics.Theme;
 import org.example.dto.MovieDto;
 import org.example.dto.ShowTimeDto;
 import org.example.seat.SeatsScreen;
 import org.example.showTime.ShowTimeService;
 import org.example.user.UserService;
+import org.example.utils.ColorThemes;
 
 import java.util.List;
 
@@ -30,17 +30,6 @@ public class MovieDetailScreen {
 
             Panel mainPanel = new Panel();
             mainPanel.setLayoutManager(new LinearLayout(Direction.VERTICAL));
-
-            Theme detailsTheme = SimpleTheme.makeTheme(
-                    true,
-                    TextColor.ANSI.WHITE,
-                    TextColor.ANSI.BLUE,
-                    TextColor.ANSI.WHITE,
-                    TextColor.ANSI.BLUE,
-                    TextColor.ANSI.BLACK,
-                    TextColor.ANSI.WHITE,
-                    TextColor.ANSI.BLACK
-            );
 
             Panel infoPanel = new Panel(new LinearLayout(Direction.VERTICAL));
 
@@ -81,7 +70,7 @@ public class MovieDetailScreen {
                     .setForegroundColor(TextColor.ANSI.CYAN));
 
             ActionListBox showTimeListBox = new ActionListBox();
-            showTimeListBox.setTheme(detailsTheme);
+            showTimeListBox.setTheme(ColorThemes.getButtonTheme());
 
             List<ShowTimeDto> showTimes = ShowTimeService.getShowTimesByMovie(movieId);
             for (ShowTimeDto showTime : showTimes) {
@@ -95,6 +84,10 @@ public class MovieDetailScreen {
             mainPanel.addComponent(new EmptySpace(new TerminalSize(0, 1)));
             Panel buttonPanel = new Panel(new GridLayout(2).setHorizontalSpacing(5));
 
+            Button backButton = new Button("Back", detailsWindow::close);
+            backButton.setTheme(ColorThemes.getButtonTheme());
+            buttonPanel.addComponent(backButton);
+
             if (UserService.isAdmin()) {
                 Button deleteButton = new Button("Delete This Movie", () -> {
                     try {
@@ -107,13 +100,9 @@ public class MovieDetailScreen {
                                 .addStyle(SGR.BOLD));
                     }
                 });
-                deleteButton.setTheme(detailsTheme);
+                deleteButton.setTheme(ColorThemes.getButtonTheme());
                 buttonPanel.addComponent(deleteButton);
             }
-
-            Button backButton = new Button("Back", detailsWindow::close);
-            backButton.setTheme(detailsTheme);
-            buttonPanel.addComponent(backButton);
 
             mainPanel.addComponent(buttonPanel);
             mainPanel.addComponent(new EmptySpace().setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center)));

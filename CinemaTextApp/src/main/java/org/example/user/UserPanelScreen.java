@@ -4,11 +4,11 @@ import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.SimpleTheme;
-import com.googlecode.lanterna.graphics.Theme;
 
 import org.example.movie.AddMovieScreen;
 import org.example.movie.MovieListScreen;
 import org.example.reservation.UserReservationsScreen;
+import org.example.utils.ColorThemes;
 
 public class UserPanelScreen {
     private final MultiWindowTextGUI gui;
@@ -20,35 +20,18 @@ public class UserPanelScreen {
     public void start() throws Exception {
         BasicWindow window = new BasicWindow();
 
-        // Główny panel z ustawionym układem pionowym (Vertical)
         Panel contentPanel = new Panel(new LinearLayout(Direction.VERTICAL));
 
         boolean isAdmin = UserService.isAdmin();
 
-        // Etykieta powitalna
         Label welcomeLabel = new Label("Welcome to the User Panel!")
                 .setForegroundColor(TextColor.ANSI.CYAN)
-                .setBackgroundColor(TextColor.ANSI.BLACK)
                 .addStyle(SGR.BOLD)
                 .setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center));
         contentPanel.addComponent(welcomeLabel);
 
-        // Dodanie pustej przestrzeni nad przyciskami, aby je lepiej wycentrować
         contentPanel.addComponent(new EmptySpace().setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center)));
 
-        // Stworzenie motywu dla przycisków
-        Theme buttonTheme = SimpleTheme.makeTheme(
-                true,                           // Użyj pogrubienia dla aktywnych komponentów
-                TextColor.ANSI.WHITE,           // Kolor bazowy tekstu
-                TextColor.ANSI.BLUE,            // Kolor tła przycisków
-                TextColor.ANSI.WHITE,           // Kolor tekstu w polach edytowalnych
-                TextColor.ANSI.BLUE,            // Kolor tła dla pól edytowalnych
-                TextColor.ANSI.BLACK,           // Kolor tekstu po najechaniu
-                TextColor.ANSI.WHITE,           // Kolor tła po najechaniu
-                TextColor.ANSI.BLACK            // Kolor tła GUI
-        );
-
-        // Przyciski z wycentrowanym układem
         if (isAdmin) {
             Button addMovieButton = new Button("Add Movie", () -> {
                 window.close();
@@ -58,7 +41,7 @@ public class UserPanelScreen {
                     throw new RuntimeException(e);
                 }
             });
-            addMovieButton.setTheme(buttonTheme);
+            addMovieButton.setTheme(ColorThemes.getButtonTheme());
             addMovieButton.setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center));
             contentPanel.addComponent(addMovieButton);
         }
@@ -71,7 +54,7 @@ public class UserPanelScreen {
                 throw new RuntimeException(e);
             }
         });
-        moviesButton.setTheme(buttonTheme);
+        moviesButton.setTheme(ColorThemes.getButtonTheme());
         moviesButton.setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center));
         contentPanel.addComponent(moviesButton);
 
@@ -83,7 +66,7 @@ public class UserPanelScreen {
                 throw new RuntimeException(e);
             }
         });
-        showReservationsButton.setTheme(buttonTheme);
+        showReservationsButton.setTheme(ColorThemes.getButtonTheme());
         showReservationsButton.setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center));
         contentPanel.addComponent(showReservationsButton);
 
@@ -91,19 +74,16 @@ public class UserPanelScreen {
             window.close();
             new MainMenuScreen(gui).start();
         });
-        logoutButton.setTheme(buttonTheme);
+        logoutButton.setTheme(ColorThemes.getButtonTheme());
         logoutButton.setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center));
         contentPanel.addComponent(logoutButton);
 
-        // Dodanie pustej przestrzeni pod przyciskami, aby je lepiej wycentrować
         contentPanel.addComponent(new EmptySpace().setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center)));
 
-        // Ustawienie okna z wyśrodkowanym panelem
         window.setComponent(contentPanel);
         window.setHints(java.util.Arrays.asList(Window.Hint.FULL_SCREEN));
         window.setTheme(new SimpleTheme(TextColor.ANSI.WHITE, TextColor.ANSI.BLACK));
 
-        // Wyświetlenie okna
         gui.addWindowAndWait(window);
     }
 }

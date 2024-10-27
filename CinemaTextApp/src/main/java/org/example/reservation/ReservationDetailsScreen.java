@@ -4,10 +4,10 @@ import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.SimpleTheme;
-import com.googlecode.lanterna.graphics.Theme;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
 import org.example.dto.ReservationDto;
+import org.example.utils.ColorThemes;
 
 public class ReservationDetailsScreen {
     private final MultiWindowTextGUI gui;
@@ -50,7 +50,7 @@ public class ReservationDetailsScreen {
 
         Button closeButton = new Button("Close", detailsWindow::close);
         closeButton.setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center));
-        closeButton.setTheme(getButtonTheme());
+        closeButton.setTheme(ColorThemes.getButtonTheme());
         buttonPanel.addComponent(closeButton);
 
         Button deleteButton = new Button("Delete Reservation", () -> {
@@ -63,7 +63,7 @@ public class ReservationDetailsScreen {
             }
         });
         deleteButton.setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center));
-        deleteButton.setTheme(getButtonTheme());
+        deleteButton.setTheme(ColorThemes.getButtonTheme());
         buttonPanel.addComponent(deleteButton);
 
         detailsPanel.addComponent(buttonPanel);
@@ -73,18 +73,5 @@ public class ReservationDetailsScreen {
         detailsWindow.setHints(java.util.Arrays.asList(Window.Hint.FULL_SCREEN));
         detailsWindow.setTheme(new SimpleTheme(TextColor.ANSI.WHITE, TextColor.ANSI.BLACK));
         gui.addWindowAndWait(detailsWindow);
-    }
-
-    private Theme getButtonTheme() {
-        return SimpleTheme.makeTheme(
-                true,
-                TextColor.ANSI.WHITE,
-                TextColor.ANSI.BLUE,
-                TextColor.ANSI.WHITE,
-                TextColor.ANSI.BLUE,
-                TextColor.ANSI.BLACK,
-                TextColor.ANSI.WHITE,
-                TextColor.ANSI.BLACK
-        );
     }
 }

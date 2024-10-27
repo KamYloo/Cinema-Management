@@ -6,9 +6,9 @@ import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.graphics.SimpleTheme;
-import com.googlecode.lanterna.graphics.Theme;
 import org.example.user.UserPanelScreen;
 import org.example.dto.MovieDto;
+import org.example.utils.ColorThemes;
 
 import java.util.Set;
 
@@ -24,7 +24,7 @@ public class MovieListScreen {
         this.mainPanel = new Panel(new GridLayout(1));
     }
 
-    public void show() throws Exception {
+    public void show() {
         WindowBasedTextGUI textGUI = new MultiWindowTextGUI(screen);
         BasicWindow window = new BasicWindow();
 
@@ -48,14 +48,14 @@ public class MovieListScreen {
         searchPanel.addComponent(searchTextBox);
 
         Button searchButton = new Button("Search", this::searchMovies);
-        searchButton.setTheme(getButtonTheme());
+        searchButton.setTheme(ColorThemes.getButtonTheme());
         searchPanel.addComponent(searchButton);
 
         mainPanel.addComponent(searchPanel.withBorder(Borders.singleLine("Search")).setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.CENTER, GridLayout.Alignment.CENTER)));
 
         movieListBox = new ActionListBox(new TerminalSize(30, 10));
         refreshMovieList(movieListBox);
-        movieListBox.setTheme(getButtonTheme());
+        movieListBox.setTheme(ColorThemes.getButtonTheme());
         mainPanel.addComponent(movieListBox.withBorder(Borders.singleLine("Movies")).setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.CENTER, GridLayout.Alignment.CENTER)));
 
         Button backButton = new Button("Back", () -> {
@@ -66,7 +66,7 @@ public class MovieListScreen {
                 e.printStackTrace();
             }
         });
-        backButton.setTheme(getButtonTheme());
+        backButton.setTheme(ColorThemes.getButtonTheme());
         mainPanel.addComponent(backButton.setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.CENTER, GridLayout.Alignment.CENTER)));
 
         containerPanel.addComponent(mainPanel.withBorder(Borders.doubleLine()), BorderLayout.Location.CENTER);
@@ -74,19 +74,6 @@ public class MovieListScreen {
         window.setComponent(containerPanel);
         window.setTheme(new SimpleTheme(TextColor.ANSI.WHITE, TextColor.ANSI.BLACK));
         textGUI.addWindowAndWait(window);
-    }
-
-    private Theme getButtonTheme() {
-        return SimpleTheme.makeTheme(
-                true,
-                TextColor.ANSI.WHITE,
-                TextColor.ANSI.BLUE,
-                TextColor.ANSI.WHITE,
-                TextColor.ANSI.BLUE,
-                TextColor.ANSI.BLACK,
-                TextColor.ANSI.WHITE,
-                TextColor.ANSI.BLACK
-        );
     }
 
     public void refreshMovieList(ActionListBox movieListBox) {

@@ -4,11 +4,11 @@ import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.SimpleTheme;
-import com.googlecode.lanterna.graphics.Theme;
 import com.googlecode.lanterna.gui2.*;
 import org.example.user.UserPanelScreen;
 import org.example.dto.ReservationDto;
 import org.example.user.UserService;
+import org.example.utils.ColorThemes;
 
 import java.util.List;
 
@@ -49,7 +49,7 @@ public class UserReservationsScreen {
                 new ReservationDetailsScreen(gui, reservation).showReservationDetails();
             });
         }
-        reservationListBox.setTheme(getButtonTheme());
+        reservationListBox.setTheme(ColorThemes.getButtonTheme());
         mainPanel.addComponent(reservationListBox);
 
         mainPanel.addComponent(new EmptySpace(new TerminalSize(0, 1)));
@@ -63,25 +63,12 @@ public class UserReservationsScreen {
             }
         });
         backButton.setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center));
-        backButton.setTheme(getButtonTheme());
+        backButton.setTheme(ColorThemes.getButtonTheme());
         mainPanel.addComponent(backButton);
 
         reservationWindow.setComponent(mainPanel);
         reservationWindow.setHints(java.util.Arrays.asList(Window.Hint.FULL_SCREEN));
         reservationWindow.setTheme(new SimpleTheme(TextColor.ANSI.WHITE, TextColor.ANSI.BLACK));
         gui.addWindowAndWait(reservationWindow);
-    }
-
-    private Theme getButtonTheme() {
-        return SimpleTheme.makeTheme(
-                true,
-                TextColor.ANSI.WHITE,
-                TextColor.ANSI.BLUE,
-                TextColor.ANSI.WHITE,
-                TextColor.ANSI.BLUE,
-                TextColor.ANSI.BLACK,
-                TextColor.ANSI.WHITE,
-                TextColor.ANSI.BLACK
-        );
     }
 }

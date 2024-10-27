@@ -1,10 +1,19 @@
 package org.example.auth;
 
+import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.TerminalSize;
+import com.googlecode.lanterna.TextColor;
+import com.googlecode.lanterna.graphics.SimpleTheme;
 import com.googlecode.lanterna.gui2.*;
+import com.googlecode.lanterna.gui2.Button;
+import com.googlecode.lanterna.gui2.GridLayout;
+import com.googlecode.lanterna.gui2.Label;
+import com.googlecode.lanterna.gui2.Panel;
+import com.googlecode.lanterna.gui2.Window;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialogBuilder;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
 import org.example.user.UserPanelScreen;
+import org.example.utils.ColorThemes;
 
 import java.util.Arrays;
 
@@ -16,22 +25,29 @@ public class LoginScreen {
     }
 
     public void start() {
-        BasicWindow window = new BasicWindow("Login");
+        BasicWindow window = new BasicWindow();
 
         Panel mainPanel = new Panel();
         mainPanel.setLayoutManager(new LinearLayout(Direction.VERTICAL));
 
-        Panel contentPanel = new Panel(new GridLayout(2)); // Siatka 2 kolumn
+        Panel contentPanel = new Panel(new GridLayout(2));
         contentPanel.setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center));
 
         Label titleLabel = new Label("User Login");
-        titleLabel.setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center));
+        titleLabel.setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center))
+                .setForegroundColor(TextColor.ANSI.CYAN)
+                .addStyle(SGR.BOLD);
+
 
         Label emailLabel = new Label("Email:");
-        TextBox emailBox = new TextBox().setPreferredSize(new TerminalSize(30, 1));  // Szerokość pola tekstowego
+        emailLabel.setForegroundColor(TextColor.ANSI.WHITE);
+        TextBox emailBox = new TextBox().setPreferredSize(new TerminalSize(30, 1));
+        emailBox.setTheme(new SimpleTheme(TextColor.ANSI.WHITE, TextColor.ANSI.BLUE));
 
         Label passwordLabel = new Label("Password:");
-        TextBox passwordBox = new TextBox().setMask('*').setPreferredSize(new TerminalSize(30, 1)); // Hasło ukryte
+        passwordLabel.setForegroundColor(TextColor.ANSI.WHITE);
+        TextBox passwordBox = new TextBox().setMask('*').setPreferredSize(new TerminalSize(30, 1));
+        passwordBox.setTheme(new SimpleTheme(TextColor.ANSI.WHITE, TextColor.ANSI.BLUE));
 
         contentPanel.addComponent(emailLabel);
         contentPanel.addComponent(emailBox);
@@ -60,7 +76,7 @@ public class LoginScreen {
                 e.printStackTrace();
             }
         });
-
+        loginButton.setTheme(ColorThemes.getButtonTheme());
         contentPanel.addComponent(new EmptySpace(new TerminalSize(0, 1)));
         contentPanel.addComponent(loginButton);
 
@@ -68,6 +84,7 @@ public class LoginScreen {
         mainPanel.addComponent(titleLabel);
         mainPanel.addComponent(contentPanel);
 
+        window.setTheme(new SimpleTheme(TextColor.ANSI.WHITE, TextColor.ANSI.BLACK));
         window.setHints(Arrays.asList(Window.Hint.FULL_SCREEN));
         window.setComponent(mainPanel);
 

@@ -3,7 +3,6 @@ package org.example.reservation;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import org.example.dto.MovieDto;
 import org.example.dto.ReservationDto;
 import org.example.utils.HttpUtils;
 import org.example.utils.JwtUtils;

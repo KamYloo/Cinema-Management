@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.example.dto.SeatDto;
-import org.example.dto.ShowTimeDto;
 import org.example.utils.HttpUtils;
 import org.example.utils.JwtUtils;
 import org.example.utils.LocalDateTimeAdapter;
