@@ -15,16 +15,18 @@ import java.util.List;
 
 public class SeatsScreen {
 
-    private Screen screen;
+    private final Screen screen;
+    private Panel seatPanel;
+    private ActionListBox seatListBox;
+    private Integer currentShowTimeId;
 
     public SeatsScreen(Screen screen) {
         this.screen = screen;
     }
 
     public void showSeatSelection(Integer showTimeId) {
+        this.currentShowTimeId = showTimeId;
         try {
-            List<SeatDto> seats = SeatService.getSeatsByShowTime(showTimeId);
-
             BasicWindow seatWindow = new BasicWindow();
 
             Panel mainPanel = new Panel(new LinearLayout(Direction.VERTICAL));
@@ -37,25 +39,14 @@ public class SeatsScreen {
                     .setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center));
             mainPanel.addComponent(titleLabel);
 
-            Panel seatPanel = new Panel(new GridLayout(2).setHorizontalSpacing(3).setVerticalSpacing(1));
+            seatPanel = new Panel(new GridLayout(2).setHorizontalSpacing(3).setVerticalSpacing(1));
             seatPanel.setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center));
 
-            ActionListBox seatListBox = new ActionListBox();
+            seatListBox = new ActionListBox();
             seatListBox.setTheme(ColorThemes.getButtonTheme());
 
-            for (SeatDto seat : seats) {
-                String seatLabel = "Row: " + seat.getRowNumber() + ", Seat: " + seat.getSeatNumber() +
-                        (seat.isReserved() ? " [Reserved]" : " [Available]");
-
-                if (seat.isReserved()) {
-                    seatListBox.addItem(seatLabel, () -> {
-                        MessageDialog.showMessageDialog(new MultiWindowTextGUI(screen), "Reservation Error",
-                                "This seat is already reserved. Please select another seat.");
-                    });
-                } else {
-                    seatListBox.addItem(seatLabel, () -> {reserveSeat(seat.getId());});
-                }
-            }
+            // Populate the seat list initially
+            updateSeatList();
 
             seatPanel.addComponent(seatListBox);
             mainPanel.addComponent(seatPanel);
@@ -79,15 +70,40 @@ public class SeatsScreen {
         }
     }
 
+    private void updateSeatList() {
+        try {
+            seatListBox.clearItems();  // Clear existing items
+
+            List<SeatDto> seats = SeatService.getSeatsByShowTime(currentShowTimeId);
+
+            for (SeatDto seat : seats) {
+                String seatLabel = "Row: " + seat.getRowNumber() + ", Seat: " + seat.getSeatNumber() +
+                        (seat.isReserved() ? " [Reserved]" : " [Available]");
+
+                if (seat.isReserved()) {
+                    seatListBox.addItem(seatLabel, () -> {
+                        MessageDialog.showMessageDialog(new MultiWindowTextGUI(screen), "Reservation Error",
+                                "This seat is already reserved. Please select another seat.");
+                    });
+                } else {
+                    seatListBox.addItem(seatLabel, () -> reserveSeat(seat.getId()));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void reserveSeat(Integer seatId) {
         try {
-
             ReservationDto reservation = ReservationService.createReservation(seatId);
 
             MessageDialog.showMessageDialog(new MultiWindowTextGUI(screen), "Reservation", "Seat reserved successfully!");
 
-        } catch (Exception e) {
+            // Refresh the seat list to reflect the updated status
+            updateSeatList();
 
+        } catch (Exception e) {
             MessageDialog.showMessageDialog(new MultiWindowTextGUI(screen), "Reservation Failed", "This seat is already reserved or an error occurred.");
             e.printStackTrace();
         }

@@ -14,17 +14,19 @@ import java.util.List;
 
 public class UserReservationsScreen {
     private final MultiWindowTextGUI gui;
+    private ActionListBox reservationListBox;
+    private Panel mainPanel;
+    private Integer userId;
 
     public UserReservationsScreen(MultiWindowTextGUI gui) {
         this.gui = gui;
     }
 
     public void showUserReservations() throws Exception {
-        Integer userId = UserService.getLoggedInUserId();
-        List<ReservationDto> reservations = ReservationService.getReservationsByUser(userId);
-
+        userId = UserService.getLoggedInUserId();
         BasicWindow reservationWindow = new BasicWindow("Your Reservations");
-        Panel mainPanel = new Panel(new LinearLayout(Direction.VERTICAL));
+
+        mainPanel = new Panel(new LinearLayout(Direction.VERTICAL));
 
         Label titleLabel = new Label("Your Reservations")
                 .addStyle(SGR.BOLD)
@@ -34,24 +36,13 @@ public class UserReservationsScreen {
 
         mainPanel.addComponent(new EmptySpace(new TerminalSize(0, 1)));
 
-        ActionListBox reservationListBox = new ActionListBox();
+        reservationListBox = new ActionListBox();
         reservationListBox.setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center));
-
-        for (ReservationDto reservation : reservations) {
-            String reservationDetails = String.format("ID: %d, Movie: %s, Seat: %s-%s",
-                    reservation.getId(),
-                    reservation.getShowtime().getMovie().getTitle(),
-                    reservation.getSeat().getRowNumber(),
-                    reservation.getSeat().getSeatNumber()
-            );
-
-            reservationListBox.addItem(reservationDetails, () -> {
-                new ReservationDetailsScreen(gui, reservation).showReservationDetails();
-            });
-        }
         reservationListBox.setTheme(ColorThemes.getButtonTheme());
-        mainPanel.addComponent(reservationListBox);
 
+        updateReservationList();
+
+        mainPanel.addComponent(reservationListBox);
         mainPanel.addComponent(new EmptySpace(new TerminalSize(0, 1)));
 
         Button backButton = new Button("Back", () -> {
@@ -70,5 +61,28 @@ public class UserReservationsScreen {
         reservationWindow.setHints(java.util.Arrays.asList(Window.Hint.FULL_SCREEN));
         reservationWindow.setTheme(new SimpleTheme(TextColor.ANSI.WHITE, TextColor.ANSI.BLACK));
         gui.addWindowAndWait(reservationWindow);
+    }
+
+    void updateReservationList() {
+        reservationListBox.clearItems();
+
+        try {
+            List<ReservationDto> reservations = ReservationService.getReservationsByUser(userId);
+
+            for (ReservationDto reservation : reservations) {
+                String reservationDetails = String.format("ID: %d, Movie: %s, Seat: %s-%s",
+                        reservation.getId(),
+                        reservation.getShowtime().getMovie().getTitle(),
+                        reservation.getSeat().getRowNumber(),
+                        reservation.getSeat().getSeatNumber()
+                );
+
+                reservationListBox.addItem(reservationDetails, () -> {
+                    new ReservationDetailsScreen(gui, reservation, this).showReservationDetails();
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

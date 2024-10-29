@@ -12,10 +12,12 @@ import org.example.utils.ColorThemes;
 public class ReservationDetailsScreen {
     private final MultiWindowTextGUI gui;
     private final ReservationDto reservation;
+    private final UserReservationsScreen parentScreen;
 
-    public ReservationDetailsScreen(MultiWindowTextGUI gui, ReservationDto reservation) {
+    public ReservationDetailsScreen(MultiWindowTextGUI gui, ReservationDto reservation, UserReservationsScreen parentScreen) {
         this.gui = gui;
         this.reservation = reservation;
+        this.parentScreen = parentScreen;
     }
 
     public void showReservationDetails() {
@@ -58,6 +60,7 @@ public class ReservationDetailsScreen {
                 ReservationService.deleteReservation(reservation.getId());
                 MessageDialog.showMessageDialog(gui, "Reservation", "Reservation deleted successfully!");
                 detailsWindow.close();
+                parentScreen.updateReservationList();
             } catch (Exception e) {
                 MessageDialog.showMessageDialog(gui, "Error", "Failed to delete reservation: " + e.getMessage());
             }

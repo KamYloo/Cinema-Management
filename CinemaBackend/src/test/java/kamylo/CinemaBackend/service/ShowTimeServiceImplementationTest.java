@@ -77,10 +77,9 @@ public class ShowTimeServiceImplementationTest {
 
     @Test
     public void testInitializeSeatsForShowTime_CorrectSeatCountAndProperties() throws MovieException {
-        // Arrange
         int movieId = 1;
         List<ShowTime> showTimes = new ArrayList<>();
-        ShowTime showTimeWithoutSeats = new ShowTime(); // No seats initialized
+        ShowTime showTimeWithoutSeats = new ShowTime();
         showTimes.add(showTimeWithoutSeats);
 
         when(showTimeRepository.findByMovieId(movieId)).thenReturn(showTimes);
@@ -91,16 +90,19 @@ public class ShowTimeServiceImplementationTest {
         // Assert
         ShowTime showTime = result.get(0);
         List<Seat> seats = showTime.getSeats();
-        assertEquals(DEFAULT_SEAT_COUNT, seats.size());
+        assertEquals(30, seats.size(), "The number of initialized seats should be 30");
+
+        int seatsPerRow = 6;
         for (int i = 0; i < seats.size(); i++) {
             Seat seat = seats.get(i);
-            assertEquals(i + 1, seat.getSeatNumber());
-            assertEquals((i / 10) + 1, seat.getRowNumber());
-            assertFalse(seat.isReserved());
+            assertEquals(i % seatsPerRow + 1, seat.getSeatNumber(), "Seat number should match expected value");
+            assertEquals(i / seatsPerRow + 1, seat.getRowNumber(), "Row number should match expected value");
+            assertFalse(seat.isReserved(), "Seat should not be reserved by default");
         }
 
         verify(seatRepository, times(1)).saveAll(anyList());
     }
+
 
     // Helper method to create mock seats
     private List<Seat> createSeatsForShowTime(ShowTime showTime, int count) {
