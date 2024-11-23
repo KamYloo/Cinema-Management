@@ -11,6 +11,14 @@ import java.time.LocalDateTime;
 
 @RestControllerAdvice
 public class GlobaleException {
+
+    @ExceptionHandler(AuthException.class)
+    public ResponseEntity<ErrorDetail> AuthExceptionHandler(AuthException e, WebRequest req) {
+        ErrorDetail errorDetail = new ErrorDetail(e.getMessage(), req.getDescription(false), LocalDateTime.now());
+
+        return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(UserException.class)
     public ResponseEntity<ErrorDetail> UserExceptionHandler(UserException e, WebRequest req) {
         ErrorDetail errorDetail = new ErrorDetail(e.getMessage(), req.getDescription(false), LocalDateTime.now());

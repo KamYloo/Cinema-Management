@@ -10,6 +10,7 @@ import kamylo.CinemaBackend.model.User;
 import kamylo.CinemaBackend.response.ApiResponse;
 import kamylo.CinemaBackend.service.ReservationService;
 import kamylo.CinemaBackend.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +18,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/reservations")
 public class ReservationController {
-    @Autowired
-    private ReservationService reservationService;
 
-    @Autowired
-    private UserService userService;
+    private final ReservationService reservationService;
+    private final UserService userService;
 
     @PostMapping("/create")
     public ResponseEntity<ReservationDto> createReservationHandler(@RequestBody Map<String, Integer> requestBody, @RequestHeader("Authorization") String token) throws UserException, SeatException {

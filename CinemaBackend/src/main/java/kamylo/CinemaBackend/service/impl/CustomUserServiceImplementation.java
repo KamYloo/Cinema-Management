@@ -1,7 +1,8 @@
-package kamylo.CinemaBackend.service;
+package kamylo.CinemaBackend.service.impl;
 
 import kamylo.CinemaBackend.model.User;
 import kamylo.CinemaBackend.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

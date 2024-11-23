@@ -8,6 +8,7 @@ import kamylo.CinemaBackend.model.Seat;
 import kamylo.CinemaBackend.model.User;
 import kamylo.CinemaBackend.repository.ReservationRepository;
 import kamylo.CinemaBackend.repository.SeatRepository;
+import kamylo.CinemaBackend.service.impl.ReservationServiceImplementation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

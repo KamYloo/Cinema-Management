@@ -8,6 +8,7 @@ import kamylo.CinemaBackend.model.User;
 import kamylo.CinemaBackend.repository.MovieRepository;
 import kamylo.CinemaBackend.repository.ShowTimeRepository;
 import kamylo.CinemaBackend.request.MovieRequest;
+import kamylo.CinemaBackend.service.impl.MovieServiceImplementation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

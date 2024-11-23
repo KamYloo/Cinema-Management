@@ -1,4 +1,4 @@
-package kamylo.CinemaBackend.service;
+package kamylo.CinemaBackend.service.impl;
 
 import kamylo.CinemaBackend.exception.ReservationException;
 import kamylo.CinemaBackend.exception.SeatException;
@@ -8,24 +8,23 @@ import kamylo.CinemaBackend.model.Seat;
 import kamylo.CinemaBackend.model.User;
 import kamylo.CinemaBackend.repository.ReservationRepository;
 import kamylo.CinemaBackend.repository.SeatRepository;
+import kamylo.CinemaBackend.service.ReservationService;
+import kamylo.CinemaBackend.service.SeatService;
+import kamylo.CinemaBackend.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ReservationServiceImplementation implements ReservationService {
-    @Autowired
-    ReservationRepository reservationRepository;
 
-    @Autowired
-    SeatService seatService;
-
-    @Autowired
-    UserService userService;
-
-    @Autowired
-    SeatRepository seatRepository;
+    private final ReservationRepository reservationRepository;
+    private final SeatService seatService;
+    private final UserService userService;
+    private final SeatRepository seatRepository;
 
     @Override
     public Reservation createReservation(Integer seatId, User user) throws SeatException {

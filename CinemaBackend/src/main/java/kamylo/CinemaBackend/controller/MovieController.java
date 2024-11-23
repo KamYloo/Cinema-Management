@@ -12,6 +12,7 @@ import kamylo.CinemaBackend.response.ApiResponse;
 import kamylo.CinemaBackend.service.MovieService;
 import kamylo.CinemaBackend.service.UserService;
 import kamylo.CinemaBackend.util.MovieUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +21,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Set;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/movies")
 public class MovieController {
-    @Autowired
-    private MovieService movieService;
 
-    @Autowired
-    private UserService userService;
+    private final MovieService movieService;
+    private final UserService userService;
 
     @PostMapping("/create")
     public ResponseEntity<?> createMovieHandler(@RequestBody MovieRequest movieRequest, @RequestHeader("Authorization") String token) {

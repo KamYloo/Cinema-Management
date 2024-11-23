@@ -5,6 +5,7 @@ import kamylo.CinemaBackend.dto.mapper.SeatDtoMapper;
 import kamylo.CinemaBackend.exception.ShowTimeException;
 import kamylo.CinemaBackend.model.Seat;
 import kamylo.CinemaBackend.service.SeatService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/seats")
+@RequiredArgsConstructor
 public class SeatController {
-    @Autowired
-    private SeatService seatService;
+
+    private final SeatService seatService;
 
     @GetMapping("/showtime/{showTimeId}")
     public ResponseEntity<List<SeatDto>> getSeatsForShowTime(@PathVariable Integer showTimeId) throws ShowTimeException {

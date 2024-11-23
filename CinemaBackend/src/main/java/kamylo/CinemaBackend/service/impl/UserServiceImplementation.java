@@ -1,17 +1,20 @@
-package kamylo.CinemaBackend.service;
+package kamylo.CinemaBackend.service.impl;
 
 import kamylo.CinemaBackend.config.JwtProvider;
 import kamylo.CinemaBackend.exception.UserException;
 import kamylo.CinemaBackend.model.User;
 import kamylo.CinemaBackend.repository.UserRepository;
+import kamylo.CinemaBackend.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImplementation implements UserService {
-    @Autowired
-    private UserRepository userRepository;
+
+    private final UserRepository userRepository;
 
     @Override
     public User findUserProfileByJwt(String jwt) throws UserException {

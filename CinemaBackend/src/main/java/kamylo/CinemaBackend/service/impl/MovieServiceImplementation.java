@@ -1,4 +1,4 @@
-package kamylo.CinemaBackend.service;
+package kamylo.CinemaBackend.service.impl;
 
 import kamylo.CinemaBackend.exception.MovieException;
 import kamylo.CinemaBackend.exception.UserException;
@@ -7,26 +7,24 @@ import kamylo.CinemaBackend.model.ShowTime;
 import kamylo.CinemaBackend.model.User;
 import kamylo.CinemaBackend.repository.MovieRepository;
 import kamylo.CinemaBackend.repository.ShowTimeRepository;
-import kamylo.CinemaBackend.repository.UserRepository;
 import kamylo.CinemaBackend.request.MovieRequest;
+import kamylo.CinemaBackend.service.MovieService;
+import kamylo.CinemaBackend.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class MovieServiceImplementation implements MovieService {
-    @Autowired
-    private MovieRepository movieRepository;
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private ShowTimeRepository showTimeRepository;
+    private final MovieRepository movieRepository;
+    private final UserService userService;
+    private final ShowTimeRepository showTimeRepository;
 
     @Override
     public Movie createMovie(MovieRequest movieRequest) throws UserException {

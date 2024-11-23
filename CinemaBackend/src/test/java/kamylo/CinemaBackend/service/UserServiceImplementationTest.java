@@ -4,6 +4,7 @@ import kamylo.CinemaBackend.config.JwtProvider;
 import kamylo.CinemaBackend.exception.UserException;
 import kamylo.CinemaBackend.model.User;
 import kamylo.CinemaBackend.repository.UserRepository;
+import kamylo.CinemaBackend.service.impl.UserServiceImplementation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -10,6 +10,7 @@ import kamylo.CinemaBackend.model.Movie;
 import kamylo.CinemaBackend.model.ShowTime;
 import kamylo.CinemaBackend.response.ApiResponse;
 import kamylo.CinemaBackend.service.ShowTimeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/showTimes")
 public class ShowTimeController {
-    @Autowired
-    private ShowTimeService showTimeService;
+
+    private final ShowTimeService showTimeService;
 
     @GetMapping("/{showTimeId}")
     public ResponseEntity<?> getShowTimeHandler(@PathVariable Integer showTimeId) {

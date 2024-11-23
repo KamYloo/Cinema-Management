@@ -1,4 +1,4 @@
-package kamylo.CinemaBackend.service;
+package kamylo.CinemaBackend.service.impl;
 
 import kamylo.CinemaBackend.exception.MovieException;
 import kamylo.CinemaBackend.exception.ShowTimeException;
@@ -6,19 +6,21 @@ import kamylo.CinemaBackend.model.Seat;
 import kamylo.CinemaBackend.model.ShowTime;
 import kamylo.CinemaBackend.repository.SeatRepository;
 import kamylo.CinemaBackend.repository.ShowTimeRepository;
+import kamylo.CinemaBackend.service.ShowTimeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
-public class ShowTimeServiceImplementation implements ShowTimeService {
-    @Autowired
-    private ShowTimeRepository showTimeRepository;
 
-    @Autowired
-    private SeatRepository seatRepository;
+@Service
+@RequiredArgsConstructor
+public class ShowTimeServiceImplementation implements ShowTimeService {
+
+    private final ShowTimeRepository showTimeRepository;
+    private final SeatRepository seatRepository;
 
     @Override
     public ShowTime getShowTime(Integer showTimeId) throws ShowTimeException {

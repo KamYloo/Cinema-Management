@@ -1,18 +1,21 @@
-package kamylo.CinemaBackend.service;
+package kamylo.CinemaBackend.service.impl;
 
 import kamylo.CinemaBackend.exception.SeatException;
 import kamylo.CinemaBackend.exception.ShowTimeException;
 import kamylo.CinemaBackend.model.Seat;
 import kamylo.CinemaBackend.repository.SeatRepository;
+import kamylo.CinemaBackend.service.SeatService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class SeatServiceImplementation implements SeatService{
-    @Autowired
-    private SeatRepository seatRepository;
+@RequiredArgsConstructor
+public class SeatServiceImplementation implements SeatService {
+
+    private final SeatRepository seatRepository;
 
     @Override
     public List<Seat> getAvailableSeatsByShowTimeId(Integer showTimeId) throws ShowTimeException {

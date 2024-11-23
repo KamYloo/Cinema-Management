@@ -5,6 +5,7 @@ import kamylo.CinemaBackend.dto.mapper.UserDtoMapper;
 import kamylo.CinemaBackend.exception.UserException;
 import kamylo.CinemaBackend.model.User;
 import kamylo.CinemaBackend.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +14,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
 
     @GetMapping("/profile")
     public ResponseEntity<UserDto> getUserProfileHandler(@RequestHeader("Authorization") String token) throws UserException {
