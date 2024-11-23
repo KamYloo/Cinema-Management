@@ -1,4 +1,4 @@
-import {apiRequest} from "../../config/api.js";
+import {apiRequest} from "../api.js";
 import {
     DELETE_RESERVATION_ERROR,
     DELETE_RESERVATION_REQUEST,

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom'
 import "../../styles/home.css";
-import backImg from "../../images/homeImg.png";
+import backImg from "../../assets/homeImg.png";
 
 function Home({ setActiveTab }) {
 

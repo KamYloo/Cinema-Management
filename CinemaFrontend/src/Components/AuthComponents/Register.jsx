@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react'
-import logo from '../../images/logo.png'
+import logo from '../../assets/logo.png'
 import {FaUser, FaLock, FaEnvelope, FaMusic} from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import '../../Styles/Login&Register.css'
 import { Link, useNavigate } from 'react-router-dom'
 import {useDispatch, useSelector} from "react-redux";
 import {currentUser, register} from "../../Redux/Auth/Action.js";
+import toast from "react-hot-toast";
 
 
 function Register() {
@@ -40,21 +41,19 @@ function Register() {
         e.preventDefault();
         const formErrors = validate();
         if (Object.keys(formErrors).length === 0) {
-            dispatch(register(inputData));
+            dispatch(register(inputData))
+                .then(() => {
+                    navigate("/login");
+                    toast.success("You have registered successfully.");
+                })
+                .catch(() => {
+                    toast.error("Failed to register. Please try again.");
+                })
         } else {
             setErrors(formErrors);
         }
     };
 
-    useEffect(() => {
-        if (token) dispatch(currentUser(token));
-    }, [token, dispatch]);
-
-    useEffect(() => {
-        if (auth.reqUser?.fullName) {
-            navigate("/login");
-        }
-    }, [auth.reqUser, navigate]);
 
     return (
         <div className='login r'>

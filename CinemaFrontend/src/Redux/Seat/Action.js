@@ -1,4 +1,4 @@
-import {apiRequest} from "../../config/api.js";
+import {apiRequest} from "../api.js";
 import {GET_SEATS_LIST_ERROR, GET_SEATS_LIST_REQUEST} from "./ActionType.js";
 
 

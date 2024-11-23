@@ -1,7 +1,7 @@
 import './App.css'
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import {NavigateComponent} from "./Components/NavigateComponent.jsx";
+import {Navbar} from "./Components/Navbar.jsx";
 import {Home} from "./Components/HomeComponents/Home.jsx";
 import {MoviesView} from "./Components/MoviesComponents/MoviesView.jsx";
 import {Login} from "./Components/AuthComponents/Login.jsx";
@@ -12,6 +12,7 @@ import {currentUser} from "./Redux/Auth/Action.js";
 import {MovieDetail} from "./Components/MoviesComponents/MovieDetail.jsx";
 import {SeatsView} from "./Components/SeatsComponents/SeatsView.jsx";
 import {ReservationsView} from "./Components/ReservationComponents/ReservationsView.jsx";
+import {Toaster} from "react-hot-toast";
 
 
 function App() {
@@ -26,7 +27,7 @@ function App() {
 
         return (
             <div className='App'>
-                <NavigateComponent activeTab={activeTab} setActiveTab={setActiveTab}/>
+                <Navbar activeTab={activeTab} setActiveTab={setActiveTab}/>
                 <Component setActiveTab={setActiveTab}/>
             </div>
         )
@@ -74,6 +75,10 @@ function App() {
 
               <Route path="/" element={<Navigate to="/home" />} />
           </Routes>
+          <Toaster
+              position="bottom-right"
+              reverseOrder={false}
+          />
       </Router>
   )
 }

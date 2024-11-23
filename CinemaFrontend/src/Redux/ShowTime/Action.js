@@ -4,7 +4,7 @@ import {
     GET_SHOW_TIMES_BY_MOVIE_ID_ERROR,
     GET_SHOW_TIMES_BY_MOVIE_ID_REQUEST
 } from "./ActionType.js";
-import {apiRequest} from "../../config/api.js";
+import {apiRequest} from "../api.js";
 
 export const getShowTimes = (movieId) => async (dispatch) => {
     await apiRequest({

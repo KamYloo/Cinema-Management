@@ -5,7 +5,7 @@ import {
     GET_ALL_MOVIES_REQUEST, GET_MOVIE_ERROR,
     GET_MOVIE_REQUEST
 } from "./ActionType.js";
-import {apiRequest} from "../../config/api.js";
+import {apiRequest} from "../api.js";
 
 export const createMovie = (data) => async (dispatch) => {
 

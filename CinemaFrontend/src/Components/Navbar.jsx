@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import "../styles/navigate.css";
-import Logo from "../images/logo.png";
+import Logo from "../assets/logo.png";
 import { AiOutlineMenuFold } from "react-icons/ai";
 import { MdCancel } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 import {logoutAction} from "../Redux/Auth/Action.js";
+import toast from "react-hot-toast";
 
-function NavigateComponent({ activeTab, setActiveTab }) {
+function Navbar({ activeTab, setActiveTab }) {
   const [isPanelVisible, setPanelVisible] = useState(false);
   const [menu, setMenu] = useState(false)
   const {auth} = useSelector(store => store);
@@ -17,8 +18,16 @@ function NavigateComponent({ activeTab, setActiveTab }) {
 
   const handleLogout = () => {
     dispatch(logoutAction())
-    navigate('/login')
-    setMenu(null)
+        .then(() => {
+          navigate("/login");
+          toast.success('Logged out successfully');
+        })
+        .catch(() => {
+          toast.error("Failed to logout. Please try again.");
+        })
+        .finally(()=> {
+          setMenu(null)
+        })
   }
 
   useEffect(() => {
@@ -46,7 +55,7 @@ function NavigateComponent({ activeTab, setActiveTab }) {
         <i className="iMenu" onClick={togglePanel}>
           {isPanelVisible ? <MdCancel/> : <AiOutlineMenuFold/>}
         </i>
-        <div className="logo">
+        <div className="logo" onClick={() =>  navigate('/home')}>
           <img src={Logo} alt=""/>
           <p>CineFlex</p>
         </div>
@@ -71,7 +80,7 @@ function NavigateComponent({ activeTab, setActiveTab }) {
           </nav>
           <div className="profileBox">
           <i className="userIcon"><FaUserCircle /></i>
-            {!auth.reqUser ? (
+            {!localStorage.getItem("token") ? (
                 <p style={{ cursor: 'pointer' }} onClick={() => navigate('/login')}>Login</p>
             ) : (
                 <>
@@ -98,4 +107,4 @@ function NavigateComponent({ activeTab, setActiveTab }) {
   );
 }
 
-export {NavigateComponent};
+export {Navbar};

@@ -6,6 +6,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {createMovie} from "../../Redux/Movie/Action.js";
 import {format} from "date-fns";
+import toast from "react-hot-toast";
 
 function AddMovie() {
     const [title, setTitle] = useState('')
@@ -45,13 +46,22 @@ function AddMovie() {
     const addMovieHandler = (e) => {
         e.preventDefault();
         dispatch(createMovie({title:title,description:description,image:movieImg,genre:genre,duration:duration,showTimes:dateList}))
-        setMovieImg('');
-        setDuration(0);
-        setTitle('');
-        setGenre('');
-        setShowtimes([]);
-        setDateList([]);
-        setDescription('');
+            .then(() => {
+                navigate("/movies");
+                toast.success('Movie added successfully');
+            })
+            .catch(() => {
+                toast.error("Failed to add movie. Please try again.");
+            })
+            .finally(()=> {
+                setMovieImg('');
+                setDuration(0);
+                setTitle('');
+                setGenre('');
+                setShowtimes([]);
+                setDateList([]);
+                setDescription('');
+            })
     }
 
 
@@ -64,20 +74,20 @@ function AddMovie() {
                 <form onSubmit={addMovieHandler}>
                     <div className="editShortText">
                         <h4>(Url) Image</h4>
-                        <input type="text" value={movieImg || ''} onChange={(e) => setMovieImg(e.target.value)}></input>
+                        <input type="text" value={movieImg || ''} onChange={(e) => setMovieImg(e.target.value)} required></input>
                     </div>
                     <div className="editShortText">
                         <h4>Title</h4>
-                        <input type="text" value={title || ''} onChange={(e) => setTitle(e.target.value)}></input>
+                        <input type="text" value={title || ''} onChange={(e) => setTitle(e.target.value)} required></input>
                     </div>
                     <div className="editLongText">
                         <h4>Description</h4>
-                        <textarea value={description || ''} onChange={(e) => setDescription(e.target.value)}></textarea>
+                        <textarea value={description || ''} onChange={(e) => setDescription(e.target.value)} required></textarea>
                     </div>
                     <div className="double">
                     <div className="editShortText">
                         <h4>Duration</h4>
-                        <input type="number" value={duration} onChange={(e) => setDuration(e.target.value)}></input>
+                        <input type="number" value={duration} onChange={(e) => setDuration(e.target.value)} required></input>
                     </div>
                     <div className="editShortText">
                         <h4>Genre</h4>

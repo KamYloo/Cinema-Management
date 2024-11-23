@@ -13,10 +13,8 @@ export const apiRequest = async ({ url, method, data, dispatch, successType, err
         });
 
         const result = await response.json();
-        console.log(successType, result);
         dispatch({ type: successType, payload: result });
     } catch (error) {
-        console.log('API request error', error);
         dispatch({ type: errorType, payload: error.message });
     }
 };
