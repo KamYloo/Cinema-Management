@@ -3,11 +3,10 @@ import {
     REGISTER,
     LOGIN,
     REQUEST_USER,
-    UPDATE_USER,
     LOGOUT,
 } from "./ActionType"
 
-export const register = (data) => async (dispatch) => {
+export const registerAction = (data) => async (dispatch) => {
     try {
         const res = await fetch(`${BASE_API_URL}/auth/register`, {
             method: "POST",
@@ -25,7 +24,7 @@ export const register = (data) => async (dispatch) => {
 }
 
 
-export const login = (data) => async (dispatch) => {
+export const loginAction = (data) => async (dispatch) => {
     try {
         const res = await fetch(`${BASE_API_URL}/auth/login`, {
             method: "POST",
@@ -44,7 +43,7 @@ export const login = (data) => async (dispatch) => {
     }
 }
 
-export const currentUser = () => async (dispatch) => {
+export const currentUserAction = () => async (dispatch) => {
     try {
         const res = await fetch(`${BASE_API_URL}/api/users/profile`, {
             method: "GET",

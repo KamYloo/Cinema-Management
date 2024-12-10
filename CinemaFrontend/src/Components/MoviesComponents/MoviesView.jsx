@@ -4,7 +4,7 @@ import { BiSearchAlt } from "react-icons/bi";
 import { FaCirclePlay } from "react-icons/fa6";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {getAllMovies} from "../../Redux/Movie/Action.js";
+import {getAllMoviesAction} from "../../Redux/MovieService/Action.js";
 
 function MoviesView() {
     const [searchQuery, setSearchQuery] = useState('');
@@ -18,7 +18,7 @@ function MoviesView() {
     );
 
     useEffect(() => {
-        dispatch(getAllMovies())
+        dispatch(getAllMoviesAction())
     }, [dispatch])
 
     return (

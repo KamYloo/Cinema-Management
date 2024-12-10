@@ -6,7 +6,7 @@ import Logo from "../assets/logo.png";
 import { AiOutlineMenuFold } from "react-icons/ai";
 import { MdCancel } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
-import {logoutAction} from "../Redux/Auth/Action.js";
+import {logoutAction} from "../Redux/AuthService/Action.js";
 import toast from "react-hot-toast";
 
 function Navbar({ activeTab, setActiveTab }) {

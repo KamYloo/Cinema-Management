@@ -1,10 +1,10 @@
 import { applyMiddleware, combineReducers, legacy_createStore } from "redux"
 import { thunk } from "redux-thunk"
-import {authReducer} from "./Auth/Reducer.js";
-import {movieReducer} from "./Movie/Reducer.js";
-import {showTimeReducer} from "./ShowTime/Reducer.js";
-import {seatReducer} from "./Seat/Reducer.js";
-import {reservationReducer} from "./Reservation/Reducer.js";
+import {authReducer} from "./AuthService/Reducer.js";
+import {movieReducer} from "./MovieService/Reducer.js";
+import {showTimeReducer} from "./ShowTimeService/Reducer.js";
+import {seatReducer} from "./SeatService/Reducer.js";
+import {reservationReducer} from "./ReservationService/Reducer.js";
 
 
 

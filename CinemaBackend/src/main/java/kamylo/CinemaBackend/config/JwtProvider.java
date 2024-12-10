@@ -48,8 +48,7 @@ public class JwtProvider {
                     .build()
                     .parseClaimsJws(jwt)
                     .getBody();
-            String email = String.valueOf(claims.get("email"));
-            return email;
+            return String.valueOf(claims.get("email"));
         } catch (Exception e) {
             e.printStackTrace();
             return null;

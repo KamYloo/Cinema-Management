@@ -1,11 +1,16 @@
 services:
-
-  db:
-    image: postgres
-    restart: always
+  postgres:
+    image: 'postgres:latest'
     environment:
-      POSTGRES_DB: cinemaData
-      POSTGRES_PASSWORD: netlab12
-      POSTGRES_USER: postgres
+      - 'POSTGRES_DB=cinemaData'
+      - 'POSTGRES_PASSWORD=netlab'
+      - 'POSTGRES_USER=postgres'
+    container_name: 'cinemaDatabase'
     ports:
       - '5432:5432'
+    networks:
+      - cinema-network
+
+networks:
+  cinema-network:
+    driver: bridge

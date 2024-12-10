@@ -8,11 +8,13 @@ import kamylo.CinemaBackend.model.User;
 import kamylo.CinemaBackend.repository.MovieRepository;
 import kamylo.CinemaBackend.repository.ShowTimeRepository;
 import kamylo.CinemaBackend.request.MovieRequest;
+import kamylo.CinemaBackend.service.FileStorageService;
 import kamylo.CinemaBackend.service.MovieService;
 import kamylo.CinemaBackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,7 @@ public class MovieServiceImplementation implements MovieService {
     private final MovieRepository movieRepository;
     private final UserService userService;
     private final ShowTimeRepository showTimeRepository;
+    private final FileStorageService fileStorageService;
 
     @Override
     public Movie createMovie(MovieRequest movieRequest) throws UserException {
@@ -69,6 +72,11 @@ public class MovieServiceImplementation implements MovieService {
     }
 
     @Override
+    public String addMoviePicture(MultipartFile file) {
+        return fileStorageService.saveFile(file);
+    }
+
+    @Override
     public void deleteMovie(Integer movieId, Integer userId) throws MovieException, UserException {
         Movie movie = getMovie(movieId);
         if (movie == null) {
@@ -78,5 +86,6 @@ public class MovieServiceImplementation implements MovieService {
             throw new UserException("User is not ADMIN");
         }
         movieRepository.deleteById(movieId);
+        fileStorageService.deleteFile(movie.getImage());
     }
 }

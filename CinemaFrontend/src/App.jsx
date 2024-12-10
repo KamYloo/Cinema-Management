@@ -8,7 +8,7 @@ import {Login} from "./Components/AuthComponents/Login.jsx";
 import {Register} from "./Components/AuthComponents/Register.jsx";
 import {AddMovie} from "./Components/MoviesComponents/AddMovie.jsx";
 import {useDispatch} from "react-redux";
-import {currentUser} from "./Redux/Auth/Action.js";
+import {currentUserAction} from "./Redux/AuthService/Action.js";
 import {MovieDetail} from "./Components/MoviesComponents/MovieDetail.jsx";
 import {SeatsView} from "./Components/SeatsComponents/SeatsView.jsx";
 import {ReservationsView} from "./Components/ReservationComponents/ReservationsView.jsx";
@@ -20,7 +20,7 @@ function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(currentUser())
+        dispatch(currentUserAction())
     }, [dispatch])
 
     const renderLayout = (Component) => {
@@ -37,13 +37,13 @@ function App() {
       <Router>
           <Routes>
 
-              <Route path="/login" element={
+              <Route path="/loginAction" element={
                   <div className='loginLayout'><Login />
                       <div className="background"></div>
                   </div>}
               />
 
-              <Route path="/register" element={
+              <Route path="/registerAction" element={
                   <div className="loginLayout"><Register />
                       <div className="background"></div>
                   </div>

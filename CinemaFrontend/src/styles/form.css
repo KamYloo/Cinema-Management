@@ -65,6 +65,55 @@
             gap: 22.5vh;
         }
 
+        .editPic{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            border-radius: 10px;
+            background: rgba(54, 54, 54, 0.644);
+
+            .left {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+
+                img {
+                    width: 140px;
+                    height: 70px;
+                    background: rgb(29, 29, 31);
+                    border-radius: 10px;
+                    object-fit: cover;
+                }
+
+                .trackImg {
+                    width: 70px;
+                }
+
+                .postImg {
+                    width: 240px;
+                    height: 150px;
+                }
+
+                span {
+                    font-size: 12px;
+                    font-weight: bold;
+                    color: white;
+                    max-width: 20vh;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+
+                }
+            }
+
+            .right {
+                input {
+                    display: none;
+                }
+            }
+        }
+
         .editLongText, .editShortText {
             width: 100%;
             display: flex;

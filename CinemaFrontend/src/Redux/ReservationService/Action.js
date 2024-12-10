@@ -8,7 +8,7 @@ import {
     MAKE_RESERVATION_REQUEST
 } from "./ActionType.js";
 
-export const makeReservation = (data) => async (dispatch) => {
+export const makeReservationAction = (data) => async (dispatch) => {
 
     await apiRequest({
         url: `/api/reservations/create`,
@@ -20,7 +20,7 @@ export const makeReservation = (data) => async (dispatch) => {
     });
 }
 
-export const getReservationsByUser = (userId) => async (dispatch) => {
+export const getReservationsByUserAction = (userId) => async (dispatch) => {
     await apiRequest({
         url: `/api/reservations/user/${userId}`,
         method: 'GET',
@@ -30,7 +30,7 @@ export const getReservationsByUser = (userId) => async (dispatch) => {
     });
 };
 
-export const deleteReservation = (reservationId) => async (dispatch) => {
+export const deleteReservationAction = (reservationId) => async (dispatch) => {
     await apiRequest({
         url: `/api/reservations/delete/${reservationId}`,
         method: 'DELETE',

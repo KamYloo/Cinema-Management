@@ -62,6 +62,32 @@
                     height: 10vh;
                 }
 
+                .data-x {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+
+                    .deleteButton {
+                        background-color: #ff4d4f;
+                        color: white;
+                        border: none;
+                        border-radius: 5px;
+                        padding: 10px 15px;
+                        cursor: pointer;
+                        font-size: 14px;
+                        transition: background-color 0.3s ease;
+                    }
+
+                    .deleteButton:hover {
+                        background-color: #ff7875;
+                    }
+
+                    .deleteButton:focus {
+                        outline: none;
+                        box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.5);
+                    }
+                }
+
                 p {
                     height: 4vh;
                     font-size: 20px;

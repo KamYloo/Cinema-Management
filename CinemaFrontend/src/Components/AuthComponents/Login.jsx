@@ -4,7 +4,7 @@ import { FaUser, FaLock } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import '../../Styles/Login&Register.css'
 import { Link, useNavigate } from 'react-router-dom'
-import {currentUser, login} from "../../Redux/Auth/Action.js";
+import {currentUserAction, loginAction} from "../../Redux/AuthService/Action.js";
 import {useDispatch, useSelector} from "react-redux";
 import toast from "react-hot-toast";
 
@@ -34,13 +34,13 @@ function Login() {
         e.preventDefault();
         const formErrors = validate();
         if (Object.keys(formErrors).length === 0) {
-            dispatch(login(inputData))
+            dispatch(loginAction(inputData))
                 .then(() => {
                     navigate("/home");
                     toast.success("You have logged in successfully.");
                 })
                 .catch(() => {
-                    toast.error("Failed to login. Please try again.");
+                    toast.error("Failed to loginAction. Please try again.");
                 })
         } else {
             setErrors(formErrors);
@@ -49,7 +49,7 @@ function Login() {
 
     useEffect(() => {
         if (token)
-            dispatch(currentUser(token));
+            dispatch(currentUserAction(token));
     }, [dispatch, token]);
 
     return (

@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import logo from '../../assets/logo.png'
-import {FaUser, FaLock, FaEnvelope, FaMusic} from "react-icons/fa";
+import {FaUser, FaLock, FaEnvelope} from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import '../../Styles/Login&Register.css'
 import { Link, useNavigate } from 'react-router-dom'
 import {useDispatch, useSelector} from "react-redux";
-import {currentUser, register} from "../../Redux/Auth/Action.js";
+import {registerAction} from "../../Redux/AuthService/Action.js";
 import toast from "react-hot-toast";
 
 
@@ -14,8 +14,6 @@ function Register() {
         fullName: "", email: "", password: "", confirmPassword: "", role: "User", artistName: ""
     });
     const [errors, setErrors] = useState({});
-    const {auth} = useSelector(store => store);
-    const token = localStorage.getItem('token');
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -41,13 +39,13 @@ function Register() {
         e.preventDefault();
         const formErrors = validate();
         if (Object.keys(formErrors).length === 0) {
-            dispatch(register(inputData))
+            dispatch(registerAction(inputData))
                 .then(() => {
                     navigate("/login");
                     toast.success("You have registered successfully.");
                 })
                 .catch(() => {
-                    toast.error("Failed to register. Please try again.");
+                    toast.error("Failed to registerAction. Please try again.");
                 })
         } else {
             setErrors(formErrors);

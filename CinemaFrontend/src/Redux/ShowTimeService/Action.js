@@ -6,7 +6,7 @@ import {
 } from "./ActionType.js";
 import {apiRequest} from "../api.js";
 
-export const getShowTimes = (movieId) => async (dispatch) => {
+export const getShowTimesAction = (movieId) => async (dispatch) => {
     await apiRequest({
         url: `/api/showTimes/movie/${movieId}`,
         method: 'GET',
@@ -17,7 +17,7 @@ export const getShowTimes = (movieId) => async (dispatch) => {
 };
 
 
-export const getShowTime = (showTimeId) => async (dispatch) => {
+export const getShowTimeAction = (showTimeId) => async (dispatch) => {
     await apiRequest({
         url: `/api/showTimes/${showTimeId}`,
         method: 'GET',

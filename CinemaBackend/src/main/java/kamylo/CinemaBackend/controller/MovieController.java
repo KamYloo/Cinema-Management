@@ -9,16 +9,14 @@ import kamylo.CinemaBackend.model.Movie;
 import kamylo.CinemaBackend.model.User;
 import kamylo.CinemaBackend.request.MovieRequest;
 import kamylo.CinemaBackend.response.ApiResponse;
+import kamylo.CinemaBackend.service.FileStorageService;
 import kamylo.CinemaBackend.service.MovieService;
 import kamylo.CinemaBackend.service.UserService;
-import kamylo.CinemaBackend.util.MovieUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -72,6 +70,12 @@ public class MovieController {
         Set<Movie> movies = movieService.searchMovieByTitle(title);
         Set<MovieDto> movieDtos = MovieDtoMapper.toMovieDtoSet(movies);
         return new ResponseEntity<>(movieDtos, HttpStatus.OK);
+    }
+
+    @PostMapping("/uploadImage")
+    public ResponseEntity<String> saveImage(@RequestParam("file") MultipartFile file) {
+        String imagePath = movieService.addMoviePicture(file);
+        return new ResponseEntity<>(imagePath, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{movieId}")

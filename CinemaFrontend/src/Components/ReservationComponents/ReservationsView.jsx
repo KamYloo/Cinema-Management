@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {useParams} from 'react-router-dom'
 import "../../styles/reservations.css";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteReservation, getReservationsByUser} from "../../Redux/Reservation/Action.js";
+import {deleteReservationAction, getReservationsByUserAction} from "../../Redux/ReservationService/Action.js";
 import {convertShowtime} from "../../utils/formatDate.js";
 
 function ReservationsView() {
@@ -13,14 +13,14 @@ function ReservationsView() {
     const {reservation} = useSelector(store => store);
 
     const deleteReservationHandler = (reservationId) => {
-        const confirmDelete = window.confirm('Are you sure you want to delete this Reservation?');
+        const confirmDelete = window.confirm('Are you sure you want to delete this ReservationService?');
         if (confirmDelete) {
-            dispatch(deleteReservation(reservationId));
+            dispatch(deleteReservationAction(reservationId));
         }
     };
 
     useEffect(() => {
-        dispatch(getReservationsByUser(userId))
+        dispatch(getReservationsByUserAction(userId))
     }, [dispatch, userId, reservation.makeReservation, reservation.deletedReservation]);
 
     return (

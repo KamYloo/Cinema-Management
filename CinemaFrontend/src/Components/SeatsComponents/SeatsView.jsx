@@ -3,9 +3,9 @@ import {useParams} from 'react-router-dom'
 import "../../styles/seats.css";
 import { PiArmchairBold } from "react-icons/pi";
 import {useDispatch, useSelector} from "react-redux";
-import {getShowTime} from "../../Redux/ShowTime/Action.js";
-import {getSeats} from "../../Redux/Seat/Action.js";
-import {makeReservation} from "../../Redux/Reservation/Action.js";
+import {getShowTimeAction} from "../../Redux/ShowTimeService/Action.js";
+import {getSeatsAction} from "../../Redux/SeatService/Action.js";
+import {makeReservationAction} from "../../Redux/ReservationService/Action.js";
 import RomanNumerals from 'roman-numerals';
 import {convertShowtime} from "../../utils/formatDate.js";
 
@@ -37,14 +37,14 @@ function SeatsView() {
     const makeReservationHandler = (e) => {
         e.preventDefault();
         if (selectedSeat) {
-            dispatch(makeReservation({seatId:selectedSeat.id}))
+            dispatch(makeReservationAction({seatId:selectedSeat.id}))
             setSelectedSeat(null);
         }
     }
 
     useEffect(() => {
-        dispatch(getShowTime(showTimeId))
-        dispatch(getSeats(showTimeId))
+        dispatch(getShowTimeAction(showTimeId))
+        dispatch(getSeatsAction(showTimeId))
     }, [dispatch, showTimeId, reservation.makeReservation]);
 
 
