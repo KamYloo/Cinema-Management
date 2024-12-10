@@ -14,6 +14,7 @@ import kamylo.CinemaBackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -76,6 +77,7 @@ public class MovieServiceImplementation implements MovieService {
         return fileStorageService.saveFile(file);
     }
 
+    @Transactional
     @Override
     public void deleteMovie(Integer movieId, Integer userId) throws MovieException, UserException {
         Movie movie = getMovie(movieId);

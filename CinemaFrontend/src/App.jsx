@@ -37,13 +37,13 @@ function App() {
       <Router>
           <Routes>
 
-              <Route path="/loginAction" element={
+              <Route path="/login" element={
                   <div className='loginLayout'><Login />
                       <div className="background"></div>
                   </div>}
               />
 
-              <Route path="/registerAction" element={
+              <Route path="/register" element={
                   <div className="loginLayout"><Register />
                       <div className="background"></div>
                   </div>

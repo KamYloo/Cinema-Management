@@ -1,4 +1,4 @@
-import {apiRequest} from "../api.js";
+import {dispatchAction} from "../api.js";
 import {
     DELETE_RESERVATION_ERROR,
     DELETE_RESERVATION_REQUEST,
@@ -9,33 +9,21 @@ import {
 } from "./ActionType.js";
 
 export const makeReservationAction = (data) => async (dispatch) => {
-
-    await apiRequest({
-        url: `/api/reservations/create`,
+    await dispatchAction(dispatch, MAKE_RESERVATION_REQUEST, MAKE_RESERVATION_ERROR, '/api/reservations/create', {
         method: 'POST',
-        data,
-        dispatch,
-        successType: MAKE_RESERVATION_REQUEST,
-        errorType: MAKE_RESERVATION_ERROR,
+        body: JSON.stringify(data),
     });
 }
 
 export const getReservationsByUserAction = (userId) => async (dispatch) => {
-    await apiRequest({
-        url: `/api/reservations/user/${userId}`,
+    await dispatchAction(dispatch, GET_USER_RESERVATIONS_REQUEST, GET_USER_RESERVATIONS_ERROR, `/api/reservations/user/${userId}`, {
         method: 'GET',
-        dispatch,
-        successType: GET_USER_RESERVATIONS_REQUEST,
-        errorType: GET_USER_RESERVATIONS_ERROR,
     });
 };
 
 export const deleteReservationAction = (reservationId) => async (dispatch) => {
-    await apiRequest({
-        url: `/api/reservations/delete/${reservationId}`,
+    await dispatchAction(dispatch, DELETE_RESERVATION_REQUEST, DELETE_RESERVATION_ERROR, `/api/reservations/delete/${reservationId}`, {
         method: 'DELETE',
-        dispatch,
-        successType: DELETE_RESERVATION_REQUEST,
-        errorType: DELETE_RESERVATION_ERROR,
     });
+
 };
