@@ -2,10 +2,10 @@ package kamylo.CinemaBackend.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.ToString;
 
 @Entity
 @Data
+@Table(name = "seat")
 public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,6 +16,6 @@ public class Seat {
     private boolean isReserved;
 
     @ManyToOne
-    @ToString.Exclude
+    @JoinColumn(name = "showTime_id", nullable = false)
     private ShowTime showTime;
 }

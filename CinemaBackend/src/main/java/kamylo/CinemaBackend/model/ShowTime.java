@@ -1,10 +1,8 @@
 package kamylo.CinemaBackend.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Data
+@Table(name = "showTime")
 public class ShowTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,12 +20,10 @@ public class ShowTime {
     private LocalDateTime time;
 
     @ManyToOne
-    @ToString.Exclude
+    @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "showTime", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @ToString.Exclude
+    @OneToMany(mappedBy = "showTime", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Seat> seats = new ArrayList<>();
 
 }
