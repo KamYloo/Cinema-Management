@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 function Navbar({ activeTab, setActiveTab }) {
   const [isPanelVisible, setPanelVisible] = useState(false);
   const [menu, setMenu] = useState(false)
-  const {auth} = useSelector(store => store);
+  const auth = useSelector(store => store.auth);
   const dispatch = useDispatch()
   const navigate = useNavigate()
 

@@ -30,6 +30,7 @@ public class MovieServiceImplementation implements MovieService {
     private final ShowTimeRepository showTimeRepository;
     private final FileStorageService fileStorageService;
 
+    @Transactional
     @Override
     public Movie createMovie(MovieRequest movieRequest) throws UserException {
         User user = userService.findUserById(movieRequest.getUser().getId());

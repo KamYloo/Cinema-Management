@@ -9,11 +9,12 @@ import kamylo.CinemaBackend.model.User;
 import kamylo.CinemaBackend.repository.ReservationRepository;
 import kamylo.CinemaBackend.repository.SeatRepository;
 import kamylo.CinemaBackend.service.ReservationService;
+import kamylo.CinemaBackend.service.SeatAvailabilityPublisher;
 import kamylo.CinemaBackend.service.SeatService;
 import kamylo.CinemaBackend.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +26,10 @@ public class ReservationServiceImplementation implements ReservationService {
     private final SeatService seatService;
     private final UserService userService;
     private final SeatRepository seatRepository;
+    private final SeatAvailabilityPublisher seatAvailabilityPublisher;
 
     @Override
+    @Transactional
     public Reservation createReservation(Integer seatId, User user) throws SeatException {
         Seat seat = seatService.getSeat(seatId);
         if (seat.isReserved()) {
@@ -39,7 +42,9 @@ public class ReservationServiceImplementation implements ReservationService {
             reservation.setShowtime(seat.getShowTime());
             seat.setReserved(true);
             seatRepository.save(seat);
-            return reservationRepository.save(reservation);
+            Reservation savedReservation = reservationRepository.save(reservation);
+            seatAvailabilityPublisher.publishSeatUpdate(seat, savedReservation, "RESERVED");
+            return savedReservation;
         }
     }
 
@@ -56,6 +61,7 @@ public class ReservationServiceImplementation implements ReservationService {
     }
 
     @Override
+    @Transactional
     public void deleteReservationById(Integer reservationId, Integer userId) throws ReservationException ,SeatException, UserException {
         Reservation reservation = getReservationById(reservationId);
         if (reservation == null) {
@@ -68,5 +74,6 @@ public class ReservationServiceImplementation implements ReservationService {
         seat.setReserved(false);
         seatRepository.save(seat);
         reservationRepository.deleteById(reservationId);
+        seatAvailabilityPublisher.publishSeatUpdate(seat, reservation, "RELEASED");
     }
 }

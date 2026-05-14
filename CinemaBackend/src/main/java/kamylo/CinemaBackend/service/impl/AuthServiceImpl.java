@@ -27,7 +27,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse registerUser(UserRequest userRequest) throws AuthException {
-        String role = userRequest.getRole().trim().toLowerCase();  // Normalize role input
+        String role = userRequest.getRole().trim().toLowerCase();
         User isEmailExist = userRepository.findByEmail(userRequest.getEmail());
 
         if (isEmailExist != null) {

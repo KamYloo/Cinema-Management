@@ -1,11 +1,16 @@
-export const BASE_API_URL = "http://localhost:8080"
+export const BASE_API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8080"
+export const BASE_WS_URL = import.meta.env.VITE_WS_URL ?? "ws://localhost:8080/ws"
 
 const fetchWithAuth = async (url, options = {}, errorType) => {
+    const token = localStorage.getItem('token');
     const headers = {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
         ...(options.body instanceof FormData ? {} : { 'Content-Type': 'application/json' }),
         ...options.headers,
     };
+
+    if (token && token !== 'null' && token !== 'undefined') {
+        headers.Authorization = `Bearer ${token}`;
+    }
 
     try {
         const response = await fetch(`${BASE_API_URL}${url}`, { ...options, headers });

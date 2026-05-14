@@ -8,5 +8,4 @@ public class SeatDto {
     private int rowNumber;
     private int seatNumber;
     private boolean isReserved;
-//    private ShowTimeDto showTime;
 }

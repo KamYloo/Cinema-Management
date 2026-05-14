@@ -13,7 +13,8 @@ function MovieDetail() {
     const {movieId} = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const {movie, showTime} = useSelector(store => store);
+    const movie = useSelector(store => store.movie);
+    const showTime = useSelector(store => store.showTime);
 
     useEffect(() => {
         dispatch(getMovieAction(movieId));

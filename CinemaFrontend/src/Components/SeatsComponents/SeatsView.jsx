@@ -8,12 +8,17 @@ import {getSeatsAction} from "../../Redux/SeatService/Action.js";
 import {makeReservationAction} from "../../Redux/ReservationService/Action.js";
 import RomanNumerals from 'roman-numerals';
 import {convertShowtime} from "../../utils/formatDate.js";
+import toast from "react-hot-toast";
+import {Client} from "@stomp/stompjs";
+import {BASE_WS_URL} from "../../Redux/api.js";
 
 function SeatsView() {
 
     const {showTimeId} = useParams();
     const dispatch = useDispatch();
-    const {showTime, seat, reservation} = useSelector(store => store);
+    const showTime = useSelector(store => store.showTime);
+    const seat = useSelector(store => store.seat);
+    const reservation = useSelector(store => store.reservation);
     const [selectedSeat, setSelectedSeat] = useState(null);
 
     const rows = seat.seats.reduce((acc, seat) => {
@@ -34,13 +39,61 @@ function SeatsView() {
         }
     };
 
-    const makeReservationHandler = (e) => {
+    const makeReservationHandler = async (e) => {
         e.preventDefault();
         if (selectedSeat) {
-            dispatch(makeReservationAction({seatId:selectedSeat.id}))
-            setSelectedSeat(null);
+            try {
+                await dispatch(makeReservationAction({seatId:selectedSeat.id}))
+                setSelectedSeat(null);
+            } catch (error) {
+                toast.error(error.message || "Nie udało się zarezerwować miejsca.");
+            }
         }
     }
+
+    useEffect(() => {
+        if (!showTimeId) {
+            return;
+        }
+
+        const client = new Client({
+            brokerURL: BASE_WS_URL,
+            reconnectDelay: 5000,
+            heartbeatIncoming: 4000,
+            heartbeatOutgoing: 4000,
+        });
+
+        client.onConnect = () => {
+            client.subscribe(`/topic/showtimes/${showTimeId}/seats`, (message) => {
+                try {
+                    const update = JSON.parse(message.body);
+
+                    dispatch(getSeatsAction(showTimeId));
+
+                    const seatLabel = `${handleConvertNumber(update.rowNumber)}-${update.seatNumber}`;
+                    if (update.action === 'RESERVED') {
+                        toast(`Miejsce ${seatLabel} zostało właśnie zajęte.`);
+                    } else if (update.action === 'RELEASED') {
+                        toast(`Miejsce ${seatLabel} jest ponownie dostępne.`);
+                    } else {
+                        toast(`Zaktualizowano dostępność miejsca ${seatLabel}.`);
+                    }
+                } catch (error) {
+                    console.error("Invalid websocket message", error);
+                }
+            });
+        };
+
+        client.onStompError = (frame) => {
+            console.error("WebSocket STOMP error", frame.headers["message"], frame.body);
+        };
+
+        client.activate();
+
+        return () => {
+            client.deactivate();
+        };
+    }, [dispatch, showTimeId]);
 
     useEffect(() => {
         dispatch(getShowTimeAction(showTimeId))

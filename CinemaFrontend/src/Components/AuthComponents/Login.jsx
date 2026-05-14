@@ -14,7 +14,7 @@ function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const {auth} = useSelector(store => store);
+    const auth = useSelector(store => store.auth);
     const token = localStorage.getItem('token');
 
     const handleChange = (e) => {
