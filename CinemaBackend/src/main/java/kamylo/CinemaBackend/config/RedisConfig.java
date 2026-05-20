@@ -33,6 +33,7 @@ public class RedisConfig {
 
     private ObjectMapper configuredObjectMapper() {
         ObjectMapper mapper = new ObjectMapper();
+
         mapper.registerModule(new JavaTimeModule());
 
         Hibernate6Module hibernateModule = new Hibernate6Module();
@@ -40,6 +41,13 @@ public class RedisConfig {
         mapper.registerModule(hibernateModule);
 
         mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+
+        mapper.activateDefaultTyping(
+                mapper.getPolymorphicTypeValidator(),
+                ObjectMapper.DefaultTyping.NON_FINAL,
+                com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY
+        );
+
         return mapper;
     }
 }
