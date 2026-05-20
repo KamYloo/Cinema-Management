@@ -41,7 +41,7 @@ public class ApplicationConfig implements WebMvcConfigurer {
             @Override
             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                 CorsConfiguration ccfg = new CorsConfiguration();
-                ccfg.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+                ccfg.setAllowedOrigins(Arrays.asList("http://localhost:5173", "https://100.100.119.110"));
                 ccfg.setAllowedMethods(Collections.singletonList("*"));
                 ccfg.setAllowCredentials(true);
                 ccfg.setAllowedHeaders(Collections.singletonList("*"));
