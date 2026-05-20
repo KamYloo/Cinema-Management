@@ -64,7 +64,6 @@ public class MovieServiceImplementation implements MovieService {
     }
 
     @Override
-    @Cacheable(key = "'all'")
     public List<Movie> getAllMovies() {
         return movieRepository.findAllByOrderByIdDesc();
     }
@@ -76,7 +75,6 @@ public class MovieServiceImplementation implements MovieService {
     }
 
     @Override
-    @Cacheable(key = "'search:' + #title.toLowerCase()")
     public List<Movie> searchMovieByTitle(String title) {
         return movieRepository.findByTitle(title);
     }

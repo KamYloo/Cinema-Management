@@ -77,7 +77,7 @@ function AddMovie() {
         let uploadedPhotoPath;
         try {
             uploadedPhotoPath = await dispatch(uploadMoviePhotoAction(formData));
-            console.log("fdssdfs"+uploadedPhotoPath);
+            console.log(uploadedPhotoPath);
         } catch (uploadError) {
             console.error("Błąd przesyłania zdjęcia:", uploadError);
             toast.error("Failed to upload the image. Please try again.");
