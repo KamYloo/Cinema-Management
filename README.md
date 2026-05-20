@@ -1,4 +1,39 @@
-# Project name: Cinema Management TextApplication
+# Project name: Cinema Management Application
+
+## Current deployment model
+
+The presentation-ready version uses 5 Docker modules:
+
+- Nginx reverse proxy with HTTPS and rate limiting
+- Spring Boot backend with authentication, REST API, WebSocket, and file proxying
+- PostgreSQL database with persistent storage
+- MinIO object storage for movie images
+- Redis for cache/session support
+
+### Network layout
+
+- `public-network`: client can reach only Nginx
+- `private-network`: backend, PostgreSQL, MinIO, and Redis stay isolated from the host
+
+### Main endpoints
+
+- `POST /auth/login`
+- `POST /auth/register`
+- `GET /api/movies`
+- `POST /api/movies/uploadImage`
+- `GET /api/files/{bucket}/{object}`
+- `GET /ws` for WebSocket/STOMP
+
+### Demo checklist for class
+
+- Show `docker compose up`
+- Open the app through HTTPS
+- Book a seat and show the WebSocket update in another browser tab
+- Repeat login requests and show the 429 rate-limit response
+- Open a movie image and confirm it is served through `/api/files/`
+- Show the network separation in Docker Compose
+
+## Legacy text-mode description
 ## Project goal:
 The application enables cinema management in text mode. Users can browse films, display available screenings, choose seats, make reservations and view the history of their transactions. Administrators have the ability to add new films, screenings.
 ## Architecture:

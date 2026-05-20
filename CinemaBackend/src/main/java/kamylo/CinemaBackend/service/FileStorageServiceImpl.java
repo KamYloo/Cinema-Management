@@ -5,7 +5,6 @@ import io.minio.PutObjectArgs;
 import io.minio.RemoveObjectArgs;
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
-import io.minio.SetBucketPolicyArgs;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,13 +21,13 @@ public class FileStorageServiceImpl implements FileStorageService {
     @Value("${minio.bucket-name:cinema-uploads}")
     private String bucketName;
 
-    @Value("${minio.endpoint}")
-    private String endpoint;
+    @Value("${application.file.cdn}")
+    private String publicCdn;
 
     @Override
     public String saveFile(MultipartFile file) {
         try {
-            ensureBucketExistsAndPublic();
+            ensureBucketExists();
 
             // Generate unique filename
             String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
@@ -44,42 +43,19 @@ public class FileStorageServiceImpl implements FileStorageService {
             );
 
             // Return URL to access the file
-            return endpoint + "/" + bucketName + "/" + fileName;
+            return publicCdn + bucketName + "/" + fileName;
 
         } catch (Exception e) {
             throw new RuntimeException("Error saving file to MinIO: " + e.getMessage(), e);
         }
     }
 
-        private void ensureBucketExistsAndPublic() throws Exception {
-                boolean exists = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
-                if (!exists) {
-                        minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
-                }
-
-                String publicReadPolicy = """
-                                {
-                                    "Version": "2012-10-17",
-                                    "Statement": [
-                                        {
-                                            "Effect": "Allow",
-                                            "Principal": {
-                                                "AWS": ["*"]
-                                            },
-                                            "Action": ["s3:GetObject"],
-                                            "Resource": ["arn:aws:s3:::%s/*"]
-                                        }
-                                    ]
-                                }
-                                """.formatted(bucketName);
-
-                minioClient.setBucketPolicy(
-                                SetBucketPolicyArgs.builder()
-                                                .bucket(bucketName)
-                                                .config(publicReadPolicy)
-                                                .build()
-                );
+    private void ensureBucketExists() throws Exception {
+        boolean exists = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
+        if (!exists) {
+            minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
         }
+    }
 
     @Override
     public void deleteFile(String fileUrl) {

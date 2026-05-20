@@ -4,78 +4,94 @@ services:
     container_name: 'cinemaReverseProxy'
     ports:
       - '80:80'
+      - '443:443'
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/nginx/certs:ro
     depends_on:
       - backend
+      - init-certs
     networks:
-      - cinema-network
+      - public-network
+      - private-network
 
   backend:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: 'cinemaBackend'
+    env_file: ../.env
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/cinemaData
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=netlab
       - SPRING_PROFILES_ACTIVE=docker
-    ports:
-      - '8080:8080'
     depends_on:
       - postgres
+      - minio
+      - redis
+      - init-certs
     networks:
-      - cinema-network
+      - private-network
 
   postgres:
     image: 'postgres:latest'
+    container_name: 'cinemaDatabase'
+    env_file: ../.env
     environment:
       - 'POSTGRES_DB=cinemaData'
       - 'POSTGRES_PASSWORD=netlab'
       - 'POSTGRES_USER=postgres'
-    container_name: 'cinemaDatabase'
-    ports:
-      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     networks:
-      - cinema-network
+      - private-network
 
   minio:
     image: 'minio/minio:latest'
     container_name: 'cinemaFileStorage'
+    env_file: ../.env
     environment:
       - MINIO_ROOT_USER=minioadmin
       - MINIO_ROOT_PASSWORD=minioadmin123
     command: minio server /data --console-address ":9001"
-    ports:
-      - '9000:9000'
-      - '9001:9001'
     volumes:
       - minio_data:/data
     networks:
-      - cinema-network
+      - private-network
 
   minio-init:
     image: minio/mc:latest
     container_name: 'cinemaFileStorageInit'
     depends_on:
       - minio
-    entrypoint: >
-      /bin/sh -c "
-      until mc alias set local http://minio:9000 minioadmin minioadmin123; do
-        echo 'Waiting for MinIO...';
-        sleep 2;
-      done;
-      mc mb -p local/cinema-uploads || true;
-      mc anonymous set download local/cinema-uploads;
-      exit 0;
-      "
+    entrypoint: /bin/sh -c "until mc alias set local http://minio:9000 minioadmin minioadmin123; do echo 'Waiting for MinIO...'; sleep 2; done; mc mb -p local/cinema-uploads || true; echo 'MinIO bucket initialized'; exit 0;"
     networks:
-      - cinema-network
+      - private-network
+  redis:
+    image: 'redis:latest'
+    container_name: 'cinemaRedis'
+    command: redis-server --requirepass redispassword
+    networks:
+      - private-network
+    volumes:
+      - redis_data:/data
+
+  init-certs:
+    image: 'alpine:latest'
+    container_name: 'cinemaCertsInit'
+    volumes:
+      - ./certs:/certs
+    entrypoint: /bin/sh -c "if [ ! -f /certs/cinema.crt ]; then apk add --no-cache openssl; openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /certs/cinema.key -out /certs/cinema.crt -subj '/C=PL/ST=State/L=City/O=Cinema/CN=localhost'; echo 'SSL certificates generated'; else echo 'SSL certificates already exist'; fi"
 
 networks:
-  cinema-network:
+  public-network:
+    driver: bridge
+
+  private-network:
     driver: bridge
 
 volumes:
+  postgres_data:
   minio_data:
+  redis_data:
