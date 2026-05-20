@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-@CacheConfig(cacheNames = "movies")
 @RequiredArgsConstructor
 public class MovieServiceImplementation implements MovieService {
 
@@ -36,7 +35,6 @@ public class MovieServiceImplementation implements MovieService {
 
     @Transactional
     @Override
-    @CacheEvict(allEntries = true)
     public Movie createMovie(MovieRequest movieRequest) throws UserException {
         User user = userService.findUserById(movieRequest.getUser().getId());
         if ("ADMIN".equalsIgnoreCase(user.getRole())) {
@@ -64,19 +62,16 @@ public class MovieServiceImplementation implements MovieService {
     }
 
     @Override
-    @Cacheable(key = "'all'")
     public List<Movie> getAllMovies() {
         return movieRepository.findAllByOrderByIdDesc();
     }
 
     @Override
-    @Cacheable(key = "#movieId")
     public Movie getMovie(Integer movieId) throws MovieException {
         return movieRepository.findById(movieId).orElseThrow(() -> new MovieException("Movie not found with id: " + movieId));
     }
 
     @Override
-    @Cacheable(key = "'search:' + #title.toLowerCase()")
     public List<Movie> searchMovieByTitle(String title) {
         return movieRepository.findByTitle(title);
     }
@@ -88,7 +83,6 @@ public class MovieServiceImplementation implements MovieService {
 
     @Transactional
     @Override
-    @CacheEvict(allEntries = true)
     public void deleteMovie(Integer movieId, Integer userId) throws MovieException, UserException {
         Movie movie = getMovie(movieId);
         if (movie == null) {
