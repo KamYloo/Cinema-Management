@@ -17,6 +17,7 @@ public interface MovieService {
     Set<Movie> getAllMovies();
     Movie getMovie(Integer movieId) throws MovieException;
     Set<Movie> searchMovieByTitle(String title);
+    
     String addMoviePicture(MultipartFile file);
     void deleteMovie(Integer movieId, Integer userId) throws MovieException, UserException;
 }

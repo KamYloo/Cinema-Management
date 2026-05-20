@@ -1,6 +1,9 @@
 package kamylo.CinemaBackend.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,10 +24,23 @@ public class RedisConfig {
         RedisCacheConfiguration cacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofMinutes(10))
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer(new ObjectMapper())));
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer(configuredObjectMapper())));
 
         return RedisCacheManager.builder(redisConnectionFactory)
                 .cacheDefaults(cacheConfiguration)
                 .build();
+    }
+
+    private ObjectMapper configuredObjectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        // Support Java 8 date/time types
+        mapper.registerModule(new JavaTimeModule());
+        // Handle Hibernate lazy-loading proxies and avoid forcing lazy fetch
+        Hibernate5Module hibernateModule = new Hibernate5Module();
+        hibernateModule.disable(Hibernate5Module.Feature.FORCE_LAZY_LOADING);
+        mapper.registerModule(hibernateModule);
+        // Avoid failures on empty beans
+        mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+        return mapper;
     }
 }

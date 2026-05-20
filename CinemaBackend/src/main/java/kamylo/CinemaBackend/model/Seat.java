@@ -1,6 +1,7 @@
 package kamylo.CinemaBackend.model;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 @Entity
@@ -17,5 +18,6 @@ public class Seat {
 
     @ManyToOne
     @JoinColumn(name = "showTime_id", nullable = false)
+    @JsonBackReference
     private ShowTime showTime;
 }

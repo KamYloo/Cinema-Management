@@ -1,6 +1,8 @@
 package kamylo.CinemaBackend.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -21,9 +23,11 @@ public class ShowTime {
 
     @ManyToOne
     @JoinColumn(name = "movie_id", nullable = false)
+    @JsonBackReference
     private Movie movie;
 
     @OneToMany(mappedBy = "showTime", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Seat> seats = new ArrayList<>();
 
 }
