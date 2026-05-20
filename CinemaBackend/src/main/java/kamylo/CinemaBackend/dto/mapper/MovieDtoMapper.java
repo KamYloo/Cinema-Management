@@ -4,8 +4,8 @@ import kamylo.CinemaBackend.dto.MovieDto;
 import kamylo.CinemaBackend.dto.UserDto;
 import kamylo.CinemaBackend.model.Movie;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MovieDtoMapper {
     public static MovieDto toMovieDto(Movie movie) {
@@ -20,11 +20,12 @@ public class MovieDtoMapper {
         movieDto.setUser(user);
         return movieDto;
     }
-    public static Set<MovieDto> toMovieDtoSet(Set<Movie> movies) {
-        Set<MovieDto> movieDtoSet = new HashSet<>();
+
+    public static List<MovieDto> toMovieDtoList(List<Movie> movies) {
+        List<MovieDto> movieDtoList = new ArrayList<>();
         for (Movie movie : movies) {
-            movieDtoSet.add(toMovieDto(movie));
+            movieDtoList.add(toMovieDto(movie));
         }
-        return movieDtoSet;
+        return movieDtoList;
     }
 }

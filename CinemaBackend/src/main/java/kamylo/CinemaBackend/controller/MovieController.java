@@ -17,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -59,16 +61,16 @@ public class MovieController {
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<Set<MovieDto>> getAllAlbumsHandler() {
-        Set<Movie> movies = movieService.getAllMovies();
-        Set<MovieDto> movieDtos = MovieDtoMapper.toMovieDtoSet(movies);
+    public ResponseEntity<List<MovieDto>> getAllAlbumsHandler() {
+        List<Movie> movies = movieService.getAllMovies();
+        List<MovieDto> movieDtos = MovieDtoMapper.toMovieDtoList(movies);
         return new ResponseEntity<>(movieDtos, HttpStatus.OK);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Set<MovieDto>> searchMovieHandler(@RequestParam("title") String title) {
-        Set<Movie> movies = movieService.searchMovieByTitle(title);
-        Set<MovieDto> movieDtos = MovieDtoMapper.toMovieDtoSet(movies);
+    public ResponseEntity<List<MovieDto>> searchMovieHandler(@RequestParam("title") String title) {
+        List<Movie> movies = movieService.searchMovieByTitle(title);
+        List<MovieDto> movieDtos = MovieDtoMapper.toMovieDtoList(movies);
         return new ResponseEntity<>(movieDtos, HttpStatus.OK);
     }
 
