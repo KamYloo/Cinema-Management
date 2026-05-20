@@ -9,6 +9,7 @@ import kamylo.CinemaBackend.repository.MovieRepository;
 import kamylo.CinemaBackend.repository.ShowTimeRepository;
 import kamylo.CinemaBackend.request.MovieRequest;
 import kamylo.CinemaBackend.service.impl.MovieServiceImplementation;
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -113,11 +114,11 @@ class MovieServiceImplementationTest {
 
     @Test
     void testGetAllMovies() {
-        Set<Movie> movies = new LinkedHashSet<>();
+        List<Movie> movies = new ArrayList<>();
         movies.add(movie);
         when(movieRepository.findAllByOrderByIdDesc()).thenReturn(movies);
 
-        Set<Movie> fetchedMovies = movieService.getAllMovies();
+        List<Movie> fetchedMovies = movieService.getAllMovies();
 
         assertEquals(1, fetchedMovies.size());
         verify(movieRepository, times(1)).findAllByOrderByIdDesc();
@@ -147,11 +148,11 @@ class MovieServiceImplementationTest {
 
     @Test
     void testSearchMovieByTitle() {
-        Set<Movie> movies = new HashSet<>();
+        List<Movie> movies = new ArrayList<>();
         movies.add(movie);
         when(movieRepository.findByTitle("Test Movie")).thenReturn(movies);
 
-        Set<Movie> foundMovies = movieService.searchMovieByTitle("Test Movie");
+        List<Movie> foundMovies = movieService.searchMovieByTitle("Test Movie");
 
         assertEquals(1, foundMovies.size());
         verify(movieRepository, times(1)).findByTitle("Test Movie");
