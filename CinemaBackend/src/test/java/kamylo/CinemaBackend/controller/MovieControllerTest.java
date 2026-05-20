@@ -18,7 +18,9 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.hamcrest.Matchers.is;
@@ -125,7 +127,7 @@ class MovieControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     void testGetAllMoviesHandler() throws Exception {
-        Set<Movie> movies = new HashSet<>();
+        List<Movie> movies = new ArrayList<>();
         movies.add(movie);
 
         when(userService.findUserProfileByJwt(anyString())).thenReturn(adminUser);
@@ -140,7 +142,7 @@ class MovieControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     void testSearchMovieHandler() throws Exception {
-        Set<Movie> movies = new HashSet<>();
+        List<Movie> movies = new ArrayList<>();
         movies.add(movie);
 
         when(userService.findUserProfileByJwt(anyString())).thenReturn(adminUser);
