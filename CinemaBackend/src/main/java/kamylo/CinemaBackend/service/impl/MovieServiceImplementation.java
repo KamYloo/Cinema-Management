@@ -13,6 +13,9 @@ import kamylo.CinemaBackend.service.MovieService;
 import kamylo.CinemaBackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@CacheConfig(cacheNames = "movies")
 @RequiredArgsConstructor
 public class MovieServiceImplementation implements MovieService {
 
@@ -32,6 +36,7 @@ public class MovieServiceImplementation implements MovieService {
 
     @Transactional
     @Override
+    @CacheEvict(allEntries = true)
     public Movie createMovie(MovieRequest movieRequest) throws UserException {
         User user = userService.findUserById(movieRequest.getUser().getId());
         if ("ADMIN".equalsIgnoreCase(user.getRole())) {
@@ -59,16 +64,19 @@ public class MovieServiceImplementation implements MovieService {
     }
 
     @Override
+    @Cacheable(key = "'all'")
     public Set<Movie> getAllMovies() {
         return movieRepository.findAllByOrderByIdDesc();
     }
 
     @Override
+    @Cacheable(key = "#movieId")
     public Movie getMovie(Integer movieId) throws MovieException {
         return movieRepository.findById(movieId).orElseThrow(() -> new MovieException("Movie not found with id: " + movieId));
     }
 
     @Override
+    @Cacheable(key = "'search:' + #title.toLowerCase()")
     public Set<Movie> searchMovieByTitle(String title) {
         return movieRepository.findByTitle(title);
     }
@@ -80,6 +88,7 @@ public class MovieServiceImplementation implements MovieService {
 
     @Transactional
     @Override
+    @CacheEvict(allEntries = true)
     public void deleteMovie(Integer movieId, Integer userId) throws MovieException, UserException {
         Movie movie = getMovie(movieId);
         if (movie == null) {
