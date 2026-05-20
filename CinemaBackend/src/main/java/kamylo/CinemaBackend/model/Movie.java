@@ -1,5 +1,6 @@
 package kamylo.CinemaBackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -22,10 +23,9 @@ public class Movie {
     private int duration;
 
     @ManyToOne
-    @JoinColumn(name = "movie_id", nullable = false)
-    @JsonBackReference
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
-
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
