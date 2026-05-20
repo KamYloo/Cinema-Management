@@ -1,4 +1,4 @@
-FROM openjdk:19-jdk-slim
+FROM eclipse-temurin:19-jdk-jammy
 
 WORKDIR /app
 
@@ -9,7 +9,7 @@ COPY src src
 
 RUN chmod +x mvnw && ./mvnw clean package -DskipTests
 
-FROM openjdk:19-jdk-slim
+FROM eclipse-temurin:19-jdk-jammy
 WORKDIR /app
 COPY --from=0 /app/target/CinemaBackend-0.0.1-SNAPSHOT.jar app.jar
 
