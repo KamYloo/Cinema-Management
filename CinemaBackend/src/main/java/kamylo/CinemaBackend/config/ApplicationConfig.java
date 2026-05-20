@@ -46,6 +46,7 @@ public class ApplicationConfig implements WebMvcConfigurer {
                 ccfg.setAllowCredentials(true);
                 ccfg.setAllowedHeaders(Collections.singletonList("*"));
                 ccfg.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "X-XSRF-TOKEN"));
+                ccfg.setExposedHeaders(Arrays.asList("Authorization"));
                 ccfg.setMaxAge(3600L);
                 return ccfg;
 
