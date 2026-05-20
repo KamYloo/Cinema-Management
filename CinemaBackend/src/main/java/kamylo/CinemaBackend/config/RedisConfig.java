@@ -1,7 +1,7 @@
 package kamylo.CinemaBackend.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+import com.fasterxml.jackson.datatype.hibernate6.Hibernate6Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.cache.CacheManager;
@@ -33,13 +33,12 @@ public class RedisConfig {
 
     private ObjectMapper configuredObjectMapper() {
         ObjectMapper mapper = new ObjectMapper();
-        // Support Java 8 date/time types
         mapper.registerModule(new JavaTimeModule());
-        // Handle Hibernate lazy-loading proxies and avoid forcing lazy fetch
-        Hibernate5Module hibernateModule = new Hibernate5Module();
-        hibernateModule.disable(Hibernate5Module.Feature.FORCE_LAZY_LOADING);
+
+        Hibernate6Module hibernateModule = new Hibernate6Module();
+        hibernateModule.disable(Hibernate6Module.Feature.FORCE_LAZY_LOADING);
         mapper.registerModule(hibernateModule);
-        // Avoid failures on empty beans
+
         mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         return mapper;
     }
