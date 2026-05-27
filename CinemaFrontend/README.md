@@ -2,9 +2,9 @@
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Frontend configuration for VPS backend
+## Frontend configuration for local backend
 
-Copy `CinemaFrontend/.env.example` to `CinemaFrontend/.env` and set `VITE_API_URL` and `VITE_WS_URL` to your VPS or Tailscale address before running `npm run dev`.
+Copy `CinemaFrontend/.env.example` to `CinemaFrontend/.env` and keep the default values for local Docker backend (`https://localhost` and `wss://localhost/ws`) before running `npm run dev`.
 
 Currently, two official plugins are available:
 

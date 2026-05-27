@@ -13,6 +13,7 @@ import kamylo.CinemaBackend.service.FileStorageService;
 import kamylo.CinemaBackend.service.MovieService;
 import kamylo.CinemaBackend.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -81,6 +82,7 @@ public class MovieController {
     }
 
     @DeleteMapping("/delete/{movieId}")
+    @CacheEvict(cacheNames = {"movieById", "allMovies", "moviesByTitle"}, allEntries = true)
     public ResponseEntity<ApiResponse> deleteMovieHandler(@PathVariable Integer movieId , @RequestHeader("Authorization") String token) throws UserException{
         User user = userService.findUserProfileByJwt(token);
         ApiResponse res = new ApiResponse();

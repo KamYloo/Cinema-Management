@@ -1,4 +1,4 @@
-.movieDetail {
+﻿.movieDetail {
     height: 88vh;
     width: 100%;
     z-index: 1;
@@ -51,8 +51,8 @@
                 height: 30vh;
 
                 h3 {
-                    background: linear-gradient(90deg, red, black); /* Gradient z czerwonego do czarnego */
-                    -webkit-background-clip: text;                  /* Zastosowanie gradientu do tekstu */
+                    background: linear-gradient(90deg, red, black); 
+                    -webkit-background-clip: text;                  
                     -webkit-text-fill-color: transparent;
                     font-size: 4vw;
                     gap: 2vh;
@@ -118,8 +118,8 @@
             text-align: center;
             font-size: 3vh;
             font-family: cursive;
-            background: linear-gradient(90deg, red, black); /* Gradient z czerwonego do czarnego */
-            -webkit-background-clip: text;                  /* Zastosowanie gradientu do tekstu */
+            background: linear-gradient(90deg, red, black); 
+            -webkit-background-clip: text;                  
             -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
             width: 100%;

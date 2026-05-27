@@ -1,4 +1,4 @@
-package kamylo.CinemaBackend.service;
+﻿package kamylo.CinemaBackend.service;
 
 import kamylo.CinemaBackend.exception.ReservationException;
 import kamylo.CinemaBackend.exception.SeatException;
@@ -46,17 +46,17 @@ public class ReservationServiceImplementationTest {
     public void setup() {
         MockitoAnnotations.openMocks(this);
 
-        // Mock seat
+        
         seat = new Seat();
         seat.setId(1);
         seat.setReserved(false);
 
-        // Mock user
+        
         user = new User();
         user.setId(1);
         user.setFullName("John Doe");
 
-        // Mock reservation
+        
         reservation = new Reservation();
         reservation.setId(1);
         reservation.setSeat(seat);
@@ -66,15 +66,15 @@ public class ReservationServiceImplementationTest {
 
     @Test
     public void testCreateReservation_Successful() throws SeatException {
-        // Arrange
+        
         when(seatService.getSeat(1)).thenReturn(seat);
         when(reservationRepository.save(any(Reservation.class))).thenReturn(reservation);
         when(seatRepository.save(seat)).thenReturn(seat);
 
-        // Act
+        
         Reservation result = reservationService.createReservation(1, user);
 
-        // Assert
+        
         assertNotNull(result);
         assertEquals(seat, result.getSeat());
         assertEquals(user, result.getUser());
@@ -86,11 +86,11 @@ public class ReservationServiceImplementationTest {
 
     @Test
     public void testCreateReservation_SeatAlreadyReserved() throws SeatException {
-        // Arrange
-        seat.setReserved(true); // Seat already reserved
+        
+        seat.setReserved(true); 
         when(seatService.getSeat(1)).thenReturn(seat);
 
-        // Act & Assert
+        
         SeatException thrown = assertThrows(SeatException.class, () -> {
             reservationService.createReservation(1, user);
         });
@@ -102,16 +102,16 @@ public class ReservationServiceImplementationTest {
 
     @Test
     public void testGetReservationsByUserId_UserHasReservations() throws UserException {
-        // Arrange
+        
         List<Reservation> reservations = new ArrayList<>();
         reservations.add(reservation);
         user.setReservations(reservations);
         when(userService.findUserById(1)).thenReturn(user);
 
-        // Act
+        
         List<Reservation> result = reservationService.getReservationsByUserId(1);
 
-        // Assert
+        
         assertNotNull(result);
         assertEquals(1, result.size());
         assertEquals(reservation, result.get(0));
@@ -120,14 +120,14 @@ public class ReservationServiceImplementationTest {
 
     @Test
     public void testGetReservationsByUserId_UserHasNoReservations() throws UserException {
-        // Arrange
-        user.setReservations(null); // No reservations
+        
+        user.setReservations(null); 
         when(userService.findUserById(1)).thenReturn(user);
 
-        // Act
+        
         List<Reservation> result = reservationService.getReservationsByUserId(1);
 
-        // Assert
+        
         assertNotNull(result);
         assertTrue(result.isEmpty());
         verify(userService, times(1)).findUserById(1);
@@ -135,13 +135,13 @@ public class ReservationServiceImplementationTest {
 
     @Test
     public void testGetReservationById_Successful() throws ReservationException {
-        // Arrange
+        
         when(reservationRepository.findById(1)).thenReturn(Optional.of(reservation));
 
-        // Act
+        
         Reservation result = reservationService.getReservationById(1);
 
-        // Assert
+        
         assertNotNull(result);
         assertEquals(reservation, result);
         verify(reservationRepository, times(1)).findById(1);
@@ -149,10 +149,10 @@ public class ReservationServiceImplementationTest {
 
     @Test
     public void testGetReservationById_ReservationNotFound() {
-        // Arrange
+        
         when(reservationRepository.findById(1)).thenReturn(Optional.empty());
 
-        // Act & Assert
+        
         ReservationException thrown = assertThrows(ReservationException.class, () -> {
             reservationService.getReservationById(1);
         });
@@ -163,14 +163,14 @@ public class ReservationServiceImplementationTest {
 
     @Test
     public void testDeleteReservationById_Successful() throws ReservationException, SeatException, UserException {
-        // Arrange
+        
         when(reservationRepository.findById(1)).thenReturn(Optional.of(reservation));
         when(seatService.getSeat(1)).thenReturn(seat);
 
-        // Act
+        
         reservationService.deleteReservationById(1, 1);
 
-        // Assert
+        
         assertFalse(seat.isReserved());
         verify(reservationRepository, times(1)).deleteById(1);
         verify(seatRepository, times(1)).save(seat);
@@ -178,10 +178,10 @@ public class ReservationServiceImplementationTest {
 
     @Test
     public void testDeleteReservationById_ReservationNotFound() {
-        // Arrange
+        
         when(reservationRepository.findById(1)).thenReturn(Optional.empty());
 
-        // Act & Assert
+        
         ReservationException thrown = assertThrows(ReservationException.class, () -> {
             reservationService.deleteReservationById(1, 1);
         });
@@ -193,15 +193,15 @@ public class ReservationServiceImplementationTest {
 
     @Test
     public void testDeleteReservationById_UserNotAuthorized() throws ReservationException {
-        // Arrange
+        
         User anotherUser = new User();
-        anotherUser.setId(2); // Different user
+        anotherUser.setId(2); 
         reservation.setUser(anotherUser);
         when(reservationRepository.findById(1)).thenReturn(Optional.of(reservation));
 
-        // Act & Assert
+        
         UserException thrown = assertThrows(UserException.class, () -> {
-            reservationService.deleteReservationById(1, 1); // User ID 1 tries to delete reservation of User ID 2
+            reservationService.deleteReservationById(1, 1); 
         });
 
         assertEquals("User not authorized to delete reservation", thrown.getMessage());
@@ -210,3 +210,4 @@ public class ReservationServiceImplementationTest {
     }
 
 }
+

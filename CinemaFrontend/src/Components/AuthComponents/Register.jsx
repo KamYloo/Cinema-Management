@@ -2,9 +2,9 @@ import React, {useState} from 'react'
 import logo from '../../assets/logo.png'
 import {FaUser, FaLock, FaEnvelope} from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
-import '../../Styles/Login&Register.css'
+import '../../styles/Login&Register.css'
 import { Link, useNavigate } from 'react-router-dom'
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {registerAction} from "../../Redux/AuthService/Action.js";
 import toast from "react-hot-toast";
 
@@ -39,14 +39,13 @@ function Register() {
         e.preventDefault();
         const formErrors = validate();
         if (Object.keys(formErrors).length === 0) {
-            dispatch(registerAction(inputData))
-                .then(() => {
-                    navigate("/login");
-                    toast.success("You have registered successfully.");
-                })
-                .catch(() => {
-                    toast.error("Failed to registerAction. Please try again.");
-                })
+            try {
+                await dispatch(registerAction(inputData));
+                navigate("/login");
+                toast.success("You have registered successfully.");
+            } catch (error) {
+                toast.error(error?.message || "Failed to register. Please try again.");
+            }
         } else {
             setErrors(formErrors);
         }
@@ -89,7 +88,6 @@ function Register() {
                     <div className="inputBox">
                         <select value={inputData.role} onChange={(e) => handleChange(e)} name="role">
                             <option value="User">User</option>
-                            <option value="Admin">Admin</option>
                         </select>
                     </div>
                     <button type='submit'>Register</button>

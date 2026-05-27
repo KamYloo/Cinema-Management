@@ -1,4 +1,4 @@
-package kamylo.CinemaBackend.service;
+﻿package kamylo.CinemaBackend.service;
 
 import kamylo.CinemaBackend.exception.MovieException;
 import kamylo.CinemaBackend.model.Seat;
@@ -37,7 +37,7 @@ public class ShowTimeServiceImplementationTest {
 
     @Test
     public void testGetShowTimeByMovieId_WithExistingSeats() throws MovieException {
-        // Arrange
+        
         int movieId = 1;
         List<ShowTime> showTimes = new ArrayList<>();
         ShowTime showTimeWithSeats = new ShowTime();
@@ -46,10 +46,10 @@ public class ShowTimeServiceImplementationTest {
 
         when(showTimeRepository.findByMovieId(movieId)).thenReturn(showTimes);
 
-        // Act
+        
         List<ShowTime> result = showTimeService.getShowTimeByMovieId(movieId);
 
-        // Assert
+        
         assertNotNull(result);
         assertEquals(1, result.size());
         assertFalse(result.get(0).getSeats().isEmpty());
@@ -58,21 +58,21 @@ public class ShowTimeServiceImplementationTest {
 
     @Test
     public void testGetShowTimeByMovieId_WithNoSeats() throws MovieException {
-        // Arrange
+        
         int movieId = 1;
         List<ShowTime> showTimes = new ArrayList<>();
-        ShowTime showTimeWithoutSeats = new ShowTime(); // No seats initialized
+        ShowTime showTimeWithoutSeats = new ShowTime(); 
         showTimes.add(showTimeWithoutSeats);
 
         when(showTimeRepository.findByMovieId(movieId)).thenReturn(showTimes);
 
-        // Act
+        
         List<ShowTime> result = showTimeService.getShowTimeByMovieId(movieId);
 
-        // Assert
+        
         assertNotNull(result);
         assertEquals(1, result.size());
-        assertFalse(result.get(0).getSeats().isEmpty()); // Seats should now be initialized
+        assertFalse(result.get(0).getSeats().isEmpty()); 
         verify(seatRepository, times(1)).saveAll(anyList());
     }
 
@@ -85,10 +85,10 @@ public class ShowTimeServiceImplementationTest {
 
         when(showTimeRepository.findByMovieId(movieId)).thenReturn(showTimes);
 
-        // Act
+        
         List<ShowTime> result = showTimeService.getShowTimeByMovieId(movieId);
 
-        // Assert
+        
         ShowTime showTime = result.get(0);
         List<Seat> seats = showTime.getSeats();
         assertEquals(30, seats.size(), "The number of initialized seats should be 30");
@@ -105,7 +105,7 @@ public class ShowTimeServiceImplementationTest {
     }
 
 
-    // Helper method to create mock seats
+    
     private List<Seat> createSeatsForShowTime(ShowTime showTime, int count) {
         List<Seat> seats = new ArrayList<>();
         for (int i = 1; i <= count; i++) {
@@ -119,3 +119,4 @@ public class ShowTimeServiceImplementationTest {
         return seats;
     }
 }
+

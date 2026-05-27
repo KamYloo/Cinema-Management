@@ -1,4 +1,4 @@
-package kamylo.CinemaBackend.service;
+﻿package kamylo.CinemaBackend.service;
 
 import kamylo.CinemaBackend.exception.SeatException;
 import kamylo.CinemaBackend.exception.ShowTimeException;
@@ -49,10 +49,10 @@ public class SeatServiceImplementationTest {
 
         when(seatRepository.findByShowTimeId(showTimeId)).thenReturn(availableSeats);
 
-        //Act
+        
         List<Seat> result = seatService.getAvailableSeatsByShowTimeId(showTimeId);
 
-        //Assert
+        
         assertNotNull(result);
         assertEquals(2, result.size());
         assertEquals(1, result.get(0).getSeatNumber());
@@ -65,7 +65,7 @@ public class SeatServiceImplementationTest {
         Integer showTimeId = 1;
         when(seatRepository.findByShowTimeId(showTimeId)).thenReturn(new ArrayList<>());
 
-        //Act
+        
         List<Seat> result = seatService.getAvailableSeatsByShowTimeId(showTimeId);
 
         assertNotNull(result);
@@ -75,7 +75,7 @@ public class SeatServiceImplementationTest {
 
     @Test
     public void testGetSeat_FoundSeat() throws SeatException {
-        // Arrange
+        
         Integer seatId = 1;
         Seat seat = new Seat();
         seat.setId(seatId);
@@ -85,10 +85,10 @@ public class SeatServiceImplementationTest {
 
         when(seatRepository.findById(seatId)).thenReturn(Optional.of(seat));
 
-        // Act
+        
         Seat result = seatService.getSeat(seatId);
 
-        // Assert
+        
         assertNotNull(result);
         assertEquals(seatId, result.getId());
         verify(seatRepository, times(1)).findById(seatId);
@@ -96,14 +96,15 @@ public class SeatServiceImplementationTest {
 
     @Test
     public void testGetSeat_SeatNotFound() {
-        // Arrange
+        
         Integer seatId = 1;
         when(seatRepository.findById(seatId)).thenReturn(Optional.empty());
 
-        // Act & Assert
+        
         SeatException exception = assertThrows(SeatException.class, () -> seatService.getSeat(seatId));
         assertEquals("Seat not found with id: " + seatId, exception.getMessage());
         verify(seatRepository, times(1)).findById(seatId);
     }
 
 }
+

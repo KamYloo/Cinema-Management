@@ -5,6 +5,7 @@ import { FaCirclePlay } from "react-icons/fa6";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {getAllMoviesAction} from "../../Redux/MovieService/Action.js";
+import {resolveMediaUrl} from "../../utils/resolveMediaUrl.js";
 
 function MoviesView() {
     const [searchQuery, setSearchQuery] = useState('');
@@ -38,7 +39,7 @@ function MoviesView() {
                     <div className="movie" key={item.id} onClick={() => navigate(`movie/${item.id}`)}>
                         <i className="play"><FaCirclePlay/></i>
                         <img
-                            src={item?.image || ''}
+                            src={resolveMediaUrl(item?.image)}
                             alt=""/>
                         <span>{item?.genre}</span>
                         <p>{item?.title}</p>

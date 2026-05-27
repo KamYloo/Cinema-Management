@@ -8,6 +8,7 @@ import {deleteMovieAction, getMovieAction} from "../../Redux/MovieService/Action
 import {getShowTimesAction} from "../../Redux/ShowTimeService/Action.js";
 import {convertShowtime} from "../../utils/formatDate.js";
 import toast from "react-hot-toast";
+import {resolveMediaUrl} from "../../utils/resolveMediaUrl.js";
 
 function MovieDetail() {
     const {movieId} = useParams();
@@ -42,7 +43,7 @@ function MovieDetail() {
             <div className="backGround"></div>
             <div className="center">
                 <div className="up">
-                    <img src={movie.getMovie?.image} alt="" />
+                    <img src={resolveMediaUrl(movie.getMovie?.image)} alt="" />
                     <div className="data">
                         <h3><i><FaCirclePlay /></i>{movie.getMovie?.title}</h3>
                         <div className="data-x">

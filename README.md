@@ -5,29 +5,41 @@
 The presentation-ready version uses 5 Docker modules:
 
 - Nginx reverse proxy with HTTPS and rate limiting
+- React frontend served as a static Docker image
 - Spring Boot backend with authentication, REST API, WebSocket, and file proxying
 - PostgreSQL database with persistent storage
 - MinIO object storage for movie images
-- Redis for cache/session support
 
 ### Network layout
 
 - `public-network`: client can reach only Nginx
-- `private-network`: backend, PostgreSQL, MinIO, and Redis stay isolated from the host
+- `private-network`: frontend, backend, PostgreSQL and MinIO stay isolated from the host
 
 ### Main endpoints
 
-- `POST /auth/login`
-- `POST /auth/register`
-- `GET /api/movies`
-- `POST /api/movies/uploadImage`
-- `GET /api/files/{bucket}/{object}`
-- `GET /ws` for WebSocket/STOMP
+Below is a concise reference of public endpoints (method, path, purpose):
+
+- **POST /auth/login**: authenticate user, returns `jwt` on success. Rate-limited (429) for demo — see `nginx` config.
+- **POST /auth/register**: create a new user (public registrations are always created with role `USER`).
+- **GET /api/movies/getAll**: list all movies.
+- **GET /api/movies/{movieId}**: get movie details.
+- **GET /api/movies/search?query=...**: search movies by name.
+- **POST /api/movies/create**: (admin) create a new movie.
+- **POST /api/movies/uploadImage**: upload movie image (multipart/form-data).
+- **GET /api/showTimes/movie/{movieId}**: get showtimes for a movie.
+- **GET /api/seats/showtime/{showTimeId}**: list seats for a showtime.
+- **POST /api/reservations/create**: create a reservation (requires auth)
+- **GET /api/files/{bucketName}/{objectName}**: serve file/object (proxied to MinIO).
+- **WebSocket /ws**: STOMP websocket endpoint for live seat updates (wss://localhost/ws in demo).
+
+Notes:
+- The only nginx-applied rate limiter in the demo is on `/auth/login` (see [CinemaBackend/nginx.conf](CinemaBackend/nginx.conf)).
+- WebSocket endpoint is registered in the backend at `registerStompEndpoints("/ws")` ([WebSocketConfig.java](CinemaBackend/src/main/java/kamylo/CinemaBackend/config/WebSocketConfig.java)).
 
 ### Demo checklist for class
 
 - Show `docker compose up`
-- Open the app through HTTPS
+- Open the app through `https://localhost/login`
 - Book a seat and show the WebSocket update in another browser tab
 - Repeat login requests and show the 429 rate-limit response
 - Open a movie image and confirm it is served through `/api/files/`
@@ -105,26 +117,60 @@ The implementation should focus primarily on the presentation layer, leaving the
 ![image5](https://github.com/user-attachments/assets/d34c1685-6bf0-4981-b10b-177244e441bd)
 ![image6](https://github.com/user-attachments/assets/9c989438-bf99-4652-8f71-6f59a5acb93e)
 
-## How to run the backend
-### Install Maven dependencies:
-- In the terminal in the project directory run the command:
+## How to run the final Docker demo
+### Start the full stack:
+```bash
+cd CinemaBackend
+docker compose up --build
 ```
-mvn clean install
+
+### Open the app:
+```text
+https://localhost/login
 ```
-### Run the Spring Boot application:
-- In the terminal, run the command:
+
+### Local development mode:
+- Backend in IntelliJ: `mvn spring-boot:run` inside `CinemaBackend`
+- Frontend locally: `npm install` then `npm run dev` inside `CinemaFrontend`
+
+## Module Diagram
+The demo stack is organized into five main modules. The public entrypoint is Nginx (TLS + reverse proxy), the frontend is served as static files, and backend + data stores are on a private network.
+
+```mermaid
+flowchart LR
+	A[Nginx public reverse proxy\n(HTTPS, rate-limiting)] --> B[Frontend (nginx serving /dist)]
+	A --> C[Backend (Spring Boot)]
+	C --> D[PostgreSQL]
+	C --> E[MinIO (object storage)]
+	B ---|WS via /ws| C
 ```
-mvn spring-boot:run
+
+## Quick test recipes
+
+- Check login rate limit (expect 429 after a few attempts):
+
+```powershell
+for ($i=1; $i -le 12; $i++) {
+	$code = curl.exe -k -s -o NUL -w "%{http_code}" -X POST https://localhost/auth/login -H "Content-Type: application/json" -d "{\"email\":\"x@x.com\",\"password\":\"bad\"}";
+	Write-Host "$i -> $code"
+}
 ```
-- make sure you have jdk 19 installed
-## How to run the Frontend
-### Install node Modules:
-- In the terminal in the project directory run the command:
+
+- Check an API endpoint (should return 200/401/403 but NOT 429):
+
+```powershell
+for ($i=1; $i -le 8; $i++) {
+	$code = curl.exe -k -s -o NUL -w "%{http_code}" https://localhost/api/movies/getAll;
+	Write-Host "$i -> $code"
+}
 ```
-npm install
-```
-### Run the React application:
-- In the terminal, run the command:
-```
-npm run dev
-```
+
+- Test websocket connection (from browser or STOMP client): connect to `wss://localhost/ws` and subscribe to `/topic/showtimes/{id}/seats` to receive live seat updates.
+
+## Files of interest
+- Nginx configuration: [CinemaBackend/nginx.conf](CinemaBackend/nginx.conf)
+- Docker Compose: [CinemaBackend/compose.yaml](CinemaBackend/compose.yaml)
+- WebSocket endpoint: [CinemaBackend/src/main/java/kamylo/CinemaBackend/config/WebSocketConfig.java](CinemaBackend/src/main/java/kamylo/CinemaBackend/config/WebSocketConfig.java)
+- Auth action handling (frontend): [CinemaFrontend/src/Redux/AuthService/Action.js](CinemaFrontend/src/Redux/AuthService/Action.js)
+
+If you want, I can also add an OpenAPI/Swagger spec for the backend to generate a machine-readable endpoints list. That would take an extra step (add `springdoc-openapi` and a small config). 

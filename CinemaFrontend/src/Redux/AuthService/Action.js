@@ -6,41 +6,51 @@ import {
     LOGOUT,
 } from "./ActionType"
 
-export const registerAction = (data) => async (dispatch) => {
+const parseJsonSafe = async (res) => {
     try {
-        const res = await fetch(`${BASE_API_URL}/auth/register`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data)
-        })
-
-        const resData = await res.json()
-        dispatch({ type: REGISTER, payload: resData })
-    } catch (error) {
-        console.log("catch error ", error)
+        return await res.json()
+    } catch {
+        return null
     }
+}
+
+export const registerAction = (data) => async (dispatch) => {
+    const res = await fetch(`${BASE_API_URL}/auth/register`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
+    })
+
+    const resData = await parseJsonSafe(res)
+    if (!res.ok) {
+        throw new Error(resData?.message || "Registration failed")
+    }
+
+    dispatch({ type: REGISTER, payload: resData })
+    return resData
 }
 
 
 export const loginAction = (data) => async (dispatch) => {
-    try {
-        const res = await fetch(`${BASE_API_URL}/auth/login`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data)
-        })
+    const res = await fetch(`${BASE_API_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
+    })
 
-        const resData = await res.json()
-        if (resData.jwt)
-            localStorage.setItem("token", resData.jwt)
-        dispatch({ type: LOGIN, payload: resData })
-    } catch (error) {
-        console.log("catch error ", error)
+    const resData = await parseJsonSafe(res)
+    if (!res.ok || !resData?.jwt) {
+        localStorage.removeItem("token")
+        throw new Error(resData?.message || "Invalid email or password")
     }
+
+    localStorage.setItem("token", resData.jwt)
+    dispatch({ type: LOGIN, payload: resData })
+    return resData
 }
 
 export const currentUserAction = () => async (dispatch) => {
@@ -53,10 +63,20 @@ export const currentUserAction = () => async (dispatch) => {
             },
         })
 
-        const resData = await res.json()
+        const resData = await parseJsonSafe(res)
+        if (!res.ok) {
+            localStorage.removeItem("token")
+            dispatch({ type: REQUEST_USER, payload: null })
+            return null
+        }
+
         dispatch({ type: REQUEST_USER, payload: resData })
+        return resData
     } catch (error) {
         console.log("catch error ", error)
+        localStorage.removeItem("token")
+        dispatch({ type: REQUEST_USER, payload: null })
+        return null
     }
 }
 

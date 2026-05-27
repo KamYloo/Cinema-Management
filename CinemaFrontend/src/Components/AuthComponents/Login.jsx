@@ -2,10 +2,10 @@ import React, {useEffect, useState} from 'react'
 import logo from '../../assets/logo.png'
 import { FaUser, FaLock } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
-import '../../Styles/Login&Register.css'
+import '../../styles/Login&Register.css'
 import { Link, useNavigate } from 'react-router-dom'
 import {currentUserAction, loginAction} from "../../Redux/AuthService/Action.js";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import toast from "react-hot-toast";
 
 function Login() {
@@ -14,7 +14,6 @@ function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const auth = useSelector(store => store.auth);
     const token = localStorage.getItem('token');
 
     const handleChange = (e) => {
@@ -34,14 +33,13 @@ function Login() {
         e.preventDefault();
         const formErrors = validate();
         if (Object.keys(formErrors).length === 0) {
-            dispatch(loginAction(inputData))
-                .then(() => {
-                    navigate("/home");
-                    toast.success("You have logged in successfully.");
-                })
-                .catch(() => {
-                    toast.error("Failed to loginAction. Please try again.");
-                })
+            try {
+                await dispatch(loginAction(inputData));
+                navigate("/home");
+                toast.success("You have logged in successfully.");
+            } catch (error) {
+                toast.error(error?.message || "Failed to login. Please try again.");
+            }
         } else {
             setErrors(formErrors);
         }
@@ -49,7 +47,7 @@ function Login() {
 
     useEffect(() => {
         if (token)
-            dispatch(currentUserAction(token));
+            dispatch(currentUserAction());
     }, [dispatch, token]);
 
     return (
