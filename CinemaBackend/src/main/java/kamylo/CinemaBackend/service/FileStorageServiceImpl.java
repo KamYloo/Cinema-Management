@@ -1,4 +1,4 @@
-package kamylo.CinemaBackend.service;
+﻿package kamylo.CinemaBackend.service;
 
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
@@ -29,10 +29,10 @@ public class FileStorageServiceImpl implements FileStorageService {
         try {
             ensureBucketExists();
 
-            // Generate unique filename
+            
             String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
 
-            // Upload file to MinIO
+            
             minioClient.putObject(
                     PutObjectArgs.builder()
                             .bucket(bucketName)
@@ -42,7 +42,7 @@ public class FileStorageServiceImpl implements FileStorageService {
                             .build()
             );
 
-            // Return URL to access the file
+            
             return publicCdn + bucketName + "/" + fileName;
 
         } catch (Exception e) {
@@ -60,10 +60,10 @@ public class FileStorageServiceImpl implements FileStorageService {
     @Override
     public void deleteFile(String fileUrl) {
         try {
-            // Extract filename from URL
+            
             String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
 
-            // Delete file from MinIO
+            
             minioClient.removeObject(
                     RemoveObjectArgs.builder()
                             .bucket(bucketName)

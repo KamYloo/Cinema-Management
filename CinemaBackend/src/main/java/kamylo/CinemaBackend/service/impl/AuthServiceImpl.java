@@ -1,4 +1,4 @@
-package kamylo.CinemaBackend.service.impl;
+﻿package kamylo.CinemaBackend.service.impl;
 
 import kamylo.CinemaBackend.config.JwtProvider;
 import kamylo.CinemaBackend.exception.AuthException;
@@ -27,7 +27,6 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse registerUser(UserRequest userRequest) throws AuthException {
-        String role = userRequest.getRole().trim().toLowerCase();
         User isEmailExist = userRepository.findByEmail(userRequest.getEmail());
 
         if (isEmailExist != null) {
@@ -38,14 +37,8 @@ public class AuthServiceImpl implements AuthService {
         newUser.setEmail(userRequest.getEmail());
         newUser.setFullName(userRequest.getFullName());
         newUser.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-
-        if ("admin".equalsIgnoreCase(role)) {
-            newUser.setRole("ADMIN");
-        } else if ("user".equalsIgnoreCase(role)) {
-            newUser.setRole("USER");
-        } else {
-            throw new AuthException("Invalid role provided. Must be 'Admin' or 'User'.");
-        }
+        
+        newUser.setRole("USER");
 
         User savedUser = userRepository.save(newUser);
 
@@ -74,3 +67,4 @@ public class AuthServiceImpl implements AuthService {
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 }
+
