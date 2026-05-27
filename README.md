@@ -138,10 +138,10 @@ The demo stack is organized into five main modules. The public entrypoint is Ngi
 
 ```mermaid
 flowchart LR
-	A[Nginx public reverse proxy\n(HTTPS, rate-limiting)] --> B[Frontend (nginx serving /dist)]
-	A --> C[Backend (Spring Boot)]
+	A[Nginx public reverse proxy (HTTPS rate-limiting)] --> B[Frontend - nginx serving /dist]
+	A --> C[Backend - Spring Boot]
 	C --> D[PostgreSQL]
-	C --> E[MinIO (object storage)]
+	C --> E[MinIO - object storage]
 	B ---|WS via /ws| C
 ```
 
