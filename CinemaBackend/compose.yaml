@@ -23,9 +23,9 @@
     container_name: 'cinemaBackend'
     env_file: ../.env
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql:
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=netlab
+      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       - postgres
@@ -70,7 +70,7 @@
     container_name: 'cinemaFileStorageInit'
     depends_on:
       - minio
-    entrypoint: /bin/sh -c "until mc alias set local http:
+    entrypoint: /bin/sh -c "until mc alias set local ${MINIO_ENDPOINT} ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD}; do echo 'Waiting for MinIO...'; sleep 2; done; mc mb -p local/${MINIO_BUCKET_NAME} || true; echo 'MinIO bucket initialized'; exit 0;"
     networks:
       - private-network
   frontend:
@@ -78,8 +78,8 @@
       context: ../CinemaFrontend
       dockerfile: Dockerfile
       args:
-        VITE_API_URL: https:
-        VITE_WS_URL: wss:
+        VITE_API_URL: ${VITE_API_URL}
+        VITE_WS_URL: ${VITE_WS_URL}
     container_name: 'cinemaFrontend'
     networks:
       - private-network
