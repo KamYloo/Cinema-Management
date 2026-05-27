@@ -1,5 +1,5 @@
-export const BASE_API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8080"
-export const BASE_WS_URL = import.meta.env.VITE_WS_URL ?? "ws://localhost:8080/ws"
+﻿export const BASE_API_URL = import.meta.env.VITE_API_URL ?? "http:
+export const BASE_WS_URL = import.meta.env.VITE_WS_URL ?? "ws:
 
 const fetchWithAuth = async (url, options = {}, errorType) => {
     const token = localStorage.getItem('token');
